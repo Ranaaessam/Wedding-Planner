@@ -51,7 +51,7 @@ const OnboardingScreen = ({ navigation }) => {
           backgroundColor: '#FF81AE',
           image: (
             <Image
-              source={require('../assets/1.jpg')}
+              source={require('../assets/Images/1.jpg')}
               style={{ width: 250, height: 250, borderRadius: 300 }}
             />
           ),
@@ -65,7 +65,7 @@ const OnboardingScreen = ({ navigation }) => {
           backgroundColor: '#FFDFEB',
           image: (
             <Image
-              source={require('../assets/cakee.png')}
+              source={require('../assets/Images/cakee.png')}
               style={{ width: 200, height: 250 }}
             />
           ),
@@ -79,7 +79,7 @@ const OnboardingScreen = ({ navigation }) => {
           backgroundColor: '#e9bcbe',
           image: (
             <Image
-              source={require('../assets/ring.png')}
+              source={require('../assets/Images/ring.png')}
               style={{ width: 250, height: 250, borderRadius: 200 }}
             />
           ),
