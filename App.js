@@ -2,11 +2,12 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import LoginScreen from "./screens/LoginScreen";
-import SplashScreen from "./screens/splashScreen";
-import OnboardingScreen from "./screens/onBoardingScreen";
-import HomeScreen from "./screens/homeScreen";
-import signUpScreen from "./screens/signUpScreen";
+import CheckList from "./screens/checkList";
+// import LoginScreen from "./screens/LoginScreen";
+// import SplashScreen from "./screens/splashScreen";
+// import OnboardingScreen from "./screens/onBoardingScreen";
+// import HomeScreen from "./screens/homeScreen";
+// import signUpScreen from "./screens/signUpScreen";
 
 const Stack = createStackNavigator();
 
@@ -14,8 +15,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <Stack.Navigator initialRouteName="SignUP">
-          <Stack.Screen
+        <Stack.Navigator initialRouteName="CheckList">
+          {/* Uncomment and add your other screens as needed */}
+          {/* <Stack.Screen
             name="Splash"
             component={SplashScreen}
             options={{ headerShown: false }}
@@ -36,8 +38,13 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="SignUP"
+            name="SignUp"
             component={signUpScreen}
+            options={{ headerShown: false }}
+          /> */}
+          <Stack.Screen
+            name="CheckList"
+            component={CheckList}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

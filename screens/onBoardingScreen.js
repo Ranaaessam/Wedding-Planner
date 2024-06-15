@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
-
+import CheckList from "../components/checkList";
 const Dots = ({ selected }) => {
   let backgroundColor;
 
@@ -44,8 +44,8 @@ const OnboardingScreen = ({ navigation }) => {
       NextButtonComponent={Next}
       DoneButtonComponent={Done}
       DotComponent={Dots}
-      onSkip={() => navigation.replace("Home")}
-      onDone={() => navigation.navigate("Home")}
+      onSkip={() => navigation.replace("CheckList")}
+      onDone={() => navigation.navigate("CheckList")}
       pages={[
         {
           backgroundColor: "#FF81AE",
@@ -62,11 +62,7 @@ const OnboardingScreen = ({ navigation }) => {
           subTitleStyles: styles.subtitle,
         },
         {
-<<<<<<< HEAD
-          backgroundColor: "#FFDFEB",
-=======
           backgroundColor: '#FAC6D8',
->>>>>>> d95b8a9 (boardingScreen updated)
           image: (
             <Image
               source={require("../assets/Images/cakee.png")}
