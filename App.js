@@ -6,6 +6,7 @@ import LoginScreen from "./screens/LoginScreen";
 import SplashScreen from "./screens/splashScreen";
 import OnboardingScreen from "./screens/onBoardingScreen";
 import HomeScreen from "./screens/homeScreen";
+import signUpScreen from "./screens/signUpScreen";
 
 const Stack = createStackNavigator();
 
@@ -13,7 +14,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <Stack.Navigator initialRouteName="Splash">
+        <Stack.Navigator initialRouteName="SignUP">
           <Stack.Screen
             name="Splash"
             component={SplashScreen}
@@ -32,6 +33,11 @@ export default function App() {
           <Stack.Screen
             name="Home"
             component={HomeScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SignUP"
+            component={signUpScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
