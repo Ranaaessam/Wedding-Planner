@@ -11,9 +11,9 @@ const HomeScreen = () => {
     <SafeAreaView>
       <Header
         imageUri={
-          "https://www.fcbarcelona.com/photo-resources/2022/08/02/ae5252d1-b79b-4950-9e34-6e67fac09bb0/LeoMessi20092010_pic_fcb-arsenal62.jpg?width=1200&height=750"
+          "https://img.freepik.com/premium-vector/avatar-wedding-couple_24911-14448.jpg"
         }
-        name={"Mazen"}
+        name={"Mr & Mrs"}
       />
       <View style={styles.container}>
         <Text style={styles.header}>Explore Venues near you</Text>

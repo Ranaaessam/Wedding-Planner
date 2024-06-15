@@ -5,22 +5,76 @@ import SupplierCard from "./supplierCard";
 const DATA = [
   {
     id: "1",
-    name: "Awesome Venue",
+    name: "Venue",
     imageUri:
-      "https://www.fcbarcelona.com/photo-resources/2022/08/02/ae5252d1-b79b-4950-9e34-6e67fac09bb0/LeoMessi20092010_pic_fcb-arsenal62.jpg?width=1200&height=750",
+      "https://assets.cairo360.com/app/uploads/2023/05/02/119941638_1666081876889903_2897944758434622818_n-768x512.jpeg",
   },
   {
     id: "2",
-    name: "Another Venue",
+    name: "Photographers",
     imageUri:
-      "https://www.fcbarcelona.com/photo-resources/2022/08/02/ae5252d1-b79b-4950-9e34-6e67fac09bb0/LeoMessi20092010_pic_fcb-arsenal62.jpg?width=1200&height=750",
+      "https://media.greatbigphotographyworld.com/wp-content/uploads/2022/04/best-cameras-for-wedding-photography.jpg",
+  },
+  {
+    id: "3",
+    name: "Make-up Artist",
+    imageUri:
+      "https://erinmartonphoto.com/wp-content/uploads/sites/11888/2020/06/wedding-hair-and-makeup-artist-los-angeles-2-1024x683.jpg",
+  },
+  {
+    id: "4",
+    name: "Cakes",
+    imageUri:
+      "https://www.bloomsburys.ae/uploads/products/wedg_jpg_25102021084637.jpg",
+  },
+  {
+    id: "5",
+    name: "Escort Cars",
+    imageUri:
+      "https://media.karousell.com/media/photos/products/2018/05/26/wedding_car_with_escort_cars_1527337192_a089c70a.jpg",
+  },
+  {
+    id: "6",
+    name: "Music Playlist",
+    imageUri:
+      "https://vinesoftheyarravalley.com.au/wp-content/uploads/2020/06/Equipment-of-a-Wedding-DJ-1-scaled.jpg",
+  },
+  {
+    id: "7",
+    name: "Jewelry",
+    imageUri:
+      "https://i.etsystatic.com/5698877/r/il/930748/4373826505/il_fullxfull.4373826505_5drb.jpg",
+  },
+  {
+    id: "8",
+    name: "Attire",
+    imageUri:
+      "https://withjoy.com/blog/wp-content/uploads/2018/12/Wedding-Dress-Code_Deciphered.jpg",
+  },
+  {
+    id: "9",
+    name: "Caterers",
+    imageUri:
+      "https://www.wedinspire.com/wp-content/uploads/2021/11/Questions-to-Ask-your-Wedding-Caterer.jpg",
+  },
+  {
+    id: "10",
+    name: "Entertainment",
+    imageUri:
+      "https://julesbridaljewellery.com/cdn/shop/articles/wedding-entertainment-ideas_1456x.png?v=1700017724",
+  },
+  {
+    id: "11",
+    name: "Decoration",
+    imageUri:
+      "https://cdn.greenvelope.com/blog/wp-content/uploads/outdoor-wedding-aisle.jpeg",
   },
 ];
 
 const Suppliers = () => {
   return (
     <FlatList
-      data={DATA.concat(DATA, DATA, DATA)}
+      data={DATA}
       renderItem={({ item }) => (
         <View>
           <SupplierCard name={item.name} imageUri={item.imageUri} />
