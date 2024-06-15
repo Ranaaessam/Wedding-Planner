@@ -62,7 +62,11 @@ const OnboardingScreen = ({ navigation }) => {
           subTitleStyles: styles.subtitle,
         },
         {
+<<<<<<< HEAD
           backgroundColor: "#FFDFEB",
+=======
+          backgroundColor: '#FAC6D8',
+>>>>>>> d95b8a9 (boardingScreen updated)
           image: (
             <Image
               source={require("../assets/Images/cakee.png")}
