@@ -1,9 +1,22 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import { Card } from "react-native-elements";
-import Icon from "react-native-vector-icons/FontAwesome5";
+import Icon from "react-native-vector-icons/AntDesign";
 
 const VenueCard = ({ name, imageUri }) => {
+  const [isLoved, setIsLoved] = useState(false);
+
+  const toggleLove = () => {
+    setIsLoved(!isLoved);
+  };
+
   return (
     <Card containerStyle={styles.card}>
       <View style={styles.imageContainer}>
@@ -11,7 +24,9 @@ const VenueCard = ({ name, imageUri }) => {
         <View style={styles.overlay}>
           <Text style={styles.name}>{name}</Text>
         </View>
-        <Icon name="heart" size={18} color="purple" style={styles.heartIcon} />
+        <TouchableOpacity onPress={toggleLove} style={styles.iconContainer}>
+          <Icon name={isLoved ? "heart" : "hearto"} size={20} color="purple" />
+        </TouchableOpacity>
       </View>
     </Card>
   );
@@ -45,9 +60,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "start",
     padding: 5,
-    width: "70%",
+    width: "75%",
   },
-  heartIcon: {
+  iconContainer: {
     position: "absolute",
     bottom: 10,
     right: 10,
