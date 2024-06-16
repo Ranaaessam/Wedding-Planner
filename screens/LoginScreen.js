@@ -21,13 +21,6 @@ const LoginScreen = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-  let [fontsLoaded, fontError] = useFonts({
-    Poppins: require("../assets/fonts/Poppins-Medium.ttf"),
-    PoppinsLight: require("../assets/fonts/Poppins-Light.ttf"),
-    PoppinsSemiBold: require("../assets/fonts/Poppins-SemiBold.ttf"),
-    PoppinsBold: require("../assets/fonts/Poppins-Bold.ttf"),
-  });
-
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .email("Invalid email address")

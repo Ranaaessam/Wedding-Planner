@@ -8,10 +8,18 @@ import SplashScreen from "./screens/splashScreen";
 import OnboardingScreen from "./screens/onBoardingScreen";
 import HomeScreen from "./screens/homeScreen";
 import signUpScreen from "./screens/signUpScreen";
+import Favourites from "./screens/favourites";
+import { useFonts } from "expo-font";
 
 const Stack = createStackNavigator();
 
 export default function App() {
+  let [fontsLoaded, fontError] = useFonts({
+    Poppins: require("./assets/fonts/Poppins-Medium.ttf"),
+    PoppinsLight: require("./assets/fonts/Poppins-Light.ttf"),
+    PoppinsSemiBold: require("./assets/fonts/Poppins-SemiBold.ttf"),
+    PoppinsBold: require("./assets/fonts/Poppins-Bold.ttf"),
+  });
   return (
     <NavigationContainer>
       <View style={styles.container}>
@@ -46,6 +54,15 @@ export default function App() {
             name="CheckList"
             component={CheckList}
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Favourites"
+            component={Favourites}
+            options={{
+              headerTintColor: "white",
+              headerTitleStyle: { fontFamily: "Poppins", fontSize: 20 },
+              headerStyle: { backgroundColor: "#FF81AE" },
+            }}
           />
         </Stack.Navigator>
       </View>
