@@ -12,7 +12,7 @@ import Favourites from "./screens/favourites";
 import { useFonts } from "expo-font";
 import FavouriteCategoryScreen from "./screens/favouriteCategoryScreen";
 import ComplaintForm from "./screens/ComplaintForm";
-import Cart from "./components/Cart"
+import Cart from "./screens/cartScreen"
 
 const Stack = createStackNavigator();
 
