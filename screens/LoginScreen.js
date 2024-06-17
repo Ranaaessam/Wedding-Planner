@@ -11,6 +11,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Icon from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
+import { useFonts } from "expo-font";
 
 const LoginScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -89,7 +90,7 @@ const LoginScreen = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.signUpLink}
-              // onPress={() => navigation.navigate("SignUpScreen")}
+              onPress={() => navigation.navigate("SignUp")}
             >
               <Text style={styles.signUpText}>
                 Not a user? Click here to sign up
@@ -116,9 +117,9 @@ const styles = StyleSheet.create({
   mainText: {
     color: "white",
     fontSize: 35,
-    fontWeight: "bold",
+    fontFamily: "PoppinsSemiBold",
     marginTop: 20,
-    letterSpacing: 4,
+    letterSpacing: 2,
   },
   form: {
     flex: 2,
@@ -149,13 +150,13 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
-    marginTop: "10%",
+    marginTop: "15%",
     width: "100%",
   },
   buttonText: {
     color: "white",
     fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: "PoppinsSemiBold",
     letterSpacing: 1.5,
   },
   errorText: {
@@ -172,6 +173,7 @@ const styles = StyleSheet.create({
   signUpText: {
     color: "#4C134E",
     marginTop: 10,
+    fontFamily: "PoppinsLight",
     fontSize: 14,
     letterSpacing: 1,
   },

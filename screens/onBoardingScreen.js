@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
-import CheckList from "../components/checkList";
 const Dots = ({ selected }) => {
   let backgroundColor;
 
@@ -62,7 +61,7 @@ const OnboardingScreen = ({ navigation }) => {
           subTitleStyles: styles.subtitle,
         },
         {
-          backgroundColor: '#FAC6D8',
+          backgroundColor: "#FAC6D8",
           image: (
             <Image
               source={require("../assets/Images/cakee.png")}
