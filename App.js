@@ -11,6 +11,7 @@ import signUpScreen from "./screens/signUpScreen";
 import Favourites from "./screens/favourites";
 import { useFonts } from "expo-font";
 import FavouriteCategoryScreen from "./screens/favouriteCategoryScreen";
+import ComplaintForm from "./screens/ComplaintForm";
 
 const Stack = createStackNavigator();
 
@@ -24,7 +25,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <Stack.Navigator initialRouteName="Favourites">
+        <Stack.Navigator initialRouteName="ComplaintForm">
           {/* Uncomment and add your other screens as needed */}
           <Stack.Screen
             name="Splash"
@@ -54,6 +55,11 @@ export default function App() {
           <Stack.Screen
             name="CheckList"
             component={CheckList}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ComplaintForm"
+            component={ComplaintForm}
             options={{ headerShown: false }}
           />
           <Stack.Screen
