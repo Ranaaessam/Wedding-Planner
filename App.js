@@ -14,6 +14,7 @@ import FavouriteCategoryScreen from "./screens/favouriteCategoryScreen";
 import ComplaintForm from "./screens/ComplaintForm";
 import Cart from "./screens/cartScreen"
 import Settings from "./screens/Settings"
+import ContactUs from "./screens/ContactUs";
 
 const Stack = createStackNavigator();
 
@@ -27,7 +28,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <Stack.Navigator initialRouteName="Settings">
+        <Stack.Navigator initialRouteName="CheckList">
           {/* Uncomment and add your other screens as needed */}
           <Stack.Screen
             name="Splash"
@@ -67,6 +68,12 @@ export default function App() {
           <Stack.Screen
             name="Cart"
             component={Cart}
+            options={{ headerShown: false }}
+
+          />
+            <Stack.Screen
+            name="ContactUs"
+            component={ContactUs}
             options={{ headerShown: false }}
 
           />
