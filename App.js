@@ -13,6 +13,7 @@ import { useFonts } from "expo-font";
 import FavouriteCategoryScreen from "./screens/favouriteCategoryScreen";
 import ComplaintForm from "./screens/ComplaintForm";
 import Cart from "./screens/cartScreen"
+import Settings from "./screens/Settings"
 
 const Stack = createStackNavigator();
 
@@ -26,7 +27,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <Stack.Navigator initialRouteName="Cart">
+        <Stack.Navigator initialRouteName="Settings">
           {/* Uncomment and add your other screens as needed */}
           <Stack.Screen
             name="Splash"
@@ -59,7 +60,7 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="ComplaintForm"
+            name="Complaint"
             component={ComplaintForm}
             options={{ headerShown: false }}
           />
@@ -67,6 +68,16 @@ export default function App() {
             name="Cart"
             component={Cart}
             options={{ headerShown: false }}
+
+          />
+           <Stack.Screen
+            name="Settings"
+            component={Settings}
+            options={{
+              headerTintColor: "white",
+              headerTitleStyle: styles.headerTitleStyle,
+              headerStyle: styles.headerStyle,
+            }}
 
           />
           <Stack.Screen
@@ -103,16 +114,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     letterSpacing: 0.9,
   },
-  cartheaderStyle: {
-    backgroundColor: "white",
-    height: 80,
-  },
 
-  cartheaderTitleStyle: {
-    fontFamily: "Poppins",
-    fontSize: 30,
-    letterSpacing: 0.9,
-    color:"#FF81AE",
-    fontWeight:"bold"
-  },
 });
