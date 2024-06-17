@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import CheckList from "./screens/checkList";
+import CheckList from "./screens/checkListScreen";
 // import LoginScreen from "./screens/LoginScreen";
 // import SplashScreen from "./screens/splashScreen";
 // import OnboardingScreen from "./screens/onBoardingScreen";

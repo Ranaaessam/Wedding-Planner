@@ -1,9 +1,9 @@
-import LottieView from 'lottie-react-native';
 import React, { useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TextInput, Modal, Pressable, ImageBackground, Image } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TextInput, Modal, Pressable, ImageBackground } from 'react-native';
 import { CheckBox, Button, Icon } from 'react-native-elements';
+import LottieView from 'lottie-react-native';
 
-const CheckList = () => {
+const Checklist = () => {
   const [tasks, setTasks] = useState([]);
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
@@ -12,7 +12,7 @@ const CheckList = () => {
   const addTask = () => {
     if (taskTitle.length > 0 && taskDescription.length > 0) {
       const newTask = {
-        key: Date.now().toString(), 
+        key: Date.now().toString(),
         title: taskTitle,
         description: taskDescription,
         completed: false,
@@ -33,9 +33,6 @@ const CheckList = () => {
   const removeTask = (taskKey) => {
     setTasks(tasks.filter((task) => task.key !== taskKey));
   };
-
-
-
 
   return (
     <ImageBackground source={require('../assets/Images/bc.jpg')} style={styles.background}>
@@ -81,7 +78,6 @@ const CheckList = () => {
           />
         )}
 
-        {/* Add Task Button */}
         <View style={styles.addButtonContainer}>
           <Button
             icon={<Icon name="add" size={20} color="white" />}
@@ -181,7 +177,7 @@ const styles = StyleSheet.create({
   },
   taskTitle: {
     fontWeight: 'bold',
-    fontSize:20
+    fontSize: 20,
   },
   taskDescription: {
     color: '#FF81AE',
@@ -192,7 +188,7 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     backgroundColor: 'red',
-    borderRadius:10
+    borderRadius: 10,
   },
   addButtonContainer: {
     position: 'absolute',
@@ -241,7 +237,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     padding: 10,
     marginBottom: 10,
-    color: '#000000', 
+    color: '#000000',
   },
   modalButtons: {
     flexDirection: 'row',
@@ -291,7 +287,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     zIndex: 1,
   },
-
+  counterText: {
+    fontSize: 16,
+  },
 });
 
-export default CheckList;
+export default Checklist;
