@@ -12,9 +12,11 @@ import Favourites from "./screens/favourites";
 import { useFonts } from "expo-font";
 import FavouriteCategoryScreen from "./screens/favouriteCategoryScreen";
 import ComplaintForm from "./screens/ComplaintForm";
-import Cart from "./screens/cartScreen"
-import Settings from "./screens/Settings"
+import Cart from "./screens/cartScreen";
+import Settings from "./screens/Settings";
 import ContactUs from "./screens/ContactUs";
+import ListviewSuppliers from "./screens/listviewSuppliers";
+import SupplierDetails from "./screens/supplierDetails";
 
 const Stack = createStackNavigator();
 
@@ -28,7 +30,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <Stack.Navigator initialRouteName="CheckList">
+        <Stack.Navigator initialRouteName="ListViewSuppliers">
           {/* Uncomment and add your other screens as needed */}
           <Stack.Screen
             name="Splash"
@@ -69,15 +71,13 @@ export default function App() {
             name="Cart"
             component={Cart}
             options={{ headerShown: false }}
-
           />
-            <Stack.Screen
+          <Stack.Screen
             name="ContactUs"
             component={ContactUs}
             options={{ headerShown: false }}
-
           />
-           <Stack.Screen
+          <Stack.Screen
             name="Settings"
             component={Settings}
             options={{
@@ -85,7 +85,6 @@ export default function App() {
               headerTitleStyle: styles.headerTitleStyle,
               headerStyle: styles.headerStyle,
             }}
-
           />
           <Stack.Screen
             name="Favourites"
@@ -99,8 +98,15 @@ export default function App() {
           <Stack.Screen
             name="FavouriteCategoryScreen"
             component={FavouriteCategoryScreen}
-            options={{ headerShown: false }}
-          ></Stack.Screen>
+            options={{ headerShown: false }}></Stack.Screen>
+          <Stack.Screen
+            name="ListViewSuppliers"
+            component={ListviewSuppliers}
+            options={{ headerShown: false }}></Stack.Screen>
+          <Stack.Screen
+            name="SupplierDetails"
+            component={SupplierDetails}
+            options={{ headerShown: false }}></Stack.Screen>
         </Stack.Navigator>
       </View>
     </NavigationContainer>
@@ -121,5 +127,4 @@ const styles = StyleSheet.create({
     fontSize: 20,
     letterSpacing: 0.9,
   },
-
 });
