@@ -17,6 +17,7 @@ import Settings from "./screens/Settings";
 import ContactUs from "./screens/ContactUs";
 import ListviewSuppliers from "./screens/listviewSuppliers";
 import SupplierDetails from "./screens/supplierDetails";
+import SearchScreen from "./screens/searchScreen";
 
 const Stack = createStackNavigator();
 
@@ -30,8 +31,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <Stack.Navigator initialRouteName="ListViewSuppliers">
-          {/* Uncomment and add your other screens as needed */}
+        <Stack.Navigator initialRouteName="Search">
           <Stack.Screen
             name="Splash"
             component={SplashScreen}
@@ -98,15 +98,24 @@ export default function App() {
           <Stack.Screen
             name="FavouriteCategoryScreen"
             component={FavouriteCategoryScreen}
-            options={{ headerShown: false }}></Stack.Screen>
+            options={{ headerShown: false }}
+          ></Stack.Screen>
           <Stack.Screen
             name="ListViewSuppliers"
             component={ListviewSuppliers}
-            options={{ headerShown: false }}></Stack.Screen>
+            options={{ headerShown: false }}
+          ></Stack.Screen>
           <Stack.Screen
             name="SupplierDetails"
             component={SupplierDetails}
-            options={{ headerShown: false }}></Stack.Screen>
+            options={{ headerShown: false }}
+          ></Stack.Screen>
+
+          <Stack.Screen
+            name="Search"
+            component={SearchScreen}
+            options={{ headerShown: false }}
+          ></Stack.Screen>
         </Stack.Navigator>
       </View>
     </NavigationContainer>
