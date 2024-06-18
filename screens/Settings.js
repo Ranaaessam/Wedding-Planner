@@ -65,6 +65,7 @@ const Settings = ({ navigation }) => {
         </TouchableWithoutFeedback>
         <View style={styles.dropdown}>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => selectLanguage('en')}>
+            
             <Text style={styles.dropdownItemText}>▫English</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => selectLanguage('ar')}>
