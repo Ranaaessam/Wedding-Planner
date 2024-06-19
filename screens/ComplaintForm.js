@@ -48,17 +48,16 @@ const ComplaintForm = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.pageTitle}>Leave Your Complaint Below❕</Text>
-        <Text style={styles.subtitle}>➡Will reach you as soon as we can</Text>
+        <Text style={styles.pageTitle}>Complaint Form</Text>
+        <Text style={styles.subtitle}>➡️ We'll reach out to you as soon as possible</Text>
 
         <View style={styles.formContainer}>
-         
           <TextInput
             style={[styles.input, styles.shadowInput]}
             placeholder="Full Name"
             value={userName}
             onChangeText={text => setUserName(text)}
-            placeholderTextColor="#999"
+            placeholderTextColor="#333"
           />
           <TextInput
             style={[styles.input, styles.shadowInput]}
@@ -66,14 +65,14 @@ const ComplaintForm = () => {
             value={email}
             onChangeText={text => setEmail(text)}
             keyboardType="email-address"
-            placeholderTextColor="#999"
+            placeholderTextColor="#333"
           />
-           <TextInput
+          <TextInput
             style={[styles.input, styles.shadowInput]}
             placeholder="Vendor ID"
             value={vendorId}
             onChangeText={text => setVendorId(text)}
-            placeholderTextColor="#999"
+            placeholderTextColor="#333"
           />
           <TextInput
             style={[styles.input, styles.shadowInput, { height: 100 }]}
@@ -81,7 +80,7 @@ const ComplaintForm = () => {
             value={complaintDetails}
             onChangeText={text => setComplaintDetails(text)}
             multiline
-            placeholderTextColor="#999"
+            placeholderTextColor="#333"
           />
           {error ? <Text style={styles.error}>{error}</Text> : null}
           <TouchableOpacity
@@ -100,7 +99,7 @@ const ComplaintForm = () => {
         >
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Complaint ID❕</Text>
+              <Text style={styles.modalTitle}>Complaint ID</Text>
               <Text style={styles.complaintIdText}>ID: {complaintId}</Text>
               <Button
                 title="Return"
@@ -119,11 +118,11 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     justifyContent: 'center',
-    backgroundColor: '#F8BBD0',
+    backgroundColor: '#FFDFEB',
     padding: 20,
   },
   pageTitle: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#4C134E',
     marginBottom: 10,
@@ -133,13 +132,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#4C134E',
     marginBottom: 20,
-    textAlign: 'start',
-    marginLeft:12
+    textAlign: 'center',
   },
   formContainer: {
     width: '100%',
     maxWidth: 400,
-    backgroundColor: 'white',
+    backgroundColor: '#FF81AE',
     padding: 20,
     borderRadius: 10,
     shadowColor: '#000',
@@ -148,9 +146,6 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
     marginBottom: 20,
-    borderColor: '#FFEDF3',
-    borderWidth: 5,
-    alignSelf: 'center',
   },
   input: {
     height: 40,
@@ -197,8 +192,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 20,
     borderRadius: 10,
-    borderColor: '#FFEDF3',
-    borderWidth: 5,
     alignItems: 'center',
     elevation: 5,
     minWidth: '80%',

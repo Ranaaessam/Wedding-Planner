@@ -13,11 +13,6 @@ import { useFonts } from "expo-font";
 import FavouriteCategoryScreen from "./screens/favouriteCategoryScreen";
 import ComplaintForm from "./screens/ComplaintForm";
 import Cart from "./screens/cartScreen";
-import PlanScreen from "./screens/planScreen";
-import BudgetScreen from "./screens/budgetScreen";
-import Checklist from "./screens/CheckList";
-import CheckListScreen from "./screens/checklistScreen";
-import ProfileScreen from "./screens/profileScreen";
 
 const Stack = createStackNavigator();
 
@@ -64,7 +59,7 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="ComplaintForm"
+            name="Complaint"
             component={ComplaintForm}
             options={{ headerShown: false }}
           />
@@ -72,6 +67,20 @@ export default function App() {
             name="Cart"
             component={Cart}
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ContactUs"
+            component={ContactUs}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Settings"
+            component={Settings}
+            options={{
+              headerTintColor: "white",
+              headerTitleStyle: styles.headerTitleStyle,
+              headerStyle: styles.headerStyle,
+            }}
           />
           <Stack.Screen
             name="Favourites"
@@ -85,6 +94,22 @@ export default function App() {
           <Stack.Screen
             name="FavouriteCategoryScreen"
             component={FavouriteCategoryScreen}
+            options={{ headerShown: false }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="ListViewSuppliers"
+            component={ListviewSuppliers}
+            options={{ headerShown: false }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="SupplierDetails"
+            component={SupplierDetails}
+            options={{ headerShown: false }}
+          ></Stack.Screen>
+
+          <Stack.Screen
+            name="Search"
+            component={SearchScreen}
             options={{ headerShown: false }}
           ></Stack.Screen>
           <Stack.Screen
