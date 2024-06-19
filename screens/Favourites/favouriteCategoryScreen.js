@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, FlatList, View } from "react-native";
-import FavouriteItem from "../components/favouriteItem";
+import FavouriteItem from "../../components/Favourites/favouriteItem";
 import { useRoute } from "@react-navigation/native";
 
 const FavouriteCategoryScreen = () => {

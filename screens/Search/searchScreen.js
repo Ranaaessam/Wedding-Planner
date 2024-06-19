@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
-import SearchBar from "../components/searchBar";
-import SearchCard from "../components/searchCard";
+import SearchBar from "../../components/Search/searchBar";
+import SearchCard from "../../components/Search/searchCard";
 const VenueTypes = [
   {
     id: 1,
@@ -43,7 +43,7 @@ const SearchScreen = () => {
             ></SearchCard>
           ))}
         </ScrollView>
-        <Text style={styles.headerStyle}> Explore Popular Suppliers.. </Text>
+        <Text style={styles.headerStyle}> Explore Popular Suppliers </Text>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator="false"
@@ -65,15 +65,16 @@ const SearchScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "rgba(255, 182, 193, 0.1)",
   },
   headerStyle: {
     fontFamily: "Poppins",
-    fontSize: 18,
+    fontSize: 19,
     letterSpacing: 1,
     width: "88%",
-    marginHorizontal: 30,
-    marginTop: 20,
+    marginHorizontal: 25,
+    marginTop: "10%",
+    color: "#4C134E",
   },
   venueTypes: {
     marginVertical: 10,
