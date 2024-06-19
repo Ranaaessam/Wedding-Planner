@@ -2,26 +2,28 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { useFonts } from "expo-font";
 import CheckList from "./screens/CheckList";
 import LoginScreen from "./screens/LoginScreen";
 import SplashScreen from "./screens/splashScreen";
 import OnboardingScreen from "./screens/onBoardingScreen";
 import HomeScreen from "./screens/homeScreen";
 import signUpScreen from "./screens/signUpScreen";
-import Favourites from "./screens/favourites";
-import { useFonts } from "expo-font";
-import FavouriteCategoryScreen from "./screens/favouriteCategoryScreen";
+import Favourites from "./screens/Favourites/favourites";
+import FavouriteCategoryScreen from "./screens/Favourites/favouriteCategoryScreen";
 import ComplaintForm from "./screens/ComplaintForm";
 import Cart from "./screens/cartScreen";
 import ContactUs from "./screens/ContactUs";
 import Settings from "./screens/Settings";
 import ListviewSuppliers from "./screens/listviewSuppliers";
 import SupplierDetails from "./screens/supplierDetails";
-import SearchScreen from "./screens/searchScreen";
 import PlanScreen from "./screens/planScreen";
 import BudgetScreen from "./screens/budgetScreen";
 import CheckListScreen from "./screens/checklistScreen";
 import ProfileScreen from "./screens/profileScreen";
+import ReservationScreen from "./screens/reservationScreen";
+import SearchScreen from "./screens/Search/searchScreen";
+import SearchResultsScreen from "./screens/Search/searchResultsScreen";
 
 const Stack = createStackNavigator();
 
@@ -35,8 +37,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <Stack.Navigator initialRouteName="SupplierDetails">
-          {/* Uncomment and add your other screens as needed */}
+        <Stack.Navigator initialRouteName="Search">
           <Stack.Screen
             name="Splash"
             component={SplashScreen}
@@ -141,6 +142,16 @@ export default function App() {
             component={ProfileScreen}
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name="Reservation"
+            component={ReservationScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SearchResults"
+            component={SearchResultsScreen}
+            options={{ headerTitle: "" }}
+          ></Stack.Screen>
         </Stack.Navigator>
       </View>
     </NavigationContainer>

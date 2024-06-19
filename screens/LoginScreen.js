@@ -90,7 +90,7 @@ const LoginScreen = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.signUpLink}
-              onPress={() => navigation.navigate("SignUp")}
+              onPress={() => navigation.navigate("MainApp")}
             >
               <Text style={styles.signUpText}>
                 Not a user? Click here to sign up
