@@ -22,6 +22,7 @@ import PlanScreen from "./screens/planScreen";
 import BudgetScreen from "./screens/budgetScreen";
 import CheckListScreen from "./screens/checklistScreen";
 import ProfileScreen from "./screens/profileScreen";
+import ReservationScreen from "./screens/reservationScreen";
 
 const Stack = createStackNavigator();
 
@@ -35,7 +36,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <Stack.Navigator initialRouteName="SupplierDetails">
+        <Stack.Navigator initialRouteName="Reservation">
           {/* Uncomment and add your other screens as needed */}
           <Stack.Screen
             name="Splash"
@@ -139,6 +140,11 @@ export default function App() {
           <Stack.Screen
             name="Profile"
             component={ProfileScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Reservation"
+            component={ReservationScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
