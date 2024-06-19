@@ -1,6 +1,6 @@
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import FavouriteCategory from "../components/favouriteCategory";
+import FavouriteCategory from "../../components/Favourites/favouriteCategory";
 
 const categories = [
   "Venue",

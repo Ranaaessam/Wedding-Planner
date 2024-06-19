@@ -1,11 +1,17 @@
+import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { IconButton } from "react-native-paper";
 
 const SearchBar = () => {
+  const navigate = useNavigation();
+
   const [searchValue, setSearch] = useState("");
   const handleSearch = (text) => {
     setSearch(text);
+  };
+  const onPress = () => {
+    navigate.navigate("SearchResults", { searchQuery: searchValue });
   };
   return (
     <View style={styles.searchBar}>
@@ -13,9 +19,15 @@ const SearchBar = () => {
         style={styles.textInputStyle}
         value={searchValue}
         onChangeText={handleSearch}
+        onSubmitEditing={onPress}
         placeholder="Search for venues or suppliers.."
       ></TextInput>
-      <IconButton icon="magnify" size={20} iconColor="#FF81AE"></IconButton>
+      <IconButton
+        icon="magnify"
+        size={20}
+        iconColor="#4C134E"
+        onPress={onPress}
+      ></IconButton>
     </View>
   );
 };
@@ -26,7 +38,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "88%",
     margin: 25,
-    marginTop: 20,
+    marginTop: "10%",
     backgroundColor: "#FAFAFA",
     shadowOpacity: 0,
     borderRadius: 15,
