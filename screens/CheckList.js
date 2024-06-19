@@ -1,13 +1,52 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TextInput, Modal, Pressable, ImageBackground } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, StyleSheet, TextInput, Modal, Pressable, ImageBackground, Platform } from 'react-native';
 import { CheckBox, Button, Icon } from 'react-native-elements';
 import LottieView from 'lottie-react-native';
+import * as Notifications from 'expo-notifications';
+
+
+//Notifications handling
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
 const Checklist = () => {
   const [tasks, setTasks] = useState([]);
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    registerForPushNotificationsAsync();
+  }, []);
+
+  const registerForPushNotificationsAsync = async () => {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+//Notification for android
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+  };
 
   const addTask = () => {
     if (taskTitle.length > 0 && taskDescription.length > 0) {
@@ -21,16 +60,55 @@ const Checklist = () => {
       setTaskTitle('');
       setTaskDescription('');
       setModalVisible(false);
+      scheduleNotification(newTask);
+    }
+  };
+
+  const scheduleNotification = async (task) => {
+    if (!task.completed) {
+      const notificationId = await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Task Reminder",
+          body: `You have a pending task: ${task.title}`,
+          data: { task },
+        },
+        trigger: { seconds: 60, repeats: true },
+      });
+
+      setTasks((prevTasks) =>
+        prevTasks.map((t) =>
+          t.key === task.key ? { ...t, notificationId } : t
+        )
+      );
+    }
+  };
+
+  const cancelNotification = async (notificationId) => {
+    if (notificationId) {
+      await Notifications.cancelScheduledNotificationAsync(notificationId);
     }
   };
 
   const completeTask = (taskKey) => {
-    setTasks(tasks.map((task) =>
+    const updatedTasks = tasks.map((task) =>
       task.key === taskKey ? { ...task, completed: !task.completed } : task
-    ));
+    );
+
+    setTasks(updatedTasks);
+
+    const completedTask = updatedTasks.find((task) => task.key === taskKey);
+    if (completedTask.completed) {
+      cancelNotification(completedTask.notificationId);
+    } else {
+      scheduleNotification(completedTask);
+    }
   };
 
   const removeTask = (taskKey) => {
+    const taskToRemove = tasks.find((task) => task.key === taskKey);
+    if (taskToRemove.notificationId) {
+      cancelNotification(taskToRemove.notificationId);
+    }
     setTasks(tasks.filter((task) => task.key !== taskKey));
   };
 
@@ -74,7 +152,7 @@ const Checklist = () => {
                 />
               </View>
             )}
-            keyExtractor={item => item.key}
+            keyExtractor={(item) => item.key}
           />
         )}
 
