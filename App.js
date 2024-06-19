@@ -13,6 +13,15 @@ import { useFonts } from "expo-font";
 import FavouriteCategoryScreen from "./screens/favouriteCategoryScreen";
 import ComplaintForm from "./screens/ComplaintForm";
 import Cart from "./screens/cartScreen";
+import ContactUs from "./screens/ContactUs";
+import Settings from "./screens/Settings";
+import ListviewSuppliers from "./screens/listviewSuppliers";
+import SupplierDetails from "./screens/supplierDetails";
+import SearchScreen from "./screens/searchScreen";
+import PlanScreen from "./screens/planScreen";
+import BudgetScreen from "./screens/budgetScreen";
+import CheckListScreen from "./screens/checklistScreen";
+import ProfileScreen from "./screens/profileScreen";
 
 const Stack = createStackNavigator();
 
@@ -26,7 +35,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <Stack.Navigator initialRouteName="Profile">
+        <Stack.Navigator initialRouteName="SupplierDetails">
           {/* Uncomment and add your other screens as needed */}
           <Stack.Screen
             name="Splash"

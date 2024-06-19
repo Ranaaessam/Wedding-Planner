@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { launchImageLibrary } from "react-native-image-picker";
+// import { launchImageLibrary } from "react-native-image-picker";
 
 const profilePicture = () => {
   const [profilePicture, setProfilePicture] = useState(
@@ -10,11 +10,11 @@ const profilePicture = () => {
   );
 
   const selectImage = () => {
-    launchImageLibrary({ mediaType: "photo" }, (response) => {
-      if (response.assets && response.assets.length > 0) {
-        setProfilePicture(response.assets[0].uri);
-      }
-    });
+    // launchImageLibrary({ mediaType: "photo" }, (response) => {
+    //   if (response.assets && response.assets.length > 0) {
+    //     setProfilePicture(response.assets[0].uri);
+    //   }
+    // });
   };
 
   return (
