@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
 import { Card } from "react-native-elements";
-import Icon from "react-native-vector-icons/FontAwesome5";
 
 const SupplierCard = ({ name, imageUri }) => {
   return (

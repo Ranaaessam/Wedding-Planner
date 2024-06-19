@@ -3,8 +3,8 @@ import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import Venues from "../components/venues";
 import Suppliers from "../components/suppliers";
 import Header from "../components/header";
-import PlanIcon from "../components/planIcon";
 import PlanList from "../components/planList";
+import BudgetScreen from "./budgetScreen";
 
 const HomeScreen = () => {
   return (
