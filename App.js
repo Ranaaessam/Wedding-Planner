@@ -4,7 +4,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useFonts } from "expo-font";
 import CheckList from "./screens/CheckList";
-import Login from "./screens/LoginScreen";
 import SplashScreen from "./screens/splashScreen";
 import OnboardingScreen from "./screens/onBoardingScreen";
 import Home from "./screens/homeScreen";
@@ -26,11 +25,11 @@ import ReservationScreen from "./screens/reservationScreen";
 import SearchScreen from "./screens/Search/searchScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import SearchResultsScreen from "./screens/Search/searchResultsScreen";
-<<<<<<< Updated upstream
 import GuestListScreen from "./screens/guestListScreen";
-=======
 import ReviewPage from "./screens/reviewScreen";
->>>>>>> Stashed changes
+import LoginScreen from "./screens/LoginScreen";
+import HomeScreen from "./screens/homeScreen";
+import ReviewScreen from "./screens/reviewScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -94,9 +93,8 @@ export default function App() {
 
   return (
     <NavigationContainer>
-<<<<<<< Updated upstream
       <View style={styles.container}>
-        <Stack.Navigator initialRouteName="Search">
+        <Stack.Navigator initialRouteName="Guestlist">
           <Stack.Screen
             name="Splash"
             component={SplashScreen}
@@ -119,7 +117,7 @@ export default function App() {
           />
           <Stack.Screen
             name="SignUp"
-            component={signUpScreen}
+            component={SignUp}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -193,6 +191,11 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
+            name="Guestlist"
+            component={GuestListScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
             name="Profile"
             component={ProfileScreen}
             options={{ headerShown: false }}
@@ -206,42 +209,12 @@ export default function App() {
             name="SearchResults"
             component={SearchResultsScreen}
             options={{ headerTitle: "" }}></Stack.Screen>
+          <Stack.Screen
+            name="Review"
+            component={ReviewScreen}
+            options={{ headerTitle: "" }}></Stack.Screen>
         </Stack.Navigator>
       </View>
-=======
-      <Stack.Navigator initialRouteName="Splash">
-        <Stack.Screen
-          name="Splash"
-          component={SplashScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Onboarding"
-          component={OnboardingScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SignUp"
-          component={SignUp}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="MainApp"
-          component={MainApp}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Review"
-          component={ReviewPage}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
->>>>>>> Stashed changes
     </NavigationContainer>
   );
 }
