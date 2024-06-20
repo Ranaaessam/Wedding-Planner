@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, FlatList, StyleSheet, Text } from 'react-native';
+import { Icon } from 'react-native-elements';
 import { Card, Button } from 'react-native-paper';
 
 const Cart = () => {
   const cartItems = [
-    { id: '1', title: 'Item 1', price: 10, description: 'This is item 1 description. It could be longer to demonstrate wrapping within the card boundaries.', image: require('../assets/Images/cars.avif') },
-    { id: '2', title: 'Item 2', price: 20, description: 'This is item 2 description.', image: require('../assets/Images/decorations.avif') },
+    { id: '1', title: 'Cars', price: 10, description: 'This is item 1 description. It could be longer to demonstrate wrapping within the card boundaries.', image: require('../assets/Images/cars.avif') },
+    { id: '2', title: 'Decorations', price: 20, description: 'This is item 2 description.', image: require('../assets/Images/decorations.avif') },
     { id: '3', title: 'Item 3', price: 30, description: 'This is item 3 description.', image: require('../assets/Images/venue1.avif') },
     { id: '4', title: 'Item 4', price: 40, description: 'This is item 4 description.', image: require('../assets/Images/venue1.avif') },
     { id: '5', title: 'Item 5', price: 50, description: 'This is item 5 description.', image: require('../assets/Images/venue1.avif') },
@@ -18,13 +19,13 @@ const Cart = () => {
   const proceedToPayment = () => {
     alert('Proceeding to payment...');
   };
-  const renderDesc = (text)=>{
-    if(text.length>50){
-        return `${text.substring(0,50)}...`;
-    }
-    return text
 
-  }
+  const renderDesc = (text) => {
+    if (text.length > 50) {
+      return `${text.substring(0, 50)}...`;
+    }
+    return text;
+  };
 
   return (
     <View style={styles.container}>
@@ -36,13 +37,20 @@ const Cart = () => {
           <Card style={styles.card}>
             <View style={styles.cardContent}>
               <Card.Cover source={item.image} style={styles.image} />
-              <View >
+              <View style={styles.detailsContainer}>
                 <Text style={styles.itemTitle}>{item.title}</Text>
                 <Text style={styles.description}>{renderDesc(item.description)}</Text>
                 <Text style={styles.price}>Price: ${item.price}</Text>
               </View>
-              </View>
-            </Card>
+              <Icon 
+                name="trash" 
+                type="font-awesome" 
+                color="red" 
+                size={22} 
+                containerStyle={styles.trashIconContainer}
+              />
+            </View>
+          </Card>
         )}
         keyExtractor={item => item.id}
         contentContainerStyle={styles.contentContainer}
@@ -91,8 +99,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10,
     padding: 10,
-    // borderWidth: 3,
-    // borderColor: '#f5dcef',
   },
   cardContent: {
     flexDirection: 'row', 
@@ -103,9 +109,12 @@ const styles = StyleSheet.create({
     height: 130,
     borderRadius: 10,
   },
+  detailsContainer: {
+    flex: 1,
+    marginLeft: 10,
+  },
   itemTitle: {
     fontSize: 20,
-    marginLeft: 10,
     fontWeight: 'bold',
     marginBottom: 5,
   },
@@ -113,14 +122,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
     marginBottom: 5,
-    marginLeft: 10,
     maxWidth: '80%', 
-
   },
   price: {
     fontSize: 16,
     color: 'green',
-    marginLeft: 10,
+  },
+  trashIconContainer: {
+    // marginLeft: 10,
+    marginTop:100,
+    paddingRight: 10,
   },
   footer: {
     flexDirection: 'row',
@@ -136,13 +147,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#FF81AE',
-    marginRight:4
+    marginRight: 4,
   },
   totalAmount: {
     fontSize: 22,
     fontWeight: 'bold',
-    marginTop:5,
-    marginLeft:2
+    marginTop: 5,
+    marginLeft: 2,
   },
   paymentButton: {
     backgroundColor: '#FF81AE',
@@ -151,7 +162,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     minWidth: '40%',
     fontWeight: 'bold',
-    marginTop:7
+    marginTop: 7,
   },
   contentContainer: {
     paddingBottom: 80,

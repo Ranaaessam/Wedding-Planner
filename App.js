@@ -4,7 +4,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useFonts } from "expo-font";
 import CheckList from "./screens/CheckList";
-import Login from "./screens/LoginScreen";
 import SplashScreen from "./screens/splashScreen";
 import OnboardingScreen from "./screens/onBoardingScreen";
 import Home from "./screens/homeScreen";
@@ -27,6 +26,10 @@ import SearchScreen from "./screens/Search/searchScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import SearchResultsScreen from "./screens/Search/searchResultsScreen";
 import GuestListScreen from "./screens/guestListScreen";
+import ReviewPage from "./screens/reviewScreen";
+import LoginScreen from "./screens/LoginScreen";
+import HomeScreen from "./screens/homeScreen";
+import ReviewScreen from "./screens/reviewScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -34,7 +37,7 @@ const Tab = createBottomTabNavigator();
 const MainApp = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Splash"
+      initialRouteName="Home"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size, focused }) => {
           let iconName;
@@ -91,7 +94,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <Stack.Navigator initialRouteName="Search">
+        <Stack.Navigator initialRouteName="Guestlist">
           <Stack.Screen
             name="Splash"
             component={SplashScreen}
@@ -114,7 +117,7 @@ export default function App() {
           />
           <Stack.Screen
             name="SignUp"
-            component={signUpScreen}
+            component={SignUp}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -188,6 +191,11 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
+            name="Guestlist"
+            component={GuestListScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
             name="Profile"
             component={ProfileScreen}
             options={{ headerShown: false }}
@@ -200,6 +208,10 @@ export default function App() {
           <Stack.Screen
             name="SearchResults"
             component={SearchResultsScreen}
+            options={{ headerTitle: "" }}></Stack.Screen>
+          <Stack.Screen
+            name="Review"
+            component={ReviewScreen}
             options={{ headerTitle: "" }}></Stack.Screen>
         </Stack.Navigator>
       </View>
