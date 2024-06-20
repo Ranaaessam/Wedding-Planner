@@ -26,6 +26,7 @@ import ReservationScreen from "./screens/reservationScreen";
 import SearchScreen from "./screens/Search/searchScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import SearchResultsScreen from "./screens/Search/searchResultsScreen";
+import GuestListScreen from "./screens/guestListScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -37,22 +38,22 @@ const MainApp = () => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size, focused }) => {
           let iconName;
-          if (route.name === 'Home') {
-            iconName = 'home-outline';
-          } else if (route.name === 'Search') {
-            iconName = 'search-outline';
-          } else if (route.name === 'Plan') {
-            iconName = 'calendar-outline';
-          } else if (route.name === 'Cart') {
-            iconName = 'cart-outline';
-          } else if (route.name === 'Settings') {
-            iconName = 'settings-outline';
+          if (route.name === "Home") {
+            iconName = "home-outline";
+          } else if (route.name === "Search") {
+            iconName = "search-outline";
+          } else if (route.name === "Plan") {
+            iconName = "calendar-outline";
+          } else if (route.name === "Cart") {
+            iconName = "cart-outline";
+          } else if (route.name === "Settings") {
+            iconName = "settings-outline";
           }
           return (
-            <View style={{ alignItems: 'center' }}> 
+            <View style={{ alignItems: "center" }}>
               <Icon name={iconName} color={color} size={size} />
               {focused && (
-                <Text style={{ color: '#FF81AE',fontFamily:'Poppins'}}>
+                <Text style={{ color: "#FF81AE", fontFamily: "Poppins" }}>
                   {route.name}
                 </Text>
               )}
@@ -88,25 +89,41 @@ export default function App() {
     PoppinsBold: require("./assets/fonts/Poppins-Bold.ttf"),
   });
 
-
-
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Splash">
-        <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
-        <Stack.Screen name="MainApp" component={MainApp} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="Splash"
+          component={SplashScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Onboarding"
+          component={OnboardingScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SignUp"
+          component={SignUp}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MainApp"
+          component={MainApp}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
   },
-
 });
