@@ -70,8 +70,7 @@ const MainApp = () => {
           paddingBottom: 5,
         },
         headerShown: false,
-      })}
-    >
+      })}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen name="Plan" component={PlanScreen} />
@@ -91,33 +90,119 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Splash">
-        <Stack.Screen
-          name="Splash"
-          component={SplashScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Onboarding"
-          component={OnboardingScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SignUp"
-          component={SignUp}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="MainApp"
-          component={MainApp}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
+      <View style={styles.container}>
+        <Stack.Navigator initialRouteName="Search">
+          <Stack.Screen
+            name="Splash"
+            component={SplashScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Onboarding"
+            component={OnboardingScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SignUp"
+            component={signUpScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="CheckList"
+            component={CheckList}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Complaint"
+            component={ComplaintForm}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Cart"
+            component={Cart}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ContactUs"
+            component={ContactUs}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Settings"
+            component={Settings}
+            options={{
+              headerTintColor: "white",
+              headerTitleStyle: styles.headerTitleStyle,
+              headerStyle: styles.headerStyle,
+            }}
+          />
+          <Stack.Screen
+            name="Favourites"
+            component={Favourites}
+            options={{
+              headerTintColor: "white",
+              headerTitleStyle: styles.headerTitleStyle,
+              headerStyle: styles.headerStyle,
+            }}
+          />
+          <Stack.Screen
+            name="FavouriteCategoryScreen"
+            component={FavouriteCategoryScreen}
+            options={{ headerShown: false }}></Stack.Screen>
+          <Stack.Screen
+            name="ListViewSuppliers"
+            component={ListviewSuppliers}
+            options={{ headerShown: false }}></Stack.Screen>
+          <Stack.Screen
+            name="SupplierDetails"
+            component={SupplierDetails}
+            options={{ headerShown: false }}></Stack.Screen>
+
+          <Stack.Screen
+            name="Search"
+            component={SearchScreen}
+            options={{ headerShown: false }}></Stack.Screen>
+          <Stack.Screen
+            name="Plan"
+            component={PlanScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Budget"
+            component={BudgetScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Checklists"
+            component={CheckListScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Reservation"
+            component={ReservationScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SearchResults"
+            component={SearchResultsScreen}
+            options={{ headerTitle: "" }}></Stack.Screen>
+        </Stack.Navigator>
+      </View>
     </NavigationContainer>
   );
 }

@@ -9,8 +9,8 @@ import {
   ScrollView,
   FlatList,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons"; // Import FontAwesome icons (or another icon library you prefer)
-import ImageCarousel from "../components/imageCarousel"; // Adjusted import path and component name
+import { FontAwesome } from "@expo/vector-icons";
+import ImageCarousel from "../components/imageCarousel";
 import ReviewCard from "../components/reviewCard";
 
 const { width: screenWidth } = Dimensions.get("window");
