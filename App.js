@@ -26,7 +26,11 @@ import ReservationScreen from "./screens/reservationScreen";
 import SearchScreen from "./screens/Search/searchScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import SearchResultsScreen from "./screens/Search/searchResultsScreen";
+<<<<<<< Updated upstream
 import GuestListScreen from "./screens/guestListScreen";
+=======
+import ReviewPage from "./screens/reviewScreen";
+>>>>>>> Stashed changes
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -34,7 +38,7 @@ const Tab = createBottomTabNavigator();
 const MainApp = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Splash"
+      initialRouteName="Home"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size, focused }) => {
           let iconName;
@@ -90,6 +94,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
+<<<<<<< Updated upstream
       <View style={styles.container}>
         <Stack.Navigator initialRouteName="Search">
           <Stack.Screen
@@ -203,6 +208,40 @@ export default function App() {
             options={{ headerTitle: "" }}></Stack.Screen>
         </Stack.Navigator>
       </View>
+=======
+      <Stack.Navigator initialRouteName="Splash">
+        <Stack.Screen
+          name="Splash"
+          component={SplashScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Onboarding"
+          component={OnboardingScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SignUp"
+          component={SignUp}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MainApp"
+          component={MainApp}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Review"
+          component={ReviewPage}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+>>>>>>> Stashed changes
     </NavigationContainer>
   );
 }
