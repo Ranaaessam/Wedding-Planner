@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Image, Dimensions } from "react-native";
-// import Carousel from "react-native-reanimated-carousel";
+import Carousel from "react-native-reanimated-carousel";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -13,7 +13,7 @@ const ImageCarousel = ({ images }) => {
 
   return (
     <View style={styles.container}>
-      {/* <Carousel
+      <Carousel
         data={images}
         renderItem={renderItem}
         width={screenWidth}
@@ -21,7 +21,7 @@ const ImageCarousel = ({ images }) => {
         loop={true}
         autoPlay={true}
         autoPlayInterval={3000}
-      /> */}
+      />
     </View>
   );
 };

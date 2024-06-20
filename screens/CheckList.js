@@ -4,8 +4,6 @@ import { CheckBox, Button, Icon } from 'react-native-elements';
 import LottieView from 'lottie-react-native';
 import * as Notifications from 'expo-notifications';
 
-
-//Notifications handling
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -37,7 +35,7 @@ const Checklist = () => {
       alert('Failed to get push token for push notification!');
       return;
     }
-//Notification for android
+
     if (Platform.OS === 'android') {
       Notifications.setNotificationChannelAsync('default', {
         name: 'default',
@@ -48,7 +46,7 @@ const Checklist = () => {
     }
   };
 
-  const addTask = () => {
+  const addTask = async () => {
     if (taskTitle.length > 0 && taskDescription.length > 0) {
       const newTask = {
         key: Date.now().toString(),
@@ -56,31 +54,27 @@ const Checklist = () => {
         description: taskDescription,
         completed: false,
       };
+
+      const notificationId = await scheduleNotification(newTask);
+
+      newTask.notificationId = notificationId;
       setTasks([...tasks, newTask]);
       setTaskTitle('');
       setTaskDescription('');
       setModalVisible(false);
-      scheduleNotification(newTask);
     }
   };
 
   const scheduleNotification = async (task) => {
-    if (!task.completed) {
-      const notificationId = await Notifications.scheduleNotificationAsync({
-        content: {
-          title: "Task Reminder",
-          body: `You have a pending task: ${task.title}`,
-          data: { task },
-        },
-        trigger: { seconds: 60, repeats: true },
-      });
-
-      setTasks((prevTasks) =>
-        prevTasks.map((t) =>
-          t.key === task.key ? { ...t, notificationId } : t
-        )
-      );
-    }
+    const notificationId = await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Task Reminder",
+        body: `You have a pending task: ${task.title}`,
+        data: { task },
+      },
+      trigger: { seconds: 60 }, 
+    });
+    return notificationId;
   };
 
   const cancelNotification = async (notificationId) => {
@@ -89,24 +83,34 @@ const Checklist = () => {
     }
   };
 
-  const completeTask = (taskKey) => {
-    const updatedTasks = tasks.map((task) =>
-      task.key === taskKey ? { ...task, completed: !task.completed } : task
-    );
+  const completeTask = async (taskKey) => {
+    const updatedTasks = tasks.map((task) => {
+      if (task.key === taskKey) {
+        const updatedTask = { ...task, completed: !task.completed };
+
+        if (updatedTask.completed) {
+          cancelNotification(updatedTask.notificationId);
+        } else {
+          scheduleNotification(updatedTask).then((notificationId) => {
+            updatedTask.notificationId = notificationId;
+            setTasks((prevTasks) =>
+              prevTasks.map((t) =>
+                t.key === taskKey ? updatedTask : t
+              )
+            );
+          });
+        }
+        return updatedTask;
+      }
+      return task;
+    });
 
     setTasks(updatedTasks);
-
-    const completedTask = updatedTasks.find((task) => task.key === taskKey);
-    if (completedTask.completed) {
-      cancelNotification(completedTask.notificationId);
-    } else {
-      scheduleNotification(completedTask);
-    }
   };
 
   const removeTask = (taskKey) => {
     const taskToRemove = tasks.find((task) => task.key === taskKey);
-    if (taskToRemove.notificationId) {
+    if (taskToRemove && taskToRemove.notificationId) {
       cancelNotification(taskToRemove.notificationId);
     }
     setTasks(tasks.filter((task) => task.key !== taskKey));

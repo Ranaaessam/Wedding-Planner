@@ -28,8 +28,7 @@ const profilePicture = () => {
         />
         <TouchableOpacity
           style={styles.editIconContainer}
-          onPress={selectImage}
-        >
+          onPress={selectImage}>
           <Icon name="edit" size={20} color="#fff" />
         </TouchableOpacity>
       </View>

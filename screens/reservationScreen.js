@@ -1,32 +1,20 @@
 import React, { useState } from "react";
 import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
-  Alert,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  Image,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
-import DateTimePicker from "@react-native-community/datetimepicker";
-
-// Mock list of reserved time slots
-const reservedSlots = [
-  { date: new Date(2024, 5, 19, 17, 0), duration: 2 }, // 07:00 PM to 09:00 PM
-  // Add more reserved slots as needed
-];
+import AvailabilityCalendar from "../components/availabilityCalendar";
 
 const ReservationScreen = () => {
-  const [date, setDate] = useState(new Date());
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(
-    new Date(startTime.getTime() + 2 * 60 * 60 * 1000)
-  ); // 2 hours later
-
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showStartTimePicker, setShowStartTimePicker] = useState(false);
-  const [showEndTimePicker, setShowEndTimePicker] = useState(false);
+  const [selectedCake, setSelectedCake] = useState(null); // State to track selected cake
+  const [selectedCar, setSelectedCar] = useState(null); // State to track selected car
+  const [selectedCaterer, setSelectedCaterer] = useState(null); // State to track selected caterer
 
   const renderStars = () => {
     const filledStars = Math.floor(3);
@@ -55,224 +43,270 @@ const ReservationScreen = () => {
     return stars;
   };
 
-  const onDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShowDatePicker(false);
-    setDate(currentDate);
-
-    // If the selected date is today, ensure the start time is not in the past
-    if (
-      currentDate.toDateString() === new Date().toDateString() &&
-      startTime < new Date()
-    ) {
-      setStartTime(new Date());
-    }
-
-    // Automatically update end time based on new start time
-    setEndTime(new Date(startTime.getTime() + 2 * 60 * 60 * 1000));
+  const availability = {
+    "2024-06-22": {
+      customStyles: {
+        container: {
+          backgroundColor: "red",
+          borderRadius: 15,
+        },
+        text: {
+          color: "white",
+        },
+      },
+    },
+    "2024-06-21": {
+      customStyles: {
+        container: {
+          backgroundColor: "red",
+          borderRadius: 15,
+        },
+        text: {
+          color: "white",
+        },
+      },
+    },
+    "2024-06-23": {
+      customStyles: {
+        container: {
+          backgroundColor: "red",
+          borderRadius: 15,
+        },
+        text: {
+          color: "white",
+        },
+      },
+    },
+    "2024-06-24": {
+      customStyles: {
+        container: {
+          backgroundColor: "green",
+          borderRadius: 15,
+        },
+        text: {
+          color: "white",
+        },
+      },
+    },
+    // Add more availability data here
   };
 
-  const onStartTimeChange = (event, selectedTime) => {
-    const currentTime = selectedTime || startTime;
-    setShowStartTimePicker(false);
-
-    if (!isTimeSlotAvailable(currentTime, endTime)) {
-      Alert.alert(
-        "Time Slot Unavailable",
-        "The selected time slot is already reserved. Please choose another time."
-      );
-      return;
-    }
-
-    setStartTime(currentTime);
-
-    // Automatically update end time based on new start time
-    setEndTime(new Date(currentTime.getTime() + 2 * 60 * 60 * 1000));
+  const handleTimeSelect = (day, time) => {
+    console.log(`Selected time on ${day}: ${time}`);
   };
 
-  const onEndTimeChange = (event, selectedTime) => {
-    const currentTime = selectedTime || endTime;
-    setShowEndTimePicker(false);
+  const cakes = [
+    {
+      id: "1",
+      image: {
+        uri: "https://scientificallysweet.com/wp-content/uploads/2020/09/IMG_4087-feature-2.jpg",
+      },
+      name: "Chocolate Cake",
+    },
+    {
+      id: "2",
+      image: {
+        uri: "https://thescranline.com/wp-content/uploads/2021/03/Vanilla-Cake.jpg",
+      },
+      name: "Vanilla Cake",
+    },
+    {
+      id: "3",
+      image: {
+        uri: "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2004/1/23/1/ss1d26_red_velvet_cake.jpg.rend.hgtvcom.1280.960.suffix/1371584132020.jpeg",
+      },
+      name: "Red Velvet Cake",
+    },
+    {
+      id: "4",
+      image: {
+        uri: "https://theloopywhisk.com/wp-content/uploads/2021/05/White-Chocolate-Cheesecake_730px-featured.jpg",
+      },
+      name: "Cheesecake",
+    },
+  ];
 
-    if (!isTimeSlotAvailable(startTime, currentTime)) {
-      Alert.alert(
-        "Time Slot Unavailable",
-        "The selected time slot is already reserved. Please choose another time."
-      );
-      return;
-    }
+  const cars = [
+    {
+      id: "1",
+      image: {
+        uri: "https://www.usnews.com/cmsmedia/98/f5/a877088e411ea7c093f1d2622cdb/2023-honda-cr-v-hybrid-1.jpg",
+      },
+      name: "SUV",
+    },
+    {
+      id: "2",
+      image: {
+        uri: "https://www.usnews.com/cmsmedia/12/be/5c7f3dfb4a12ab0795a9ba8144b5/2023-acura-integra-a-spec-2.jpg",
+      },
+      name: "Sedan",
+    },
+    {
+      id: "3",
+      image: {
+        uri: "https://www.cnet.com/a/img/resize/91a72b98f2e2fa37a1e87041fd5a01cdb9c8e5aa/hub/2020/06/11/851281c9-bcfd-45c0-bded-cb16e4b8b469/2021-porsche-911-turbo-s-cabriolet-009.jpg?auto=webp&width=1920",
+      },
+      name: "Convertible",
+    },
+    {
+      id: "4",
+      image: {
+        uri: "https://carsguide-res.cloudinary.com/image/upload/f_auto,fl_lossy,q_auto,t_default/v1/editorial/2017-Volkswagen-Golf-110TSI-Highline-R-Line-hatchback-yellow-press-image-why-a-hatchback-is-the-smartest-car-you-can-buy-1200x800p.jpg",
+      },
+      name: "Hatchback",
+    },
+  ];
 
-    setEndTime(currentTime);
-  };
+  const caterers = [
+    {
+      id: "1",
+      image: {
+        uri: "https://joyfoodsunshine.com/wp-content/uploads/2022/06/chicken-kebabs-recipe-1.jpg",
+      },
+      name: "Caterer A",
+      description: "Exquisite dishes tailored to your wedding theme.",
+    },
+    {
+      id: "2",
+      image: {
+        uri: "https://i.pinimg.com/236x/db/00/d7/db00d7767863913492c207c27378d943.jpg",
+      },
+      name: "Caterer B",
+      description: "Specializes in gourmet cuisine with a twist.",
+    },
+    {
+      id: "3",
+      image: {
+        uri: "https://cdn.pixabay.com/photo/2017/05/07/08/56/pancakes-2291908_960_720.jpg",
+      },
+      name: "Caterer C",
+      description: "Offers a wide range of international flavors.",
+    },
+  ];
 
-  const formatDate = (date) => {
-    return date.toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
+  const renderCakeItem = ({ item }) => (
+    <TouchableOpacity
+      style={[styles.item, selectedCake === item.id && styles.selectedItem]}
+      onPress={() => setSelectedCake(item.id)}>
+      <Image source={item.image} style={styles.image} />
+      <Text style={styles.itemName}>{item.name}</Text>
+    </TouchableOpacity>
+  );
 
-  const formatTime = (time) => {
-    return time.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-  };
+  const renderCarItem = ({ item }) => (
+    <TouchableOpacity
+      style={[styles.item, selectedCar === item.id && styles.selectedItem]}
+      onPress={() => setSelectedCar(item.id)}>
+      <Image source={item.image} style={styles.image} />
+      <Text style={styles.itemName}>{item.name}</Text>
+    </TouchableOpacity>
+  );
 
-  const isTimeSlotAvailable = (start, end) => {
-    return !reservedSlots.some((slot) => {
-      const slotStart = new Date(slot.date);
-      const slotEnd = new Date(
-        slotStart.getTime() + slot.duration * 60 * 60 * 1000
-      );
-      return (
-        (start >= slotStart && start < slotEnd) ||
-        (end > slotStart && end <= slotEnd) ||
-        (start < slotStart && end > slotEnd)
-      );
-    });
-  };
+  const renderCatererItem = ({ item }) => (
+    <TouchableOpacity
+      style={[styles.item, selectedCaterer === item.id && styles.selectedItem]}
+      onPress={() => setSelectedCaterer(item.id)}>
+      <Image source={item.image} style={styles.image} />
+      <Text style={styles.itemName}>{item.name}</Text>
+      <Text style={styles.description}>{item.description}</Text>
+    </TouchableOpacity>
+  );
 
   return (
-    <View style={styles.container}>
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <View>
-          <Text style={styles.header}>Marriott Zamalek</Text>
-          <View style={styles.ratingContainer}>{renderStars()}</View>
-        </View>
-        <View style={styles.priceContainer}>
-          <Text style={styles.price}>$45</Text>
-          <Text style={styles.unit}>hour</Text>
-        </View>
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          marginTop: 30,
-          alignItems: "flex-end",
-        }}
-      >
-        <FontAwesome name="building" size={25} color="#FF81AE"></FontAwesome>
-        <Text
-          style={{
-            marginLeft: 10,
-            color: "grey",
-            fontSize: 13,
-            fontWeight: "600",
-          }}
-        >
-          Saray El, Gezira St
-        </Text>
-      </View>
-      <Image
-        source={{
-          uri: "https://media-cdn.tripadvisor.com/media/photo-s/1c/05/1f/13/it-s-a-new-beginning.jpg",
-        }}
-        style={{ height: 300, width: "100%", marginTop: 30, borderRadius: 10 }}
-      ></Image>
-      <TouchableOpacity
-        style={styles.dateContainer}
-        onPress={() => setShowDatePicker(true)}
-      >
-        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-          {formatDate(date)}
-        </Text>
-      </TouchableOpacity>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-around",
-          alignItems: "center",
-        }}
-      >
-        <TouchableOpacity
-          style={[styles.dateContainer, { width: 140 }]}
-          onPress={() => setShowStartTimePicker(true)}
-        >
-          <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-            {formatTime(startTime)}
+    <FlatList
+      data={[{ key: "content" }]}
+      renderItem={({ item }) => (
+        <View style={styles.container}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.header}>Marriott Zamalek</Text>
+            <View style={styles.ratingContainer}>{renderStars()}</View>
+          </View>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}>
+            <View style={styles.locationContainer}>
+              <FontAwesome name="building" size={25} color="#FF81AE" />
+              <Text style={styles.locationText}>Saray El, Gezira St</Text>
+            </View>
+            <View style={styles.priceContainer}>
+              <Text style={styles.price}>$45</Text>
+              <Text style={styles.unit}>/ hour</Text>
+            </View>
+          </View>
+          <Text style={styles.stepText}>Step 1: Choose your Date</Text>
+          <View style={styles.calendarContainer}>
+            <AvailabilityCalendar
+              availability={availability}
+              onTimeSelect={handleTimeSelect}
+            />
+          </View>
+          <Text style={styles.stepText}>
+            Step 2: Choose your Favourite Cake
           </Text>
-        </TouchableOpacity>
-        <FontAwesome
-          name="chevron-circle-right"
-          size={20}
-          style={{ marginTop: 25 }}
-          color="#FF81AE"
-        ></FontAwesome>
-        <TouchableOpacity
-          style={[styles.dateContainer, { width: 140 }]}
-          onPress={() => setShowEndTimePicker(true)}
-        >
-          <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-            {formatTime(endTime)}
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <Button
-        mode="contained"
-        style={styles.paymentButton}
-        labelStyle={{ fontSize: 16, fontWeight: "bold" }}
-      >
-        Next $90
-      </Button>
-
-      {showDatePicker && (
-        <DateTimePicker
-          value={date}
-          mode="date"
-          display="default"
-          onChange={onDateChange}
-          minimumDate={new Date()}
-        />
+          <FlatList
+            data={cakes}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.listContainer}
+            renderItem={renderCakeItem}
+            keyExtractor={(item) => item.id}
+          />
+          <Text style={styles.stepText}>Step 3: Choose your Wedding Car</Text>
+          <FlatList
+            data={cars}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.listContainer}
+            renderItem={renderCarItem}
+            keyExtractor={(item) => item.id}
+          />
+          <Text style={styles.stepText}>Step 4: Choose your Caterer</Text>
+          <FlatList
+            data={caterers}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.listContainer}
+            renderItem={renderCatererItem}
+            keyExtractor={(item) => item.id}
+          />
+          <Button
+            mode="contained"
+            style={styles.button}
+            labelStyle={{ fontSize: 16, fontWeight: "bold" }}>
+            Next $90
+          </Button>
+        </View>
       )}
-      {showStartTimePicker && (
-        <DateTimePicker
-          value={startTime}
-          mode="time"
-          display="default"
-          onChange={onStartTimeChange}
-          minimumDate={
-            date.toDateString() === new Date().toDateString()
-              ? new Date()
-              : undefined
-          }
-        />
-      )}
-      {showEndTimePicker && (
-        <DateTimePicker
-          value={endTime}
-          mode="time"
-          display="default"
-          onChange={onEndTimeChange}
-          minimumDate={startTime}
-        />
-      )}
-    </View>
+      keyExtractor={(item) => item.key}
+    />
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 20,
     paddingTop: 60,
+    backgroundColor: "#ffffff",
+  },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
   },
   header: {
     fontSize: 22,
     fontWeight: "bold",
-    paddingBottom: 10,
   },
   ratingContainer: {
     flexDirection: "row",
   },
   priceContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: "#e0e0df",
-    alignItems: "flex-end",
-    padding: 10,
-    borderRadius: 10,
+    paddingVertical: 10,
     paddingHorizontal: 15,
+    borderRadius: 10,
   },
   price: {
     fontSize: 22,
@@ -280,27 +314,72 @@ const styles = StyleSheet.create({
   },
   unit: {
     fontSize: 12,
-    marginTop: -7,
+    marginLeft: 5,
+    marginTop: -2,
   },
-  dateContainer: {
-    borderWidth: 1,
-    borderColor: "#e0e0df",
-    marginTop: 30,
-    backgroundColor: "white",
-    alignSelf: "flex-start",
-    padding: 10,
-    width: 237,
-    borderRadius: 10,
+  locationContainer: {
+    flexDirection: "row",
     alignItems: "center",
   },
-  paymentButton: {
+  locationText: {
+    marginLeft: 10,
+    color: "grey",
+    fontSize: 13,
+    fontWeight: "600",
+  },
+  listContainer: {
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  item: {
+    marginRight: 15,
+    alignItems: "center",
+  },
+  selectedItem: {
+    borderWidth: 2,
+    borderColor: "#FF81AE",
+    borderRadius: 10,
+    padding: 5,
+  },
+  image: {
+    width: 120,
+    height: 120,
+    borderRadius: 10,
+  },
+  stepText: {
+    marginVertical: 15,
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333333",
+  },
+  calendarContainer: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#e0e0df",
+    borderRadius: 10,
+    padding: 10,
+    backgroundColor: "#ffffff",
+    marginBottom: 20,
+  },
+  button: {
     backgroundColor: "#FF81AE",
     paddingVertical: 10,
     paddingHorizontal: 12,
     borderRadius: 10,
-    minWidth: "40%",
+    minWidth: "100%",
+    alignSelf: "center",
+    marginVertical: 20,
+  },
+  description: {
+    textAlign: "center",
+    marginTop: 5,
+    fontSize: 12,
+    color: "#666666",
+    width: 100,
+  },
+  itemName: {
     fontWeight: "bold",
-    marginTop: 30,
+    marginTop: 8,
   },
 });
 
