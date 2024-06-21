@@ -14,7 +14,18 @@
       "Contact Us": "اتصل بنا",
       "If you have any questions or require assistance, feel free to reach out to us. We're here to help!": "إذا كان لديك أي أسئلة أو تحتاج إلى مساعدة ، فلا تتردد في الاتصال بنا. نحن هنا للمساعدة!",
       "Contact Information": "معلومات الاتصال",
-      "Follow Us On Social Media": "تابعنا على وسائل التواصل الاجتماعي"
+      "Follow Us On Social Media": "تابعنا على وسائل التواصل الاجتماعي",
+      "Complaint Form": "نموذج الشكوى",
+      "We'll reach out to you as soon as possible": "سنقوم بالرد عليك في أقرب وقت ممكن",
+      "Full Name": "الاسم الكامل",
+      "Email Address": "عنوان البريد الإلكتروني",
+      "Vendor ID": "رقم المورد",
+      "Complaint Details": "تفاصيل الشكوى",
+      "Please fill out all fields.": "الرجاء ملء جميع الحقول.",
+      "Please enter a valid email address.": "الرجاء إدخال عنوان بريد إلكتروني صحيح.",
+      "Submit Complaint": "إرسال الشكوى",
+      "Complaint ID": "رقم الشكوى",
+      "Return to homepage": "العودة إلى الصفحة الرئيسية"
     }
     
   

@@ -19,7 +19,7 @@ const VenueCard = ({ name, imageUri, navigation }) => {
   };
 
   return (
-    <TouchableOpacity  onPress={()=> navigation.navigate('SupplierDetails')} >
+    <TouchableOpacity  onPress={()=> navigation.navigate('Reservation')} >
     <Card containerStyle={styles.card}>
       <View style={styles.imageContainer}>
         <Image source={{ uri: imageUri }} style={styles.image} />

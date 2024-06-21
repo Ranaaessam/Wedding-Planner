@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, TextInput, Button, StyleSheet, Modal, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ScrollView } from 'react-native';
 
-const ComplaintForm = ({navigation}) => {
+const ComplaintForm = ({ navigation }) => {
+  const { t } = useTranslation();
+
   const [vendorId, setVendorId] = useState('');
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -17,15 +20,12 @@ const ComplaintForm = ({navigation}) => {
 
   const handleSubmit = () => {
     if (!vendorId || !userName || !email || !complaintDetails) {
-      setError('Please fill out all fields.');
-
-
-    
+      setError(t('Please fill out all fields.'));
       return;
     }
 
     if (!validateEmail(email)) {
-      setError('Please enter a valid email address.');
+      setError(t('Please enter a valid email address.'));
       return;
     }
 
@@ -45,27 +45,27 @@ const ComplaintForm = ({navigation}) => {
   };
 
   const handleReturn = () => {
-    navigation.navigate('Home')
+    navigation.navigate('Home');
     setModalVisible(false);
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.pageTitle}>Complaint Form</Text>
-        <Text style={styles.subtitle}>➡️ We'll reach out to you as soon as possible</Text>
+        <Text style={styles.pageTitle}>{t('Complaint Form')}</Text>
+        <Text style={styles.subtitle}>{t('We\'ll reach out to you as soon as possible')}</Text>
 
         <View style={styles.formContainer}>
           <TextInput
             style={[styles.input, styles.shadowInput]}
-            placeholder="Full Name"
+            placeholder={t('Full Name')}
             value={userName}
             onChangeText={text => setUserName(text)}
             placeholderTextColor="#333"
           />
           <TextInput
             style={[styles.input, styles.shadowInput]}
-            placeholder="Email Address"
+            placeholder={t('Email Address')}
             value={email}
             onChangeText={text => setEmail(text)}
             keyboardType="email-address"
@@ -73,14 +73,14 @@ const ComplaintForm = ({navigation}) => {
           />
           <TextInput
             style={[styles.input, styles.shadowInput]}
-            placeholder="Vendor ID"
+            placeholder={t('Vendor ID')}
             value={vendorId}
             onChangeText={text => setVendorId(text)}
             placeholderTextColor="#333"
           />
           <TextInput
             style={[styles.input, styles.shadowInput, { height: 100 }]}
-            placeholder="Complaint Details"
+            placeholder={t('Complaint Details')}
             value={complaintDetails}
             onChangeText={text => setComplaintDetails(text)}
             multiline
@@ -91,7 +91,7 @@ const ComplaintForm = ({navigation}) => {
             style={styles.submitButton}
             onPress={handleSubmit}
           >
-            <Text style={styles.submitButtonText}>Submit Complaint</Text>
+            <Text style={styles.submitButtonText}>{t('Submit Complaint')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -103,10 +103,10 @@ const ComplaintForm = ({navigation}) => {
         >
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Complaint ID</Text>
-              <Text style={styles.complaintIdText}>ID: {complaintId}</Text>
+              <Text style={styles.modalTitle}>{t('Complaint ID')}</Text>
+              <Text style={styles.complaintIdText}>{t('ID')}: {complaintId}</Text>
               <Button
-                title="Return to homepage"
+                title={t('Return to homepage')}
                 onPress={handleReturn}
                 color="#4C134E"
               />

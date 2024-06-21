@@ -273,7 +273,7 @@ const ReservationScreen = ({navigation}) => {
             mode="contained"
             style={styles.button}
             labelStyle={{ fontSize: 16, fontWeight: "bold" }}>
-            Proceed to Cart  $90
+            Next $90
           </Button>
           </TouchableOpacity>
         </View>
