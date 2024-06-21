@@ -2,38 +2,32 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
-const cors = require('cors');
-
-
-
-app.use(cors());
- 
-
-const mongoose = require("mongoose");
 const cors = require("cors");
+const mongoose = require("mongoose");
 
-mongoose.connect(
-  "mongodb+srv://Rana123:Rana123@cluster0.tzw4ssh.mongodb.net/weddingPlanner"
-);
-app.use(express.json());
 const UsersRouters = require("./routes/users");
 const VenuesRouters = require("./routes/venues");
 const SuppliersRouters = require("./routes/suppliers");
 const ReviewsRouters = require("./routes/reviews");
+const adminRoutes = require("./routes/admin");
 
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
-});
-
+mongoose.connect(
+  "mongodb+srv://Rana123:Rana123@cluster0.tzw4ssh.mongodb.net/weddingPlanner"
+);
 const corsOptions = {
-  origin: "*", //nnd Allow requests from this origin
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Allow specified HTTP methods
+  origin: "*",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: "*",
-  exposedHeaders: ["x-auth-token"], // Allow specified headers
+  exposedHeaders: ["x-auth-token"],
 };
+app.use(express.json());
 app.use(cors(corsOptions));
-``;
 app.use("/users", UsersRouters);
 app.use("/venues", VenuesRouters);
 app.use("/suppliers", SuppliersRouters);
 app.use("/reviews", ReviewsRouters);
+app.use("/admin", adminRoutes);
+
+app.listen(port, () => {
+  console.log(`Server is running at http://localhost:${port}`);
+});
