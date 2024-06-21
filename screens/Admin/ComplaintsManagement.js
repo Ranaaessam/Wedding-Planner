@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,36 +8,26 @@ import {
   Alert,
   Modal,
   TextInput,
-  Button,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllComplaints } from "../../StateManagement/slices/AdminSlice";
 
 const ComplaintsManagement = () => {
-  const [complaints, setComplaints] = useState([
-    {
-      id: "1",
-      from: "John Doe",
-      date: "2024-06-15",
-      details: "The service was not up to the mark.",
-    },
-    {
-      id: "2",
-      from: "Jane Smith",
-      date: "2024-06-16",
-      details: "There was an issue with the payment process.",
-    },
-    {
-      id: "3",
-      from: "Michael Johnson",
-      date: "2024-06-17",
-      details: "The product quality was below expectations.",
-    },
-    // Add more complaints as needed
-  ]);
+  const dispatch = useDispatch();
+  const complaints = useSelector((state) => state.admin.complaints);
+  const status = useSelector((state) => state.admin.status);
+  const error = useSelector((state) => state.admin.error);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [currentComplaintId, setCurrentComplaintId] = useState(null);
   const [replyText, setReplyText] = useState("");
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(getAllComplaints());
+    }
+  }, [status, dispatch]);
 
   const replyToComplaint = (complaintId) => {
     setCurrentComplaintId(complaintId);
@@ -45,9 +35,7 @@ const ComplaintsManagement = () => {
   };
 
   const handleSendReply = () => {
-    setComplaints((prevComplaints) =>
-      prevComplaints.filter((complaint) => complaint.id !== currentComplaintId)
-    );
+    // Logic to handle sending reply and updating state goes here
     setReplyText("");
     setModalVisible(false);
     Alert.alert(
@@ -75,12 +63,18 @@ const ComplaintsManagement = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Complaints</Text>
-      <FlatList
-        data={complaints}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={styles.listContainer}
-      />
+      {status === "loading" ? (
+        <Text>Loading...</Text>
+      ) : status === "failed" ? (
+        <Text>{error}</Text>
+      ) : (
+        <FlatList
+          data={complaints}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          contentContainerStyle={styles.listContainer}
+        />
+      )}
 
       <Modal
         animationType="slide"
