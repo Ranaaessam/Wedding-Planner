@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 // axios.defaults.baseURL = 'http://localhost:3000';
 import {
   StyleSheet,
@@ -14,6 +14,7 @@ import * as Yup from "yup";
 import Icon from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
 import { useFonts } from "expo-font";
+import axios from "axios";
 
 const LoginScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -34,24 +35,23 @@ const LoginScreen = () => {
 
   const handleLogin = async (values) => {
     try {
-      console.log('Sending request to server...', values);
-  
-      const response = await axios.post('http://localhost:3000/users/Login',values );
-  
-      console.log('Server response:', response.data);
-  
-      if (response.status === 200) {
-        console.log('Login Successful', 'You have been logged in successfully');
-        navigation.navigate('Home')
+      const response = await axios.post(
+        "http://192.168.1.7:3000/users/Login",
+        values
+      );
+      console.log(response);
+      if (response.status == 200) {
+        console.log("Login Successful", "You have been logged in successfully");
+        navigation.navigate("Home");
       } else {
-        console.log('Login Failed', response.data.message);
+        console.log("Login Failed", response.data.message);
+        Alert.alert("invalid email or password");
       }
     } catch (error) {
-      console.log('Error', 'An error occurred during login');
+      console.log("Error", "An error occurred during login");
       console.log(error);
     }
   };
-  
 
   return (
     <View style={styles.background}>
@@ -116,7 +116,6 @@ const LoginScreen = () => {
               style={styles.signUpLink}
               onPress={() => navigation.navigate("SignUp")}
             >
-              
               <Text style={styles.signUpText}>
                 Not a user? Click here to sign up
               </Text>
