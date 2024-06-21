@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,38 +10,30 @@ import {
   TextInput,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllUsers,
+  deleteUser,
+} from "../../StateManagement/slices/AdminSlice";
 
 const UsersManagement = () => {
-  const [users, setUsers] = useState([
-    {
-      id: "1",
-      name: "John Doe",
-      profilePic:
-        "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
-      budget: 5000,
-      weddingDate: "2024-08-15",
-    },
-    {
-      id: "2",
-      name: "Jane Smith",
-      profilePic:
-        "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
-      budget: 8000,
-      weddingDate: "2024-09-20",
-    },
-    {
-      id: "3",
-      name: "Michael Johnson",
-      profilePic:
-        "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
-      budget: 6500,
-      weddingDate: "2024-07-10",
-    },
-    // Add more users as needed
-  ]);
-  const [filteredUsers, setFilteredUsers] = useState(users); // State to hold filtered users
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.admin.users);
+  const status = useSelector((state) => state.admin.status);
+  const error = useSelector((state) => state.admin.error);
+  const [filteredUsers, setFilteredUsers] = useState(users);
 
-  const deleteUser = (userId) => {
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(getAllUsers());
+    }
+  }, [status, dispatch]);
+
+  useEffect(() => {
+    setFilteredUsers(users);
+  }, [users]);
+
+  const handleDeleteUser = (userId) => {
     Alert.alert(
       "Confirm Deletion",
       "Are you sure you want to suspend this user?",
@@ -53,12 +45,7 @@ const UsersManagement = () => {
         {
           text: "Delete",
           onPress: () => {
-            setUsers((prevUsers) =>
-              prevUsers.filter((user) => user.id !== userId)
-            );
-            setFilteredUsers((prevUsers) =>
-              prevUsers.filter((user) => user.id !== userId)
-            );
+            dispatch(deleteUser(userId));
           },
           style: "destructive",
         },
@@ -90,7 +77,7 @@ const UsersManagement = () => {
           <Text style={styles.budgetText}>{item.budget}</Text>
         </View>
       </View>
-      <TouchableOpacity onPress={() => deleteUser(item.id)}>
+      <TouchableOpacity onPress={() => handleDeleteUser(item.id)}>
         <Icon name="delete" size={24} color="#FF6347" />
       </TouchableOpacity>
     </View>
@@ -106,12 +93,18 @@ const UsersManagement = () => {
         />
         <Icon name="search" size={24} color="#666" style={styles.searchIcon} />
       </View>
-      <FlatList
-        data={filteredUsers}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={styles.listContainer}
-      />
+      {status === "loading" ? (
+        <Text>Loading...</Text>
+      ) : status === "failed" ? (
+        <Text>{error}</Text>
+      ) : (
+        <FlatList
+          data={filteredUsers}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderItem}
+          contentContainerStyle={styles.listContainer}
+        />
+      )}
     </View>
   );
 };

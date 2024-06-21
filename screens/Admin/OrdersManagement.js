@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,32 +9,30 @@ import {
   TextInput,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllOrders,
+  deleteOrder,
+} from "../../StateManagement/slices/AdminSlice";
 
 const OrdersManagement = () => {
-  const [orders, setOrders] = useState([
-    {
-      id: "1",
-      username: "John Doe",
-      price: 200,
-      date: "2024-06-15",
-    },
-    {
-      id: "2",
-      username: "Jane Smith",
-      price: 150,
-      date: "2024-06-16",
-    },
-    {
-      id: "3",
-      username: "Michael Johnson",
-      price: 300,
-      date: "2024-06-17",
-    },
-    // Add more orders as needed
-  ]);
+  const dispatch = useDispatch();
+  const orders = useSelector((state) => state.admin.orders);
+  const status = useSelector((state) => state.admin.status);
+  const error = useSelector((state) => state.admin.error);
   const [filteredOrders, setFilteredOrders] = useState(orders);
 
-  const deleteOrder = (orderId) => {
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(getAllOrders());
+    }
+  }, [status, dispatch]);
+
+  useEffect(() => {
+    setFilteredOrders(orders);
+  }, [orders]);
+
+  const handleDeleteOrder = (orderId) => {
     Alert.alert(
       "Confirm Deletion",
       "Are you sure you want to delete this order?",
@@ -46,12 +44,7 @@ const OrdersManagement = () => {
         {
           text: "Delete",
           onPress: () => {
-            setOrders((prevOrders) =>
-              prevOrders.filter((order) => order.id !== orderId)
-            );
-            setFilteredOrders((prevOrders) =>
-              prevOrders.filter((order) => order.id !== orderId)
-            );
+            dispatch(deleteOrder(orderId));
           },
           style: "destructive",
         },
@@ -82,7 +75,7 @@ const OrdersManagement = () => {
           <Text style={styles.priceText}>{item.price}</Text>
         </View>
       </View>
-      <TouchableOpacity onPress={() => deleteOrder(item.id)}>
+      <TouchableOpacity onPress={() => handleDeleteOrder(item.id)}>
         <Icon name="delete" size={24} color="#FF6347" />
       </TouchableOpacity>
     </View>
@@ -93,17 +86,23 @@ const OrdersManagement = () => {
       <View style={styles.searchBarContainer}>
         <TextInput
           style={styles.searchInput}
-          placeholder="Search by username..."
+          placeholder="Search by name..."
           onChangeText={handleSearch}
         />
         <Icon name="search" size={24} color="#666" style={styles.searchIcon} />
       </View>
-      <FlatList
-        data={filteredOrders}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={styles.listContainer}
-      />
+      {status === "loading" ? (
+        <Text>Loading...</Text>
+      ) : status === "failed" ? (
+        <Text>{error}</Text>
+      ) : (
+        <FlatList
+          data={filteredOrders}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderItem}
+          contentContainerStyle={styles.listContainer}
+        />
+      )}
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,38 +10,30 @@ import {
   Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllSuppliers,
+  deleteSupplier,
+} from "../../StateManagement/slices/AdminSlice";
 
 const SuppliersManagement = () => {
-  const [suppliers, setSuppliers] = useState([
-    {
-      id: "1",
-      name: "Supplier One",
-      location: "New York, NY",
-      rate: 4.5,
-      profilePicture:
-        "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
-    },
-    {
-      id: "2",
-      name: "Supplier Two",
-      location: "Los Angeles, CA",
-      rate: 4.0,
-      profilePicture:
-        "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
-    },
-    {
-      id: "3",
-      name: "Supplier Three",
-      location: "Chicago, IL",
-      rate: 3.8,
-      profilePicture:
-        "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
-    },
-    // Add more suppliers as needed
-  ]);
+  const dispatch = useDispatch();
+  const suppliers = useSelector((state) => state.admin.suppliers);
+  const status = useSelector((state) => state.admin.status);
+  const error = useSelector((state) => state.admin.error);
   const [filteredSuppliers, setFilteredSuppliers] = useState(suppliers);
 
-  const deleteSupplier = (supplierId) => {
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(getAllSuppliers());
+    }
+  }, [status, dispatch]);
+
+  useEffect(() => {
+    setFilteredSuppliers(suppliers);
+  }, [suppliers]);
+
+  const handleDeleteSupplier = (supplierId) => {
     Alert.alert(
       "Confirm Deletion",
       "Are you sure you want to delete this supplier?",
@@ -53,12 +45,7 @@ const SuppliersManagement = () => {
         {
           text: "Delete",
           onPress: () => {
-            setSuppliers((prevSuppliers) =>
-              prevSuppliers.filter((supplier) => supplier.id !== supplierId)
-            );
-            setFilteredSuppliers((prevSuppliers) =>
-              prevSuppliers.filter((supplier) => supplier.id !== supplierId)
-            );
+            dispatch(deleteSupplier(supplierId));
           },
           style: "destructive",
         },
@@ -88,7 +75,7 @@ const SuppliersManagement = () => {
           <Text style={styles.rateText}>{item.rate}</Text>
         </View>
       </View>
-      <TouchableOpacity onPress={() => deleteSupplier(item.id)}>
+      <TouchableOpacity onPress={() => handleDeleteSupplier(item.id)}>
         <Icon name="delete" size={24} color="#FF6347" />
       </TouchableOpacity>
     </View>
@@ -104,12 +91,18 @@ const SuppliersManagement = () => {
         />
         <Icon name="search" size={24} color="#666" style={styles.searchIcon} />
       </View>
-      <FlatList
-        data={filteredSuppliers}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={styles.listContainer}
-      />
+      {status === "loading" ? (
+        <Text>Loading...</Text>
+      ) : status === "failed" ? (
+        <Text>{error}</Text>
+      ) : (
+        <FlatList
+          data={filteredSuppliers}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderItem}
+          contentContainerStyle={styles.listContainer}
+        />
+      )}
     </View>
   );
 };

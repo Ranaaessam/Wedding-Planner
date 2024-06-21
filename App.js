@@ -4,6 +4,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import StackNav from "./navigators/stackNav";
 import AdminNav from "./navigators/adminNav";
+import { Provider } from "react-redux";
+import store from "./StateManagement/store";
+import BottomNav from "./navigators/bottomNav";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -12,14 +15,15 @@ export default function App() {
     PoppinsSemiBold: require("./assets/fonts/Poppins-SemiBold.ttf"),
     PoppinsBold: require("./assets/fonts/Poppins-Bold.ttf"),
   });
-
   return (
-    <NavigationContainer>
-      <View style={styles.container}>
-        <StackNav></StackNav>
-        {/* <AdminNav></AdminNav> */}
-      </View>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <View style={styles.container}>
+          <StackNav></StackNav>
+          {/* <AdminNav></AdminNav> */}
+        </View>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

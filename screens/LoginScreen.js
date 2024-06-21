@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 // axios.defaults.baseURL = 'http://localhost:3000';
 import {
   StyleSheet,
@@ -62,8 +61,7 @@ const LoginScreen = () => {
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={validationSchema}
-        onSubmit={(values) => handleLogin(values)}
-      >
+        onSubmit={(values) => handleLogin(values)}>
         {({
           handleChange,
           handleBlur,
@@ -96,8 +94,7 @@ const LoginScreen = () => {
               />
               <TouchableOpacity
                 style={styles.eyeIcon}
-                onPress={togglePasswordVisibility}
-              >
+                onPress={togglePasswordVisibility}>
                 <Icon
                   name={passwordVisible ? "eye-off" : "eye"}
                   size={20}
@@ -114,8 +111,7 @@ const LoginScreen = () => {
 
             <TouchableOpacity
               style={styles.signUpLink}
-              onPress={() => navigation.navigate("SignUp")}
-            >
+              onPress={() => navigation.navigate("SignUp")}>
               <Text style={styles.signUpText}>
                 Not a user? Click here to sign up
               </Text>
