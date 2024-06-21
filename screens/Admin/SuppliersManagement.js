@@ -7,37 +7,44 @@ import {
   TouchableOpacity,
   Alert,
   TextInput,
+  Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-const OrdersManagement = () => {
-  const [orders, setOrders] = useState([
+const SuppliersManagement = () => {
+  const [suppliers, setSuppliers] = useState([
     {
       id: "1",
-      username: "John Doe",
-      price: 200,
-      date: "2024-06-15",
+      name: "Supplier One",
+      location: "New York, NY",
+      rate: 4.5,
+      profilePicture:
+        "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
     },
     {
       id: "2",
-      username: "Jane Smith",
-      price: 150,
-      date: "2024-06-16",
+      name: "Supplier Two",
+      location: "Los Angeles, CA",
+      rate: 4.0,
+      profilePicture:
+        "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
     },
     {
       id: "3",
-      username: "Michael Johnson",
-      price: 300,
-      date: "2024-06-17",
+      name: "Supplier Three",
+      location: "Chicago, IL",
+      rate: 3.8,
+      profilePicture:
+        "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
     },
-    // Add more orders as needed
+    // Add more suppliers as needed
   ]);
-  const [filteredOrders, setFilteredOrders] = useState(orders);
+  const [filteredSuppliers, setFilteredSuppliers] = useState(suppliers);
 
-  const deleteOrder = (orderId) => {
+  const deleteSupplier = (supplierId) => {
     Alert.alert(
       "Confirm Deletion",
-      "Are you sure you want to delete this order?",
+      "Are you sure you want to delete this supplier?",
       [
         {
           text: "Cancel",
@@ -46,11 +53,11 @@ const OrdersManagement = () => {
         {
           text: "Delete",
           onPress: () => {
-            setOrders((prevOrders) =>
-              prevOrders.filter((order) => order.id !== orderId)
+            setSuppliers((prevSuppliers) =>
+              prevSuppliers.filter((supplier) => supplier.id !== supplierId)
             );
-            setFilteredOrders((prevOrders) =>
-              prevOrders.filter((order) => order.id !== orderId)
+            setFilteredSuppliers((prevSuppliers) =>
+              prevSuppliers.filter((supplier) => supplier.id !== supplierId)
             );
           },
           style: "destructive",
@@ -61,28 +68,27 @@ const OrdersManagement = () => {
   };
 
   const handleSearch = (text) => {
-    const filteredData = orders.filter((order) =>
-      order.username.toLowerCase().includes(text.toLowerCase())
+    const filteredData = suppliers.filter((supplier) =>
+      supplier.name.toLowerCase().includes(text.toLowerCase())
     );
-    setFilteredOrders(filteredData);
+    setFilteredSuppliers(filteredData);
   };
 
   const renderItem = ({ item }) => (
-    <View style={styles.orderCard}>
-      <View style={styles.orderInfo}>
-        <Text style={styles.username}>{item.username}</Text>
-        <Text style={styles.orderDate}>Date: {item.date}</Text>
-        <View style={styles.priceContainer}>
-          <Icon
-            name="attach-money"
-            size={20}
-            color="#4CAF50"
-            style={styles.priceIcon}
-          />
-          <Text style={styles.priceText}>{item.price}</Text>
+    <View style={styles.supplierCard}>
+      <Image
+        source={{ uri: item.profilePicture }}
+        style={styles.profilePicture}
+      />
+      <View style={styles.supplierInfo}>
+        <Text style={styles.name}>{item.name}</Text>
+        <Text style={styles.location}>{item.location}</Text>
+        <View style={styles.rateContainer}>
+          <Icon name="star" size={20} color="#FFD700" style={styles.rateIcon} />
+          <Text style={styles.rateText}>{item.rate}</Text>
         </View>
       </View>
-      <TouchableOpacity onPress={() => deleteOrder(item.id)}>
+      <TouchableOpacity onPress={() => deleteSupplier(item.id)}>
         <Icon name="delete" size={24} color="#FF6347" />
       </TouchableOpacity>
     </View>
@@ -93,13 +99,13 @@ const OrdersManagement = () => {
       <View style={styles.searchBarContainer}>
         <TextInput
           style={styles.searchInput}
-          placeholder="Search by username..."
+          placeholder="Search by name..."
           onChangeText={handleSearch}
         />
         <Icon name="search" size={24} color="#666" style={styles.searchIcon} />
       </View>
       <FlatList
-        data={filteredOrders}
+        data={filteredSuppliers}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         contentContainerStyle={styles.listContainer}
@@ -139,7 +145,7 @@ const styles = StyleSheet.create({
   listContainer: {
     paddingBottom: 20,
   },
-  orderCard: {
+  supplierCard: {
     backgroundColor: "#fff",
     padding: 15,
     borderRadius: 10,
@@ -152,30 +158,36 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 3,
   },
-  orderInfo: {
+  profilePicture: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 15,
+  },
+  supplierInfo: {
     flex: 1,
   },
-  username: {
+  name: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#333",
   },
-  orderDate: {
+  location: {
     fontSize: 14,
     color: "#666",
     marginVertical: 5,
   },
-  priceContainer: {
+  rateContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
-  priceIcon: {
+  rateIcon: {
     marginRight: 5,
   },
-  priceText: {
+  rateText: {
     fontSize: 16,
-    color: "#4CAF50",
+    color: "#FFD700",
   },
 });
 
-export default OrdersManagement;
+export default SuppliersManagement;

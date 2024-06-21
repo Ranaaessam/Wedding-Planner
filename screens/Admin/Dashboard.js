@@ -49,10 +49,10 @@ const AdminDashboard = ({ navigation }) => {
         <TouchableOpacity
           style={styles.card}
           onPress={() => {
-            navigation.navigate("SettingsManagement");
+            navigation.navigate("SuppliersManagement");
           }}>
-          <Icon name="settings" size={40} color="#FFC107" />
-          <Text style={styles.cardText}>Settings</Text>
+          <Icon name="sell" size={40} color="#FFC107" />
+          <Text style={styles.cardText}>Suppliers</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.card}

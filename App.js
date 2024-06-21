@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import StackNav from "./navigators/stackNav";
+import AdminNav from "./navigators/adminNav";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -15,8 +16,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <StackNav></StackNav>
-        {/* <AdminNav></AdminNav> */}
+        {/* <StackNav></StackNav> */}
+        <AdminNav></AdminNav>
       </View>
     </NavigationContainer>
   );

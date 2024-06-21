@@ -6,7 +6,7 @@ import AdminDashboard from "../screens/Admin/Dashboard";
 
 import UsersManagement from "../screens/Admin/UsersManagement";
 import OrdersManagement from "../screens/Admin/OrdersManagement";
-import SettingsManagement from "../screens/Admin/SettingsManagement";
+import SuppliersManagement from "../screens/Admin/SuppliersManagement";
 import ComplaintsManagement from "../screens/Admin/ComplaintsManagement";
 
 const Stack = createStackNavigator();
@@ -21,7 +21,10 @@ const AdminNav = () => {
       />
       <Stack.Screen name="Users Management" component={UsersManagement} />
       <Stack.Screen name="OrdersManagement" component={OrdersManagement} />
-      <Stack.Screen name="SettingsManagement" component={SettingsManagement} />
+      <Stack.Screen
+        name="SuppliersManagement"
+        component={SuppliersManagement}
+      />
       <Stack.Screen
         name="ComplaintsManagement"
         component={ComplaintsManagement}
