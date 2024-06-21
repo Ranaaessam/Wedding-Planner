@@ -26,12 +26,14 @@ import ReviewPage from "../screens/reviewScreen";
 import LoginScreen from "../screens/LoginScreen";
 import HomeScreen from "../screens/homeScreen";
 import ReviewScreen from "../screens/reviewScreen";
+import BottomNav from "./bottomNav";
+import VenueCard from "../components/venueCard";
 
 const Stack = createStackNavigator();
 
 const StackNav = () => {
   return (
-    <Stack.Navigator initialRouteName="Settings">
+    <Stack.Navigator initialRouteName="Profile">
       <Stack.Screen
         name="Splash"
         component={SplashScreen}
@@ -49,7 +51,7 @@ const StackNav = () => {
       />
       <Stack.Screen
         name="Home"
-        component={HomeScreen}
+        component={BottomNav}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -115,6 +117,11 @@ const StackNav = () => {
       <Stack.Screen
         name="Plan"
         component={PlanScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="VenueCard"
+        component={VenueCard}
         options={{ headerShown: false }}
       />
       <Stack.Screen

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import SupplierDetails from "../screens/supplierDetails";
 import {
   View,
   Text,
@@ -10,7 +11,7 @@ import {
 import { Card } from "react-native-elements";
 import Icon from "react-native-vector-icons/AntDesign";
 
-const VenueCard = ({ name, imageUri }) => {
+const VenueCard = ({ name, imageUri, navigation }) => {
   const [isLoved, setIsLoved] = useState(false);
 
   const toggleLove = () => {
@@ -18,6 +19,7 @@ const VenueCard = ({ name, imageUri }) => {
   };
 
   return (
+    <TouchableOpacity  onPress={()=> navigation.navigate('SupplierDetails')} >
     <Card containerStyle={styles.card}>
       <View style={styles.imageContainer}>
         <Image source={{ uri: imageUri }} style={styles.image} />
@@ -29,6 +31,7 @@ const VenueCard = ({ name, imageUri }) => {
         </TouchableOpacity>
       </View>
     </Card>
+    </TouchableOpacity>
   );
 };
 

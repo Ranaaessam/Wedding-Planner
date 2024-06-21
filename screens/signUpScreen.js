@@ -6,15 +6,15 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
-  Alert,
   StatusBar,
   SafeAreaView,
   ScrollView,
+  Alert,
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
-const SignUp = () => {
+const SignUp = ({navigation}) => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [passwordShape, setPasswordShape] = useState(
     "https://tse1.mm.bing.net/th?id=OIP.PQmBVQC52i6lgjwMc1UyrAHaHa&pid=Api&P=0&h=220"
@@ -49,9 +49,12 @@ const SignUp = () => {
       .required("Repeat password is required"),
   });
 
-  const handleSignUp = (values) => {
-    Alert.alert("Form Data", JSON.stringify(values, null, 2));
-  };
+  // const handleSignUp = () => {
+  //   navigation.navigate('Login')
+  //   console.log("test");
+  //   Alert.alert("test")
+    
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -72,7 +75,7 @@ const SignUp = () => {
             repeatPassword: "",
           }}
           validationSchema={signUpValidationSchema}
-          onSubmit={handleSignUp}
+          onSubmit={()=>{navigation.navigate('Login')}}
         >
           {({
             handleChange,
@@ -192,14 +195,14 @@ const SignUp = () => {
 
               <TouchableOpacity
                 style={[styles.buttonContainer, styles.loginButton]}
-                onPress={handleSubmit}
+                onPress={()=>{navigation.navigate('Login')}}
               >
                 <Text style={styles.loginText}>Sign Up</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.buttonContainer}
-                onPress={() => Alert.alert("Alert", "Button pressed")}
+                onPress={() => navigation.navigate('Login')}
               >
                 <Text style={styles.btnText}>Have an account?</Text>
               </TouchableOpacity>

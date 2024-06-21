@@ -45,20 +45,20 @@ const ProfileScreen = () => {
         />
         <ProfilePicture />
         <TouchableOpacity style={styles.editBtn} onPress={handleEditToggle}>
-          <Text style={{ paddingRight: 10, fontWeight: "500" }}>
+          <Text style={{ paddingRight: 10, fontWeight: "500",color:"white",fontSize:18 }}>
             {isEditing ? "Save Profile" : "Edit Profile"}
           </Text>
-          <Icon name={isEditing ? "check" : "pencil"} size={18} />
+          <Icon name={isEditing ? "check" : "pencil"} size={18} style={{color:"white"}} />
         </TouchableOpacity>
         <View style={styles.infoContainer}>
           <View style={styles.balanceContainer}>
-            <Text>Balance</Text>
+            <Text style={{fontSize:16}}>Balance</Text>
             <Text style={{ fontWeight: "500", fontSize: 18, paddingTop: 10 }}>
               $8000
             </Text>
           </View>
           <View style={styles.planContainer}>
-            <Text>Plan</Text>
+            <Text style={{fontSize:16}}>Plan</Text>
             <Text
               style={{
                 fontWeight: "500",
@@ -107,14 +107,15 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 550,
   },
   editBtn: {
-    alignSelf: "center",
+    alignSelf: "flex-end",
     marginTop: 20,
     backgroundColor: "#FF81AE",
     padding: 8,
+    marginRight:22,
     paddingHorizontal: 11,
     borderRadius: 5,
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "center"
   },
   infoContainer: {
     flexDirection: "row",
@@ -149,10 +150,10 @@ const styles = StyleSheet.create({
   },
   head: {
     color: "grey",
-    fontSize: 12,
+    fontSize: 16,
   },
   data: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "500",
     paddingVertical: 0,
     marginVertical: 0,

@@ -7,6 +7,7 @@ import PlanScreen from "../screens/planScreen";
 import Icon from "react-native-vector-icons/Ionicons";
 import SearchScreen from "../screens/Search/searchScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import StackNav from "./stackNav";
 
 const Tab = createBottomTabNavigator();
 

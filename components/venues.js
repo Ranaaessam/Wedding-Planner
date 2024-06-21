@@ -2,7 +2,7 @@ import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import VenueCard from "./venueCard";
 
-const Venues = () => {
+const Venues = ({navigation}) => {
   const venueData = [
     {
       id: "1",
@@ -55,7 +55,7 @@ const Venues = () => {
       style={styles.scrollView}
     >
       {venueData.map((venue) => (
-        <VenueCard key={venue.id} name={venue.name} imageUri={venue.imageUri} />
+        <VenueCard key={venue.id} name={venue.name} imageUri={venue.imageUri}  />
       ))}
     </ScrollView>
   );

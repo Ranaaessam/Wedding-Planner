@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from 'axios';
+// axios.defaults.baseURL = 'http://localhost:3000';
 import {
   StyleSheet,
   Text,
@@ -30,6 +32,27 @@ const LoginScreen = () => {
       .required("Password is required"),
   });
 
+  const handleLogin = async (values) => {
+    try {
+      console.log('Sending request to server...', values);
+  
+      const response = await axios.post('http://localhost:3000/users/Login',values );
+  
+      console.log('Server response:', response.data);
+  
+      if (response.status === 200) {
+        console.log('Login Successful', 'You have been logged in successfully');
+        navigation.navigate('Home')
+      } else {
+        console.log('Login Failed', response.data.message);
+      }
+    } catch (error) {
+      console.log('Error', 'An error occurred during login');
+      console.log(error);
+    }
+  };
+  
+
   return (
     <View style={styles.background}>
       <View style={styles.main}>
@@ -39,7 +62,7 @@ const LoginScreen = () => {
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={validationSchema}
-        onSubmit={(values) => Alert.alert("Submitted", JSON.stringify(values))}
+        onSubmit={(values) => handleLogin(values)}
       >
         {({
           handleChange,
@@ -88,10 +111,12 @@ const LoginScreen = () => {
             <TouchableOpacity style={styles.button} onPress={handleSubmit}>
               <Text style={styles.buttonText}>Continue</Text>
             </TouchableOpacity>
+
             <TouchableOpacity
               style={styles.signUpLink}
-              onPress={() => navigation.navigate("MainApp")}
+              onPress={() => navigation.navigate("SignUp")}
             >
+              
               <Text style={styles.signUpText}>
                 Not a user? Click here to sign up
               </Text>

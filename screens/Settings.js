@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Switch, Modal, TouchableWithoutFeedback, FlatList, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
+import ContactUs from './ContactUs';
+import ProfileScreen from './profileScreen.js';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n.js';
 
+
 const SettingsScreen = ({ navigation }) => {
   const { t } = useTranslation();
+  //default language
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
@@ -16,15 +20,20 @@ const SettingsScreen = ({ navigation }) => {
     setDropdownVisible(false);
     Alert.alert(t('languageChanged'));
   };
+  const handleLoggedOut = ()=> {
+    Alert.alert("Logged out successfully!")
+    navigation.navigate('Home')
+
+  }
 
   const data = [
-    { id: 'profile', icon: 'user', text: t('profile'), onPress: () => {} },
+    { id: 'profile', icon: 'user', text: t('profile'), onPress: () => {navigation.navigate('Profile')} },
     { id: 'favorites', icon: 'heart', text: t('favorites'), onPress: () => navigation.navigate('Favourites') },
     { id: 'language', icon: 'globe', text: selectedLanguage === 'en' ? t('english') : t('arabic'), onPress: () => setDropdownVisible(!isDropdownVisible) },
-    { id: 'contactUs', icon: 'envelope', text: t('contactUs'), onPress: () => {} },
+    { id: 'contactUs', icon: 'envelope', text: t('contactUs'), onPress: () => navigation.navigate('ContactUs') },
     { id: 'complaints', icon: 'exclamation-triangle', text: t('complaints'), onPress: () => navigation.navigate('Complaint') },
     { id: 'darkMode', icon: 'adjust', text: t('darkMode'), onPress: () => setIsDarkMode(prev => !prev) },
-    { id: 'logout', icon: 'share', text: t('logout'), onPress: () => { Alert.alert(t('loggedOut')) } },
+    { id: 'logout', icon: 'share', text: t('logout'), onPress: () => { handleLoggedOut()} },
   ];
 
   const renderItem = ({ item }) => (

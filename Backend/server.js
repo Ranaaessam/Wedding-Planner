@@ -2,6 +2,13 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
+const cors = require('cors');
+
+
+
+app.use(cors());
+ 
+
 const mongoose = require("mongoose");
 mongoose.connect(
   "mongodb+srv://Rana123:Rana123@cluster0.tzw4ssh.mongodb.net/weddingPlanner"

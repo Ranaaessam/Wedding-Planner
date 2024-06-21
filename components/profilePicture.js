@@ -29,7 +29,7 @@ const profilePicture = () => {
         <TouchableOpacity
           style={styles.editIconContainer}
           onPress={selectImage}>
-          <Icon name="edit" size={20} color="#fff" />
+          <Icon name="edit" size={20} color="white" />
         </TouchableOpacity>
       </View>
     </View>
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 10,
     right: 10,
-    backgroundColor: "black",
+    backgroundColor: "#FF81AE",
     borderRadius: 20,
     padding: 4,
   },

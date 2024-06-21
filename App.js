@@ -16,8 +16,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        {/* <StackNav></StackNav> */}
-        <AdminNav></AdminNav>
+        <StackNav></StackNav>
+        {/* <AdminNav></AdminNav> */}
       </View>
     </NavigationContainer>
   );

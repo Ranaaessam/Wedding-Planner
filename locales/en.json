@@ -5,11 +5,18 @@
     "language": "Language",
     "english": "English",
     "arabic": "Arabic",
-    "contactUs": "Contact Us",
     "complaints": "Complaints",
     "darkMode": "Dark Mode",
     "logout": "Log Out",
     "loggedOut": "Logged Out",
-    "languageChanged": "Language changed successfully"
+    "languageChanged": "Language changed successfully",
+ "   Contact Information":"Contact Information",
+    "Contact Us": "Contact Us",
+    "If you have any questions or require assistance, feel free to reach out to us. We're here to help!": "If you have any questions or require assistance, feel free to reach out to us. We're here to help!",
+    "Contact Information": "Contact Information",
+    "Follow Us On Social Media": "Follow Us On Social Media"
   }
+  
+
+
   

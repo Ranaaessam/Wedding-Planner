@@ -10,6 +10,11 @@
     "darkMode": "الوضع الداكن",
     "logout": "تسجيل الخروج",
     "loggedOut": "تم تسجيل الخروج",
-    "languageChanged": "تم تغيير اللغة بنجاح"
-  }
+    "languageChanged": "تم تغيير اللغة بنجاح",
+      "Contact Us": "اتصل بنا",
+      "If you have any questions or require assistance, feel free to reach out to us. We're here to help!": "إذا كان لديك أي أسئلة أو تحتاج إلى مساعدة ، فلا تتردد في الاتصال بنا. نحن هنا للمساعدة!",
+      "Contact Information": "معلومات الاتصال",
+      "Follow Us On Social Media": "تابعنا على وسائل التواصل الاجتماعي"
+    }
+    
   
