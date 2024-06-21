@@ -1,0 +1,15 @@
+{
+    "settings": "Settings",
+    "profile": "Profile",
+    "favorites": "Favorites",
+    "language": "Language",
+    "english": "English",
+    "arabic": "Arabic",
+    "contactUs": "Contact Us",
+    "complaints": "Complaints",
+    "darkMode": "Dark Mode",
+    "logout": "Log Out",
+    "loggedOut": "Logged Out",
+    "languageChanged": "Language changed successfully"
+  }
+  

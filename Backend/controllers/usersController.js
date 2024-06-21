@@ -7,7 +7,7 @@ const Registration = async(req,res)=>{
    try{ // check already exists
    let user=await  User.findOne({email:req.body.email}).exec();
    if(user)
-    return res.status(400).send("user already Registration");
+    return res.status(400).send("user already has an account!");
     // create new user
     user = new User(req.body);
     await user.save();

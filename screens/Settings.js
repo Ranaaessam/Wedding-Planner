@@ -1,51 +1,52 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Switch, Modal, TouchableWithoutFeedback, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Switch, Modal, TouchableWithoutFeedback, FlatList, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { useTranslation } from 'react-i18next';
+import i18n from '../i18n.js';
 
-const Settings = ({ navigation }) => {
+const SettingsScreen = ({ navigation }) => {
+  const { t } = useTranslation();
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
   const selectLanguage = (language) => {
     setSelectedLanguage(language);
+    i18n.changeLanguage(language);
     setDropdownVisible(false);
+    Alert.alert(t('languageChanged'));
   };
 
   const data = [
-    { id: 'profile', icon: 'user', text: 'Profile', onPress: ()=>{} },
-    { id: 'favorites', icon: 'heart', text: 'Favorites', onPress: ()=>{navigation.navigate('Favourites')} },
-    { id: 'language', icon: 'globe', text: selectedLanguage === 'en' ? 'English' : 'Arabic', onPress: ()=>{setDropdownVisible(!isDropdownVisible)} },
-    { id: 'contactUs', icon: 'envelope', text: 'Contact Us', onPress: ()=>{} },
-    { id: 'complaints', icon: 'exclamation-triangle', text: 'Complaints', onPress: ()=>{navigation.navigate('Complaint')} },
-    { id: 'darkMode', icon: 'adjust', text: 'Dark Mode', onPress: ()=>{setIsDarkMode(!setIsDarkMode)} },
-    { id: 'logout', icon: 'share', text: 'Log Out', onPress: () => {alert("Logged Out")} }, 
+    { id: 'profile', icon: 'user', text: t('profile'), onPress: () => {} },
+    { id: 'favorites', icon: 'heart', text: t('favorites'), onPress: () => navigation.navigate('Favourites') },
+    { id: 'language', icon: 'globe', text: selectedLanguage === 'en' ? t('english') : t('arabic'), onPress: () => setDropdownVisible(!isDropdownVisible) },
+    { id: 'contactUs', icon: 'envelope', text: t('contactUs'), onPress: () => {} },
+    { id: 'complaints', icon: 'exclamation-triangle', text: t('complaints'), onPress: () => navigation.navigate('Complaint') },
+    { id: 'darkMode', icon: 'adjust', text: t('darkMode'), onPress: () => setIsDarkMode(prev => !prev) },
+    { id: 'logout', icon: 'share', text: t('logout'), onPress: () => { Alert.alert(t('loggedOut')) } },
   ];
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.optionContainer} onPress={item.onPress}>
-      <Icon name={item.icon} type='font-awesome' style={styles.icon} />
+      <Icon name={item.icon} type="font-awesome" style={styles.icon} />
       <Text style={styles.optionText}>{item.text}</Text>
-      {item.id === 'language' && (
-        <Icon name='caret-down' type='font-awesome' />
-      )}
+      {item.id === 'language' && <Icon name="caret-down" type="font-awesome" />}
       {item.id === 'darkMode' && (
         <Switch
           value={isDarkMode}
-          onValueChange={ ()=>{setIsDarkMode(x => !x)}}
+          onValueChange={() => setIsDarkMode(x => !x)}
           style={styles.switch}
         />
       )}
     </TouchableOpacity>
   );
 
-
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Icon name='gear' type='font-awesome' size={24} />
-        <Text style={styles.title}>Settings</Text>
+        <Icon name="gear" type="font-awesome" size={24} />
+        <Text style={styles.title}>{t('settings')}</Text>
       </View>
       <FlatList
         data={data}
@@ -57,7 +58,7 @@ const Settings = ({ navigation }) => {
       <Modal
         visible={isDropdownVisible}
         transparent={true}
-        animationType='slide'
+        animationType="slide"
         onRequestClose={() => setDropdownVisible(false)}
       >
         <TouchableWithoutFeedback onPress={() => setDropdownVisible(false)}>
@@ -65,11 +66,10 @@ const Settings = ({ navigation }) => {
         </TouchableWithoutFeedback>
         <View style={styles.dropdown}>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => selectLanguage('en')}>
-            
-            <Text style={styles.dropdownItemText}>▫English</Text>
+            <Text style={styles.dropdownItemText}>▫ {t('english')}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => selectLanguage('ar')}>
-            <Text style={styles.dropdownItemText}>▫Arabic</Text>
+            <Text style={styles.dropdownItemText}>▫ {t('arabic')}</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
     color: '#4C134E',
     flex: 1,
   },
-
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -130,7 +129,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    top: 400, 
+    top: 400,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -149,4 +148,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Settings;
+export default SettingsScreen;

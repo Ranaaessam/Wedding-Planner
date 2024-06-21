@@ -31,7 +31,7 @@ const Stack = createStackNavigator();
 
 const StackNav = () => {
   return (
-    <Stack.Navigator initialRouteName="Guestlist">
+    <Stack.Navigator initialRouteName="Settings">
       <Stack.Screen
         name="Splash"
         component={SplashScreen}

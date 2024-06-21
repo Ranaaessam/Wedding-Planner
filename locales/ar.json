@@ -1,0 +1,15 @@
+{
+    "settings": "الإعدادات",
+    "profile": "الملف الشخصي",
+    "favorites": "المفضلة",
+    "language": "اللغة",
+    "english": "الإنجليزية",
+    "arabic": "العربية",
+    "contactUs": "اتصل بنا",
+    "complaints": "الشكاوى",
+    "darkMode": "الوضع الداكن",
+    "logout": "تسجيل الخروج",
+    "loggedOut": "تم تسجيل الخروج",
+    "languageChanged": "تم تغيير اللغة بنجاح"
+  }
+  
