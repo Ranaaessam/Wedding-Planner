@@ -71,13 +71,13 @@ const DATA = [
   },
 ];
 
-const Suppliers = () => {
+const Suppliers = ({navigation}) => {
   return (
     <FlatList
       data={DATA}
       renderItem={({ item }) => (
         <View>
-          <SupplierCard name={item.name} imageUri={item.imageUri} />
+          <SupplierCard name={item.name} imageUri={item.imageUri} navigation={navigation} />
         </View>
       )}
       keyExtractor={(item) => item.id}

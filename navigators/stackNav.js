@@ -33,7 +33,7 @@ const Stack = createStackNavigator();
 
 const StackNav = () => {
   return (
-    <Stack.Navigator initialRouteName="Budget">
+    <Stack.Navigator initialRouteName="Plan">
       <Stack.Screen
         name="Splash"
         component={SplashScreen}
@@ -67,7 +67,13 @@ const StackNav = () => {
       <Stack.Screen
         name="Complaint"
         component={ComplaintForm}
-        options={{ headerShown: false }}
+        options={{ 
+          headerShown: true, 
+          headerTitle: '', 
+          headerBackTitleVisible: false,
+          headerTintColor: '#FF69B4', // Light pink back arrow
+          headerStyle: { backgroundColor: '#FFDFEB' }, 
+        }}
       />
       <Stack.Screen
         name="Cart"

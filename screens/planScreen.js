@@ -6,7 +6,7 @@ import PlanInvitePartner from "../components/planInvitePartner";
 import PlanCard from "../components/planCard";
 import PlanCards from "../components/planCards";
 
-const PlanScreen = () => {
+const PlanScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <PlanCoverImage
@@ -15,9 +15,9 @@ const PlanScreen = () => {
         }
         name={"Mr & Mrs"}
       />
-      <PlanChecklist />
-      <PlanInvitePartner />
-      <PlanCards></PlanCards>
+      <PlanChecklist navigation={navigation} />
+      <PlanInvitePartner navigation={navigation} />
+      <PlanCards navigation={navigation}></PlanCards>
     </View>
   );
 };

@@ -1,8 +1,8 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
-const PlanCard = ({ icon, name, value }) => {
+const PlanCard = ({ icon, name, value, navigation }) => {
   let valueText = "";
 
   switch (name.toLowerCase()) {
@@ -28,9 +28,38 @@ const PlanCard = ({ icon, name, value }) => {
       valueText = `${value}`;
   }
 
+  const handlePress = () => {
+    switch (name.toLowerCase()) {
+      case "budget":
+        navigation.navigate("Budget");
+        break;
+      case "guest list":
+        navigation.navigate("Guestlist");
+        break;
+      case "favorites":
+        navigation.navigate("Favourites");
+        break;
+      case "booked":
+        navigation.navigate("Cart");
+        break;
+      case "advice":
+        () => {};
+
+        break;
+      case "scrapbook":
+        () => {};
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <View style={styles.planCard}>
-      <Icon name={icon} size={32} />
+      <TouchableOpacity onPress={handlePress}>
+        <Icon name={icon} size={32} />
+      </TouchableOpacity>
+
       <Text style={styles.text}>{name}</Text>
       <Text style={styles.text2}>{valueText}</Text>
     </View>

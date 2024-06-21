@@ -74,10 +74,10 @@ const images = [
   },
 ];
 
-const SupplierDetails = () => {
+const SupplierDetails = ({navigation}) => {
   const handleBookPress = () => {
     // Handle booking action
-    console.log("Book button pressed");
+    navigation.navigate('Cart')
   };
 
   const handleFavoritePress = () => {
@@ -96,6 +96,8 @@ const SupplierDetails = () => {
   );
 
   return (
+    <ScrollView>
+
     <View style={styles.container}>
       <View style={styles.carouselContainer}>
         <ImageCarousel images={images} />
@@ -144,6 +146,8 @@ const SupplierDetails = () => {
         />
       </View>
     </View>
+    </ScrollView>
+
   );
 };
 

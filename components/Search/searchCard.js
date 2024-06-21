@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet, ImageBackground } from "react-native";
+import { View, Text, StyleSheet, ImageBackground, TouchableOpacity } from "react-native";
 
-const SearchCard = ({ title, imageUrl }) => {
+const SearchCard = ({ title, imageUrl,navigation }) => {
   return (
+    <TouchableOpacity onPress={()=>{navigation.navigate('SupplierDetails')}}>
     <View style={styles.card}>
       <ImageBackground source={{ uri: imageUrl }} style={styles.image}>
         <View style={styles.overlay}>
@@ -10,6 +11,7 @@ const SearchCard = ({ title, imageUrl }) => {
         </View>
       </ImageBackground>
     </View>
+    </TouchableOpacity>
   );
 };
 

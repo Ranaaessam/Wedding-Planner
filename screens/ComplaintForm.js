@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Modal, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ScrollView } from 'react-native';
 
-const ComplaintForm = () => {
+const ComplaintForm = ({navigation}) => {
   const [vendorId, setVendorId] = useState('');
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,6 +18,9 @@ const ComplaintForm = () => {
   const handleSubmit = () => {
     if (!vendorId || !userName || !email || !complaintDetails) {
       setError('Please fill out all fields.');
+
+
+    
       return;
     }
 
@@ -42,6 +45,7 @@ const ComplaintForm = () => {
   };
 
   const handleReturn = () => {
+    navigation.navigate('Home')
     setModalVisible(false);
   };
 
@@ -102,7 +106,7 @@ const ComplaintForm = () => {
               <Text style={styles.modalTitle}>Complaint ID</Text>
               <Text style={styles.complaintIdText}>ID: {complaintId}</Text>
               <Button
-                title="Return"
+                title="Return to homepage"
                 onPress={handleReturn}
                 color="#4C134E"
               />

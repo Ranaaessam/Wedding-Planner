@@ -1,6 +1,7 @@
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import PlanIcon from "./planIcon";
+import { ScrollView } from "react-native-gesture-handler";
 
 const planIcons = [
   { id: "1", iconName: "checklist", name: "Checklist" },

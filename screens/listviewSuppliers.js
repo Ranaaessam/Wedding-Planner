@@ -1,6 +1,6 @@
 // ListviewSuppliers.js
 import React from "react";
-import { StyleSheet, FlatList, View } from "react-native";
+import { StyleSheet, FlatList, View, TouchableOpacity } from "react-native";
 import SupplierCard from "../components/supplierListCard";
 
 const suppliers = [
@@ -30,17 +30,19 @@ const suppliers = [
   },
 ];
 
-const ListviewSuppliers = () => {
+const ListviewSuppliers = ({navigation}) => {
   return (
     <FlatList
       data={suppliers}
       renderItem={({ item }) => (
+        <TouchableOpacity onPress={()=>{navigation.navigate('SupplierDetails')}}>
         <SupplierCard
           image={item.image}
           name={item.name}
           location={item.location}
           rate={item.rate}
         />
+        </TouchableOpacity>
       )}
       keyExtractor={(item) => item.id}
       contentContainerStyle={styles.list}

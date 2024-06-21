@@ -11,7 +11,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import AvailabilityCalendar from "../components/availabilityCalendar";
 
-const ReservationScreen = () => {
+const ReservationScreen = ({navigation}) => {
   const [selectedCake, setSelectedCake] = useState(null); // State to track selected cake
   const [selectedCar, setSelectedCar] = useState(null); // State to track selected car
   const [selectedCaterer, setSelectedCaterer] = useState(null); // State to track selected caterer
@@ -268,12 +268,14 @@ const ReservationScreen = () => {
             renderItem={renderCatererItem}
             keyExtractor={(item) => item.id}
           />
+          <TouchableOpacity onPress={()=>{navigation.navigate('Cart')}}>
           <Button
             mode="contained"
             style={styles.button}
             labelStyle={{ fontSize: 16, fontWeight: "bold" }}>
-            Next $90
+            Proceed to Cart  $90
           </Button>
+          </TouchableOpacity>
         </View>
       )}
       keyExtractor={(item) => item.key}

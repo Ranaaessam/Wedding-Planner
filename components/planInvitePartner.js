@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import ProgressBar from "../components/progressBar";
 import Icon from "react-native-vector-icons/AntDesign";
 
-const PlanInvitePartner = () => {
+const PlanInvitePartner = ({navigation}) => {
   return (
     <View style={styles.checklist}>
       <View style={styles.content}>

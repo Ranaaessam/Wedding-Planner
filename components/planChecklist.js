@@ -1,10 +1,10 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import ProgressBar from "../components/progressBar";
 import Icon from "react-native-vector-icons/AntDesign";
 import { CheckBox } from "react-native-elements"; // Import CheckBox from a library like react-native-elements
 
-const PlanChecklist = () => {
+const PlanChecklist = ({navigation}) => {
   return (
     <View style={styles.checklist}>
       <View style={styles.content}>
@@ -24,7 +24,10 @@ const PlanChecklist = () => {
           containerStyle={styles.checkBox}
         />
         <Text style={styles.checkText}>Start spreading your wedding news</Text>
+        <TouchableOpacity onPress={()=>{navigation.navigate('Checklists')}}>
         <Icon name="right" size={24} />
+    </TouchableOpacity>
+
       </View>
     </View>
   );

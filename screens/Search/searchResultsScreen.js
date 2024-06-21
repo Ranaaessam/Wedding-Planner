@@ -5,7 +5,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import SearchCategories from "../../components/Search/searchCategories";
 import SearchResultItem from "../../components/Search/searchResultItem";
 
-const SearchResultsScreen = () => {
+const SearchResultsScreen = ({navigation}) => {
   const route = useRoute();
   const { searchQuery } = route.params;
   const results = [
@@ -67,6 +67,7 @@ const SearchResultsScreen = () => {
               category={result.category}
               location={result.location}
               image={result.image}
+              navigation={navigation}
             />
           ))}
         </ScrollView>

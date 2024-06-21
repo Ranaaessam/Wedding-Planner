@@ -1,13 +1,15 @@
 import React from "react";
-import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { FlatList, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import Venues from "../components/venues";
 import Suppliers from "../components/suppliers";
 import Header from "../components/header";
 import PlanList from "../components/planList";
 import BudgetScreen from "./budgetScreen";
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   return (
+    <ScrollView>
+
     <SafeAreaView>
       <Header
         imageUri={
@@ -17,10 +19,10 @@ const HomeScreen = () => {
       />
       <View style={styles.container}>
         <Text style={styles.header}>Explore Venues near you</Text>
-        <Venues />
+        <Venues navigation={navigation} />
         <View style={{ paddingTop: 20 }}>
           <Text style={styles.header}>Suppliers</Text>
-          <Suppliers />
+          <Suppliers  navigation={navigation}/>
         </View>
         <View style={{ paddingTop: 20 }}>
           <Text style={styles.header}>Plan</Text>
@@ -28,6 +30,7 @@ const HomeScreen = () => {
         </View>
       </View>
     </SafeAreaView>
+    </ScrollView>
   );
 };
 

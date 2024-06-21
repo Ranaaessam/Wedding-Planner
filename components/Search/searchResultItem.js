@@ -1,9 +1,10 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
-const SearchResultItem = ({ name, category, location, image }) => {
+const SearchResultItem = ({ name, category, location, image , navigation }) => {
   return (
+    <TouchableOpacity onPress={()=>{navigation.navigate('SupplierDetails')}}>
     <View style={styles.container}>
       <Image source={{ uri: image }} style={styles.image} />
       <View style={styles.info}>
@@ -20,6 +21,7 @@ const SearchResultItem = ({ name, category, location, image }) => {
         </View>
       </View>
     </View>
+    </TouchableOpacity>
   );
 };
 

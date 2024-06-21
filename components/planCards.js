@@ -11,13 +11,13 @@ const planCards = [
   { id: 6, icon: "book", name: "Scrapbook", value: 0 },
 ];
 
-const PlanCards = () => {
+const PlanCards = ({navigation}) => {
   return (
     <View style={{ marginTop: -90 }}>
       <FlatList
         data={planCards}
         renderItem={({ item }) => (
-          <PlanCard icon={item.icon} name={item.name} value={item.value} />
+          <PlanCard icon={item.icon} name={item.name} value={item.value} navigation={navigation} />
         )}
         keyExtractor={(item) => item.id.toString()}
         numColumns={3}

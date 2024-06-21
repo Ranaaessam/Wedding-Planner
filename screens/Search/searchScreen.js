@@ -23,7 +23,7 @@ const VenueTypes = [
   },
 ];
 
-const SearchScreen = () => {
+const SearchScreen = ({navigation}) => {
   const [search, setSearch] = useState("");
   return (
     <SafeAreaView style={styles.container}>
@@ -40,6 +40,7 @@ const SearchScreen = () => {
               key={venue.id}
               title={venue.title}
               imageUrl={venue.imageUrl}
+              navigation ={navigation}
             ></SearchCard>
           ))}
         </ScrollView>
@@ -54,6 +55,7 @@ const SearchScreen = () => {
               key={venue.id}
               title={venue.title}
               imageUrl={venue.imageUrl}
+              navigation ={navigation}
             ></SearchCard>
           ))}
         </ScrollView>

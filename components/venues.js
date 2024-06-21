@@ -55,7 +55,7 @@ const Venues = ({navigation}) => {
       style={styles.scrollView}
     >
       {venueData.map((venue) => (
-        <VenueCard key={venue.id} name={venue.name} imageUri={venue.imageUri}  />
+        <VenueCard key={venue.id} name={venue.name} imageUri={venue.imageUri} navigation={navigation}  />
       ))}
     </ScrollView>
   );
