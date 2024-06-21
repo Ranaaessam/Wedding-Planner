@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, FlatList, StyleSheet, Text } from 'react-native';
+import { View, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Card, Button } from 'react-native-paper';
 
-const Cart = () => {
+const Cart = ({ navigation }) => {
   const cartItems = [
     { id: '1', title: 'Cars', price: 10, description: 'This is item 1 description. It could be longer to demonstrate wrapping within the card boundaries.', image: require('../assets/Images/cars.avif') },
     { id: '2', title: 'Decorations', price: 20, description: 'This is item 2 description.', image: require('../assets/Images/decorations.avif') },
@@ -33,24 +33,28 @@ const Cart = () => {
       <Text style={styles.subtitle}>Review your cart and proceed to payment</Text>
       <FlatList
         data={cartItems}
-        renderItem={({ item }) => (
-          <Card style={styles.card}>
-            <View style={styles.cardContent}>
-              <Card.Cover source={item.image} style={styles.image} />
-              <View style={styles.detailsContainer}>
-                <Text style={styles.itemTitle}>{item.title}</Text>
-                <Text style={styles.description}>{renderDesc(item.description)}</Text>
-                <Text style={styles.price}>Price: ${item.price}</Text>
+        renderItem={({ item  }) => (
+          <TouchableOpacity onPress={()=>{navigation.navigate('SupplierDetails')}}>
+            <Card style={styles.card}>
+              <View style={styles.cardContent}>
+                <Card.Cover source={item.image} style={styles.image} />
+                <View style={styles.detailsContainer}>
+                  <Text style={styles.itemTitle}>{item.title}</Text>
+                  <Text style={styles.description}>{renderDesc(item.description)}</Text>
+                  <Text style={styles.price}>Price: ${item.price}</Text>
+                </View>
+                <TouchableOpacity onPress={() => {}}>
+                  <Icon 
+                    name="trash" 
+                    type="font-awesome" 
+                    color="red" 
+                    size={22} 
+                    containerStyle={styles.trashIconContainer}
+                  />
+                </TouchableOpacity>
               </View>
-              <Icon 
-                name="trash" 
-                type="font-awesome" 
-                color="red" 
-                size={22} 
-                containerStyle={styles.trashIconContainer}
-              />
-            </View>
-          </Card>
+            </Card>
+          </TouchableOpacity>
         )}
         keyExtractor={item => item.id}
         contentContainerStyle={styles.contentContainer}
@@ -129,8 +133,7 @@ const styles = StyleSheet.create({
     color: 'green',
   },
   trashIconContainer: {
-    // marginLeft: 10,
-    marginTop:100,
+    marginTop: 100,
     paddingRight: 10,
   },
   footer: {

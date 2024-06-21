@@ -1,8 +1,9 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-const BudgetHistoryCard = ({ image, type, name, price }) => {
+const BudgetHistoryCard = ({ image, type, name, price, navigation }) => {
   return (
+    <TouchableOpacity onPress={()=>{navigation.navigate('SupplierDetails')}}>
     <View style={styles.cardContainer}>
       <Image source={{ uri: image }} style={styles.image} />
       <View style={styles.textContainer}>
@@ -11,6 +12,7 @@ const BudgetHistoryCard = ({ image, type, name, price }) => {
       </View>
       <Text style={styles.price}>${price}</Text>
     </View>
+    </TouchableOpacity>
   );
 };
 

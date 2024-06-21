@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Home from "../screens/homeScreen";
-import Cart from "../screens/cartScreen";
+import Cart from "../screens/Cart";
 import Settings from "../screens/Settings";
 import PlanScreen from "../screens/planScreen";
 import Icon from "react-native-vector-icons/Ionicons";

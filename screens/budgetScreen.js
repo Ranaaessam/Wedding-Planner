@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 import ProgressBar from "../components/progressBar";
 import BudgetHistoryCard from "../components/budgetHistoryCard";
 
-const BudgetScreen = () => {
+const BudgetScreen = ({navigation}) => {
   const budgetHistoryData = [
     {
       id: "1",
@@ -59,7 +59,7 @@ const BudgetScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 18 }}>Left to spend</Text>
+      <Text style={{ fontSize: 20 }}>Left to spend</Text>
       <Text style={styles.budget}>$8000</Text>
       <ProgressBar progress={20} height={25} />
       <View style={styles.progressRow}>
@@ -82,13 +82,14 @@ const BudgetScreen = () => {
         <Text style={styles.budgetSpent}>$2000</Text>
       </View>
       <View style={{ paddingTop: 30 }}>
-        <Text style={{ fontSize: 16, fontWeight: "bold" }}>History</Text>
+        <Text style={{ fontSize: 22, fontWeight: "bold" }}>History</Text>
         <View
           style={{
             height: 2,
-            width: 52,
+            width: 70,
             backgroundColor: "#FF81AE",
             marginBottom: 2,
+            marginTop:6
           }}
         ></View>
       </View>
@@ -100,6 +101,7 @@ const BudgetScreen = () => {
             type={item.type}
             name={item.name}
             price={item.price}
+            navigation={navigation}
           />
         )}
         keyExtractor={(item) => item.id}

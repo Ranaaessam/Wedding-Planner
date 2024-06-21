@@ -9,7 +9,7 @@ import SignUp from "../screens/signUpScreen";
 import Favourites from "../screens/Favourites/favourites";
 import FavouriteCategoryScreen from "../screens/Favourites/favouriteCategoryScreen";
 import ComplaintForm from "../screens/ComplaintForm";
-import Cart from "../screens/cartScreen";
+import Cart from "../screens/Cart";
 import ContactUs from "../screens/ContactUs";
 import Settings from "../screens/Settings";
 import ListviewSuppliers from "../screens/listviewSuppliers";
@@ -33,7 +33,7 @@ const Stack = createStackNavigator();
 
 const StackNav = () => {
   return (
-    <Stack.Navigator initialRouteName="Profile">
+    <Stack.Navigator initialRouteName="Budget">
       <Stack.Screen
         name="Splash"
         component={SplashScreen}
