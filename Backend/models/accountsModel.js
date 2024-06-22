@@ -12,7 +12,7 @@ const accountSchema = new mongoose.Schema({
     required: true,
   },
   weddingdate: {
-    type: Date
+    type: Date,
   },
   favourites: {
     type: [Object],
@@ -23,12 +23,19 @@ const accountSchema = new mongoose.Schema({
     default: [],
   },
   location: {
-    type: String
+    type: String,
   },
   image: {
     type: String,
-    default: '',
+    default: "",
   },
+  orders: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Orders",
+      default: [],
+    },
+  ],
 });
 
 const Account = mongoose.model("Account", accountSchema);
