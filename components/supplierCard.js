@@ -1,18 +1,29 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import { Card } from "react-native-elements";
 
-const SupplierCard = ({ name, imageUri , navigation }) => {
+const SupplierCard = ({ name, imageUri, navigation }) => {
   return (
-    <TouchableOpacity onPress={()=>{navigation.navigate('SupplierDetails')}}>
-    <Card containerStyle={styles.card}>
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: imageUri }} style={styles.image} />
-        <View style={styles.overlay}>
-          <Text style={styles.name}>{name}</Text>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate("ListViewSuppliers");
+      }}
+    >
+      <Card containerStyle={styles.card}>
+        <View style={styles.imageContainer}>
+          <Image source={{ uri: imageUri }} style={styles.image} />
+          <View style={styles.overlay}>
+            <Text style={styles.name}>{name}</Text>
+          </View>
         </View>
-      </View>
-    </Card>
+      </Card>
     </TouchableOpacity>
   );
 };
