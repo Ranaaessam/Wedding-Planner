@@ -1,66 +1,37 @@
-import { useRoute } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { useSelector, useDispatch } from "react-redux";
 import SearchCategories from "../../components/Search/searchCategories";
 import SearchResultItem from "../../components/Search/searchResultItem";
+import { filterResultsByCategory } from "../../StateManagement/slices/SearchSlice";
 
-const SearchResultsScreen = ({navigation}) => {
-  const route = useRoute();
-  const { searchQuery } = route.params;
-  const results = [
-    {
-      name: "Venue 1",
-      category: "Venue",
-      location: "Haram, Al Jizah",
-      image:
-        "https://plus.unsplash.com/premium_photo-1673626578328-d72e1e75202b?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      name: "Venue 2",
-      category: "Venue",
-      location: "Haram, Al Jizah",
-      image:
-        "https://plus.unsplash.com/premium_photo-1673626578328-d72e1e75202b?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      name: "Photographer 1",
-      category: "Photographer",
-      location: "Haram, Al Jizah",
-      image:
-        "https://plus.unsplash.com/premium_photo-1673626578328-d72e1e75202b?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      name: "Caterer 1",
-      category: "Caterer",
-      location: "Haram, Al Jizah",
-      image:
-        "https://plus.unsplash.com/premium_photo-1673626578328-d72e1e75202b?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      name: "DJ 1",
-      category: "DJ",
-      location: "Haram, Al Jizah",
-      image:
-        "https://plus.unsplash.com/premium_photo-1673626578328-d72e1e75202b?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      name: "Makeup Artist 1",
-      category: "Makeup Artist",
-      location: "Haram, Al Jizah",
-      image:
-        "https://plus.unsplash.com/premium_photo-1673626578328-d72e1e75202b?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-  ];
+const SearchResultsScreen = ({ navigation }) => {
+  const { filteredResults, status } = useSelector((state) => state.search);
+  const dispatch = useDispatch();
 
-  const hasResults = results.length > 0;
+  useEffect(() => {
+    dispatch(filterResultsByCategory({ category: "Venues" }));
+  }, [dispatch]);
+
+  const hasResults = filteredResults.length > 0;
 
   return (
     <View style={styles.container}>
       <SearchCategories />
-      {hasResults ? (
+      {status === "loading" && <Text>Loading...</Text>}
+      {!hasResults && (
+        <View style={styles.noResultsContainer}>
+          <Image
+            source={require("../../assets/Images/EmptyList.png")}
+            style={styles.noResultsImage}
+          />
+          <Text style={styles.noResultsText}>No results found</Text>
+        </View>
+      )}
+      {hasResults && (
         <ScrollView>
-          {results.map((result, index) => (
+          {filteredResults.map((result, index) => (
             <SearchResultItem
               key={index}
               name={result.name}
@@ -71,14 +42,6 @@ const SearchResultsScreen = ({navigation}) => {
             />
           ))}
         </ScrollView>
-      ) : (
-        <View style={styles.noResultsContainer}>
-          <Image
-            source={require("../../assets/Images/EmptyList.png")}
-            style={styles.noResultsImage}
-          />
-          <Text style={styles.noResultsText}>No results found</Text>
-        </View>
       )}
     </View>
   );
@@ -86,11 +49,9 @@ const SearchResultsScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 10,
   },
   noResultsContainer: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },

@@ -70,6 +70,50 @@ export const getAllComplaints = createAsyncThunk(
     return data;
   }
 );
+
+// Async thunk for statistics
+export const getStatistics = createAsyncThunk(
+  "admin/getStatistics",
+  async () => {
+    const usersResponse = await fetch(
+      "https://jsonplaceholder.typicode.com/users"
+    );
+    const usersData = await usersResponse.json();
+    const suppliersResponse = await fetch(
+      "https://jsonplaceholder.typicode.com/post"
+    );
+    const suppliersData = await suppliersResponse.json();
+
+    const venuesResponse = await fetch(
+      "https://jsonplaceholder.typicode.com/users"
+    );
+    const venuesData = await venuesResponse.json();
+
+    const usersCount = usersData.length;
+    const suppliersCount = suppliersData.length;
+    const venuesCount = venuesData.length;
+
+    const photographersCount = suppliersData.filter(
+      (supplier) => supplier.type === "Photographer"
+    ).length;
+    const makeupArtistsCount = suppliersData.filter(
+      (supplier) => supplier.type === "Makeup Artist"
+    ).length;
+    const floristsCount = suppliersData.filter(
+      (supplier) => supplier.type === "Florist"
+    ).length;
+
+    return {
+      usersCount,
+      suppliersCount,
+      venuesCount,
+      photographersCount,
+      makeupArtistsCount,
+      floristsCount,
+    };
+  }
+);
+
 const adminSlice = createSlice({
   name: "admin",
   initialState: {
@@ -144,6 +188,19 @@ const adminSlice = createSlice({
         state.complaints = action.payload;
       })
       .addCase(getAllComplaints.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+
+      // Statistics-related cases
+      .addCase(getStatistics.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getStatistics.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.statistics = action.payload;
+      })
+      .addCase(getStatistics.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });
