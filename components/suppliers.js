@@ -82,6 +82,7 @@ const Suppliers = ({navigation}) => {
       )}
       keyExtractor={(item) => item.id}
       numColumns={3}
+      navigation ={navigation}
     />
   );
 };

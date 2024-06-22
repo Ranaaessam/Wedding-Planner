@@ -19,6 +19,19 @@
       "We'll reach out to you as soon as possible": "We'll reach out to you as soon as possible",
       "Full Name": "Full Name",
       "Email Address": "Email Address",
+        "Mr & Mrs": "Mr & Mrs",
+          "Venue": "Venue",
+          "Photographers": "Photographers",
+          "Make-up Artist": "Make-up Artist",
+          "Cakes": "Cakes",
+          "Escort Cars": "Escort Cars",
+          "Music Playlist": "Music Playlist",
+          "Jewelry": "Jewelry",
+          "Attire": "Attire",
+          "Caterers": "Caterers",
+          "Entertainment": "Entertainment",
+          "Decoration": "Decoration",
+        
       "Vendor ID": "Vendor ID",
       "Complaint Details": "Complaint Details",
       "Please fill out all fields.": "Please fill out all fields.",
@@ -26,7 +39,10 @@
       "Submit Complaint": "Submit Complaint",
       "Complaint ID": "Complaint ID",
       "Return to homepage": "Return to homepage",
-      "we'll reach out to you as soon as possible":"we'll reach out to you as soon as possible"
+      "we'll reach out to you as soon as possible":"we'll reach out to you as soon as possible",
+      "Explore Venues near you": "Explore Venues near you",
+  "Suppliers": "Suppliers",
+  "Plan": "Plan"
     
   }
   

@@ -4,7 +4,7 @@ import { Card } from "react-native-elements";
 
 const SupplierCard = ({ name, imageUri , navigation }) => {
   return (
-    <TouchableOpacity onPress={()=>{navigation.navigate('SupplierDetails')}}>
+    <TouchableOpacity onPress={()=>{navigation.navigate('ListViewSuppliers')}}>
     <Card containerStyle={styles.card}>
       <View style={styles.imageContainer}>
         <Image source={{ uri: imageUri }} style={styles.image} />
@@ -40,11 +40,13 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.3)",
   },
   name: {
-    fontSize: 12,
+    fontSize: 13,
     color: "#fff",
     fontWeight: "bold",
     textAlign: "start",
     padding: 5,
+    width:"100%"
+
   },
   heartIcon: {
     position: "absolute",

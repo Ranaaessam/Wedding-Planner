@@ -41,8 +41,10 @@ const styles = StyleSheet.create({
     margin: 5,
     borderRadius: 10,
     overflow: "hidden",
-    width: Dimensions.get("window").width * 0.29,
-    height: Dimensions.get("window").height * 0.14,
+    // width: Dimensions.get("window").width * 0.29,
+    // height: Dimensions.get("window").height * 0.14,
+    width:120,
+    height:100
   },
   imageContainer: {
     position: "relative",

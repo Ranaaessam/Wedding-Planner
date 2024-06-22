@@ -1,6 +1,5 @@
-// ListviewSuppliers.js
 import React from "react";
-import { StyleSheet, FlatList, View, TouchableOpacity } from "react-native";
+import { StyleSheet, FlatList, View, Text, TouchableOpacity } from "react-native";
 import SupplierCard from "../components/supplierListCard";
 
 const suppliers = [
@@ -30,31 +29,44 @@ const suppliers = [
   },
 ];
 
-const ListviewSuppliers = ({navigation}) => {
+const ListviewSuppliers = ({ navigation }) => {
   return (
-    <FlatList
-      data={suppliers}
-      renderItem={({ item }) => (
-        <TouchableOpacity onPress={()=>{navigation.navigate('SupplierDetails')}}>
-        <SupplierCard
-          image={item.image}
-          name={item.name}
-          location={item.location}
-          rate={item.rate}
-        />
-        </TouchableOpacity>
-      )}
-      keyExtractor={(item) => item.id}
-      contentContainerStyle={styles.list}
-    />
+    <View style={styles.container}>
+      <Text style={styles.title}>Choose what fits you!</Text>
+      <FlatList
+        data={suppliers}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => { navigation.navigate('SupplierDetails') }}>
+            <SupplierCard
+              image={item.image}
+              name={item.name}
+              location={item.location}
+              rate={item.rate}
+            />
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.list}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  list: {
-    marginTop: 30,
-    padding: 20,
+  container: {
+    flex: 1,
     backgroundColor: "#f0f0f0",
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginVertical: 40,
+    color: "#333",
+
+  },
+  list: {
+    paddingHorizontal: 20,
   },
 });
 

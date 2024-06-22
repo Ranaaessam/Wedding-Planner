@@ -7,11 +7,15 @@
     "arabic": "العربية",
     "contactUs": "اتصل بنا",
     "complaints": "الشكاوى",
+      "Mr & Mrs": "السيد والسيدة",
     "darkMode": "الوضع الداكن",
     "logout": "تسجيل الخروج",
     "loggedOut": "تم تسجيل الخروج",
     "languageChanged": "تم تغيير اللغة بنجاح",
       "Contact Us": "اتصل بنا",
+      "Explore Venues near you": "استكشاف الأماكن القريبة منك",
+      "Suppliers": "الموردين",
+      "Plan": "خطة",
       "If you have any questions or require assistance, feel free to reach out to us. We're here to help!": "إذا كان لديك أي أسئلة أو تحتاج إلى مساعدة ، فلا تتردد في الاتصال بنا. نحن هنا للمساعدة!",
       "Contact Information": "معلومات الاتصال",
       "Follow Us On Social Media": "تابعنا على وسائل التواصل الاجتماعي",
@@ -25,7 +29,18 @@
       "Please enter a valid email address.": "الرجاء إدخال عنوان بريد إلكتروني صحيح.",
       "Submit Complaint": "إرسال الشكوى",
       "Complaint ID": "رقم الشكوى",
-      "Return to homepage": "العودة إلى الصفحة الرئيسية"
+      "Return to homepage": "العودة إلى الصفحة الرئيسية",
+      "Venue": "قاعة",
+      "Photographers": "المصورون",
+      "Make-up Artist": "فنان المكياج",
+      "Cakes": "كعكات",
+      "Escort Cars": "سيارات مرافقة",
+      "Music Playlist": "قائمة تشغيل الموسيقى",
+      "Jewelry": "المجوهرات",
+      "Attire": "الملابس",
+      "Caterers": "المطاعم",
+      "Entertainment": "الترفيه",
+      "Decoration": "الديكور"
     }
     
   

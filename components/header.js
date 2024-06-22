@@ -15,7 +15,9 @@ const Header = ({ imageUri, name }) => {
         />
       </View>
       <Text style={styles.name}>{name}</Text>
-      <Icon name="gear" size={25} color="#000" style={styles.settingsIcon} />
+      {/* <TouchableOpacity onPress={()=>{navigation.navigate('Settings')}}>
+      <Icon name="gear" size={25} color="grey" style={styles.settingsIcon} />
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -29,13 +31,17 @@ const styles = StyleSheet.create({
   },
   avatarContainer: {
     borderWidth: 2,
-    borderColor: "#000",
+    borderColor: "#D3D3D3",
     borderRadius: 30,
     overflow: "hidden",
     width: 60,
     height: 60,
     justifyContent: "center",
     alignItems: "center",
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.3, 
+    shadowRadius: 4,
+    elevation: 5, 
   },
   avatar: {
     width: 56,
@@ -44,7 +50,7 @@ const styles = StyleSheet.create({
   },
   name: {
     flex: 1,
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
     marginLeft: 10,
   },
