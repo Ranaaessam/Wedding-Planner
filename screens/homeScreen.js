@@ -16,7 +16,7 @@ const HomeScreen = ({ navigation }) => {
           imageUri={
             "https://i.pinimg.com/564x/aa/10/8b/aa108b7ea07eab894954153872bf4863.jpg"
           }
-          name={"Mr & Mrs"}
+          name={t("Mr & Mrs")}
           navigation={navigation}
         />
         <View style={styles.container}>
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   header: {
     padding: 5,
     fontWeight: "600",
-    fontSize:18
+    fontSize: 18,
   },
 });
 

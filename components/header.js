@@ -1,5 +1,6 @@
 // Header.js
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { View, Text, Image, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/Octicons";
 
