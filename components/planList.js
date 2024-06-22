@@ -11,14 +11,18 @@ const planIcons = [
   { id: "5", iconName: "gift", name: "Gift" },
 ];
 
-const PlanList = () => {
+const PlanList = ({ navigation }) => {
   return (
     <FlatList
       horizontal
       showsHorizontalScrollIndicator={false}
       data={planIcons}
       renderItem={({ item }) => (
-        <PlanIcon iconName={item.iconName} name={item.name} />
+        <PlanIcon
+          iconName={item.iconName}
+          name={item.name}
+          navigation={navigation}
+        />
       )}
       keyExtractor={(item) => item.id}
     />

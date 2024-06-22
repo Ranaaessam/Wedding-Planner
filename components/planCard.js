@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
 const PlanCard = ({ icon, name, value, navigation }) => {
@@ -43,11 +43,17 @@ const PlanCard = ({ icon, name, value, navigation }) => {
         navigation.navigate("Cart");
         break;
       case "advice":
-        () => {};
+        Alert.alert(
+          "Upcoming feature",
+          "Look out for new advice tips coming in our next update!"
+        );
 
         break;
       case "scrapbook":
-        () => {};
+        Alert.alert(
+          "Upcoming feature",
+          "Look out for new scrapbook notes coming in our next update!"
+        );
         break;
       default:
         break;
@@ -55,21 +61,21 @@ const PlanCard = ({ icon, name, value, navigation }) => {
   };
 
   return (
-    <View style={styles.planCard}>
-      <TouchableOpacity onPress={handlePress}>
+    <TouchableOpacity onPress={handlePress}>
+      <View style={styles.planCard}>
         <Icon name={icon} size={32} />
-      </TouchableOpacity>
 
-      <Text style={styles.text}>{name}</Text>
-      <Text style={styles.text2}>{valueText}</Text>
-    </View>
+        <Text style={styles.text}>{name}</Text>
+        <Text style={styles.text2}>{valueText}</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   planCard: {
-    height: "100%",
-    width: "25%",
+    height: "90%",
+    width: 90,
     borderWidth: 1,
     borderColor: "grey",
     borderRadius: 20,

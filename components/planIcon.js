@@ -1,15 +1,35 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
 import Icon from "react-native-vector-icons/Octicons";
 
-const PlanIcon = ({ iconName, name }) => {
+const PlanIcon = ({ iconName, name, navigation }) => {
+  const handlePress = () => {
+    if (name === "Budget") {
+      navigation.navigate("Budget");
+    } else if (name === "Checklist") {
+      navigation.navigate("Checklists");
+    } else if (name === "Guest") {
+      navigation.navigate("Guestlist");
+    } else if (name === "Advice") {
+      Alert.alert(
+        "Upcoming feature",
+        "Look out for new advice tips coming in our next update!"
+      );
+    } else if (name === "Gift") {
+      Alert.alert(
+        "Upcoming feature",
+        "Look out for new gift suggestions coming in our next update!"
+      );
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={handlePress}>
       <View style={styles.circle}>
         <Icon name={iconName} size={25} color="#000" />
       </View>
       <Text style={styles.text}>{name}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -15,7 +15,6 @@ const Header = ({ imageUri, name }) => {
         />
       </View>
       <Text style={styles.name}>{name}</Text>
-      <Icon name="gear" size={25} color="#000" style={styles.settingsIcon} />
     </View>
   );
 };
