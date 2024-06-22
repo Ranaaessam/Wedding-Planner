@@ -1,17 +1,24 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const BudgetHistoryCard = ({ image, type, name, price, navigation }) => {
+  const { t } = useTranslation();
+
   return (
-    <TouchableOpacity onPress={()=>{navigation.navigate('SupplierDetails')}}>
-    <View style={styles.cardContainer}>
-      <Image source={{ uri: image }} style={styles.image} />
-      <View style={styles.textContainer}>
-        <Text style={styles.type}>{type}</Text>
-        <Text style={styles.name}>{name}</Text>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate("SupplierDetails");
+      }}
+    >
+      <View style={styles.cardContainer}>
+        <Image source={{ uri: image }} style={styles.image} />
+        <View style={styles.textContainer}>
+          <Text style={styles.type}>{t(type)}</Text>
+          <Text style={styles.name}>{name}</Text>
+        </View>
+        <Text style={styles.price}>${price}</Text>
       </View>
-      <Text style={styles.price}>${price}</Text>
-    </View>
     </TouchableOpacity>
   );
 };
@@ -39,6 +46,7 @@ const styles = StyleSheet.create({
   type: {
     fontWeight: "bold",
     fontSize: 18,
+    textAlign: "left",
   },
   name: {
     color: "grey",

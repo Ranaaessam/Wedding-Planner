@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import { SafeAreaView, View, FlatList, Text, StyleSheet } from "react-native";
 import { Checkbox, FAB } from "react-native-paper";
 import ProgressBar from "../components/progressBar";
+import { useTranslation } from "react-i18next";
 
 const CheckListScreen = () => {
+  const { t } = useTranslation();
+
   const [tasks, setTasks] = useState([
-    { id: "1", text: "Venues", completed: false },
-    { id: "2", text: "Photographer", completed: false },
-    { id: "3", text: "Makeup Artist", completed: true },
+    { id: "1", text: "Venue", completed: false },
+    { id: "2", text: "Photographer", completed: true },
   ]);
 
   const toggleTaskCompletion = (id) => {
@@ -25,9 +27,11 @@ const CheckListScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Complete your wedding plan</Text>
+      <Text style={styles.header}>{t("Complete your wedding plan")}</Text>
       <Text style={styles.subText}>
-        Once you complete all the tasks, you'll be ready for your wedding day.
+        {t(
+          "Once you complete all the tasks, you'll be ready for your wedding day."
+        )}
       </Text>
       <View
         style={{
@@ -63,7 +67,7 @@ const CheckListScreen = () => {
                 item.completed && styles.completedTaskText,
               ]}
             >
-              {item.text}
+              {t(item.text)}
             </Text>
 
             <Checkbox
@@ -106,6 +110,7 @@ const styles = StyleSheet.create({
   taskText: {
     flex: 1,
     marginRight: 10,
+    textAlign: "left",
   },
   completedTaskText: {
     textDecorationLine: "line-through",

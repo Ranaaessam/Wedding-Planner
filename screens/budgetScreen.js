@@ -2,8 +2,11 @@ import React from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import ProgressBar from "../components/progressBar";
 import BudgetHistoryCard from "../components/budgetHistoryCard";
+import { useTranslation } from "react-i18next";
 
-const BudgetScreen = ({navigation}) => {
+const BudgetScreen = ({ navigation }) => {
+  const { t } = useTranslation();
+
   const budgetHistoryData = [
     {
       id: "1",
@@ -59,7 +62,9 @@ const BudgetScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 20 }}>Left to spend</Text>
+      <Text style={{ fontSize: 20, textAlign: "left" }}>
+        {t("Left to spend")}
+      </Text>
       <Text style={styles.budget}>$8000</Text>
       <ProgressBar progress={20} height={25} />
       <View style={styles.progressRow}>
@@ -78,18 +83,20 @@ const BudgetScreen = ({navigation}) => {
             marginRight: 10,
           }}
         ></View>
-        <Text>Amount spent till now: </Text>
+        <Text style={{ textAlign: "left" }}>{t("Amount spent till now:")}</Text>
         <Text style={styles.budgetSpent}>$2000</Text>
       </View>
       <View style={{ paddingTop: 30 }}>
-        <Text style={{ fontSize: 22, fontWeight: "bold" }}>History</Text>
+        <Text style={{ fontSize: 22, fontWeight: "bold", textAlign: "left" }}>
+          {t("History")}
+        </Text>
         <View
           style={{
             height: 2,
             width: 70,
             backgroundColor: "#FF81AE",
             marginBottom: 2,
-            marginTop:6
+            marginTop: 6,
           }}
         ></View>
       </View>
