@@ -26,6 +26,25 @@ const supplierSchema = new Schema({
     type: Number,
     required: true,
   },
+  cakes: [
+    {
+      name: String,
+      image: String,
+    },
+  ],
+  cars: [
+    {
+      name: String,
+      image: String,
+    },
+  ],
+  caterer: [
+    {
+      name: String,
+      description: String,
+      image: String,
+    },
+  ],
 });
 
 const Supplier = mongoose.model("Suppliers", supplierSchema);
