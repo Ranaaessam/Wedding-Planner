@@ -1,11 +1,14 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import ProgressBar from "../components/progressBar";
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
-const PlanInvitePartner = ({navigation}) => {
+const PlanInvitePartner = ({ navigation }) => {
+  const handlePress = () => {
+    Alert.alert("Invite your partner");
+  };
+
   return (
-    <View style={styles.checklist}>
+    <TouchableOpacity style={styles.checklist} onPress={handlePress}>
       <View style={styles.content}>
         <View style={styles.iconText}>
           <Icon name="mail" size={28} />
@@ -20,7 +23,7 @@ const PlanInvitePartner = ({navigation}) => {
           <Icon name="right" size={28} />
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

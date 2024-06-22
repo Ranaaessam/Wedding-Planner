@@ -2,11 +2,14 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import ProgressBar from "../components/progressBar";
 import Icon from "react-native-vector-icons/AntDesign";
-import { CheckBox } from "react-native-elements"; // Import CheckBox from a library like react-native-elements
+import { CheckBox } from "react-native-elements";
 
-const PlanChecklist = ({navigation}) => {
+const PlanChecklist = ({ navigation }) => {
   return (
-    <View style={styles.checklist}>
+    <TouchableOpacity
+      style={styles.checklist}
+      onPress={() => navigation.navigate("Checklists")}
+    >
       <View style={styles.content}>
         <View style={styles.iconText}>
           <Icon name="checkcircleo" size={28} />
@@ -24,12 +27,9 @@ const PlanChecklist = ({navigation}) => {
           containerStyle={styles.checkBox}
         />
         <Text style={styles.checkText}>Start spreading your wedding news</Text>
-        <TouchableOpacity onPress={()=>{navigation.navigate('Checklists')}}>
         <Icon name="right" size={24} />
-    </TouchableOpacity>
-
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

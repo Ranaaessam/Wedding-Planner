@@ -11,7 +11,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import AvailabilityCalendar from "../components/availabilityCalendar";
 
-const ReservationScreen = ({navigation}) => {
+const ReservationScreen = ({ navigation }) => {
   const [selectedCake, setSelectedCake] = useState(null); // State to track selected cake
   const [selectedCar, setSelectedCar] = useState(null); // State to track selected car
   const [selectedCaterer, setSelectedCaterer] = useState(null); // State to track selected caterer
@@ -187,7 +187,8 @@ const ReservationScreen = ({navigation}) => {
   const renderCakeItem = ({ item }) => (
     <TouchableOpacity
       style={[styles.item, selectedCake === item.id && styles.selectedItem]}
-      onPress={() => setSelectedCake(item.id)}>
+      onPress={() => setSelectedCake(item.id)}
+    >
       <Image source={item.image} style={styles.image} />
       <Text style={styles.itemName}>{item.name}</Text>
     </TouchableOpacity>
@@ -196,7 +197,8 @@ const ReservationScreen = ({navigation}) => {
   const renderCarItem = ({ item }) => (
     <TouchableOpacity
       style={[styles.item, selectedCar === item.id && styles.selectedItem]}
-      onPress={() => setSelectedCar(item.id)}>
+      onPress={() => setSelectedCar(item.id)}
+    >
       <Image source={item.image} style={styles.image} />
       <Text style={styles.itemName}>{item.name}</Text>
     </TouchableOpacity>
@@ -205,7 +207,8 @@ const ReservationScreen = ({navigation}) => {
   const renderCatererItem = ({ item }) => (
     <TouchableOpacity
       style={[styles.item, selectedCaterer === item.id && styles.selectedItem]}
-      onPress={() => setSelectedCaterer(item.id)}>
+      onPress={() => setSelectedCaterer(item.id)}
+    >
       <Image source={item.image} style={styles.image} />
       <Text style={styles.itemName}>{item.name}</Text>
       <Text style={styles.description}>{item.description}</Text>
@@ -222,7 +225,8 @@ const ReservationScreen = ({navigation}) => {
             <View style={styles.ratingContainer}>{renderStars()}</View>
           </View>
           <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}>
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
             <View style={styles.locationContainer}>
               <FontAwesome name="building" size={25} color="#FF81AE" />
               <Text style={styles.locationText}>Saray El, Gezira St</Text>
@@ -232,6 +236,17 @@ const ReservationScreen = ({navigation}) => {
               <Text style={styles.unit}>/ hour</Text>
             </View>
           </View>
+          <Image
+            source={{
+              uri: "https://i.pinimg.com/originals/65/71/d9/6571d99950851c0efd43b15b9a5efa59.jpg",
+            }}
+            style={{
+              width: "100%",
+              height: "20%",
+              marginTop: 15,
+              borderRadius: 20,
+            }}
+          ></Image>
           <Text style={styles.stepText}>Step 1: Choose your Date</Text>
           <View style={styles.calendarContainer}>
             <AvailabilityCalendar
@@ -268,13 +283,18 @@ const ReservationScreen = ({navigation}) => {
             renderItem={renderCatererItem}
             keyExtractor={(item) => item.id}
           />
-          <TouchableOpacity onPress={()=>{navigation.navigate('Cart')}}>
-          <Button
-            mode="contained"
-            style={styles.button}
-            labelStyle={{ fontSize: 16, fontWeight: "bold" }}>
-            Next $90
-          </Button>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Cart");
+            }}
+          >
+            <Button
+              mode="contained"
+              style={styles.button}
+              labelStyle={{ fontSize: 16, fontWeight: "bold" }}
+            >
+              Next $90
+            </Button>
           </TouchableOpacity>
         </View>
       )}
@@ -293,6 +313,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 10,
   },
   header: {

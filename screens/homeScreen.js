@@ -1,13 +1,12 @@
 import React from "react";
-import { FlatList, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import Venues from "../components/venues";
 import Suppliers from "../components/suppliers";
 import Header from "../components/header";
 import PlanList from "../components/planList";
-import BudgetScreen from "./budgetScreen";
 import { useTranslation } from "react-i18next";
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }) => {
   const { t } = useTranslation();
 
   return (
@@ -16,9 +15,8 @@ const HomeScreen = ({navigation}) => {
         <Header
           imageUri={
             "https://i.pinimg.com/564x/aa/10/8b/aa108b7ea07eab894954153872bf4863.jpg"
-    
           }
-          name={t("Mr & Mrs")}
+          name={"Mr & Mrs"}
           navigation={navigation}
         />
         <View style={styles.container}>

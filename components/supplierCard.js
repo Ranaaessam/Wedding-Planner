@@ -2,17 +2,17 @@ import React from "react";
 import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import { Card } from "react-native-elements";
 
-const SupplierCard = ({ name, imageUri , navigation }) => {
+const SupplierCard = ({ name, imageUri, navigation }) => {
   return (
-    <TouchableOpacity onPress={()=>{navigation.navigate('ListViewSuppliers')}}>
-    <Card containerStyle={styles.card}>
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: imageUri }} style={styles.image} />
-        <View style={styles.overlay}>
-          <Text style={styles.name}>{name}</Text>
+    <TouchableOpacity onPress={() => { navigation.navigate('ListViewSuppliers') }}>
+      <Card containerStyle={styles.card}>
+        <View style={styles.imageContainer}>
+          <Image source={{ uri: imageUri }} style={styles.image} />
+          <View style={styles.overlay}>
+            <Text style={styles.name}>{name}</Text>
+          </View>
         </View>
-      </View>
-    </Card>
+      </Card>
     </TouchableOpacity>
   );
 };
@@ -43,15 +43,9 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: "#fff",
     fontWeight: "bold",
-    textAlign: "start",
+    textAlign: "center", // Changed to center for better alignment
     padding: 5,
-    width:"100%"
-
-  },
-  heartIcon: {
-    position: "absolute",
-    bottom: 10,
-    right: 10,
+    width: "100%",
   },
 });
 
