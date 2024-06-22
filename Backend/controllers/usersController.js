@@ -23,6 +23,7 @@ const Registration = async (req, res) => {
 
 const Login = async (req, res) => {
   try {
+    console.log(req.body);
     let user = await User.findOne({ email: req.body.email }).exec();
     if (!user) {
       return res.status(400).send("Invalid email or password.");
