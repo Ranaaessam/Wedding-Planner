@@ -40,18 +40,20 @@ const ListviewSuppliers = ({ navigation ,route}) => {
       try {
         const response = await axios.get(`http://192.168.1.2:3000/suppliers/filter?type=${type}`);
 
-        console.log("Basma")
 
-        console.log(response.data);
-        // suppliers=response.data;
+        setSuppliers(response.data);
+        console.log("suppliers array")
+        // console.log(suppliers.images[0])
+        console.log(response.data.location)
+        response.data.forEach(supplier => {
+          console.log("Location:", supplier.images[0]);
+        });
 
-        setSuppliers(response.data); // Update state with fetched data
-        console.log(suppliers)
 
       } catch (error) {
         console.error("Error fetching suppliers:", error);
-        console.error("Error response:", error.response); // Log the detailed response for debugging
-        // Handle error if needed
+        console.error("Error response:", error.response); 
+
       }
     };
   
@@ -63,11 +65,11 @@ const ListviewSuppliers = ({ navigation ,route}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Choose what fits you!</Text>
       <FlatList
         data={suppliers}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => { navigation.navigate('SupplierDetails') }}>
+          // <TouchableOpacity onPress={() => { navigation.navigate('SupplierDetails') }}>
+             <TouchableOpacity onPress={() => navigation.navigate('SupplierDetails', { supplierId: item._id,imagess:item.images })}>
             <SupplierCard
               image={item.images[0]}
               name={item.name}
@@ -88,14 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f0f0f0",
   },
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginVertical: 40,
-    color: "#333",
 
-  },
   list: {
     paddingHorizontal: 20,
   },

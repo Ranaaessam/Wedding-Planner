@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -14,14 +14,23 @@ import ProgressBar from "../components/progressBar";
 
 const ProfileScreen = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [profile, setProfile] = useState({
-    email: "leomessi@gmail.com",
-    username: "Leo10",
-    name: "Leo Messi",
-    partnerUsername: "Mrs10",
-    birthDate: "June 24, 1987",
-    location: "USA",
-  });
+  const [profile, setProfile] = useState(
+    {}
+    //   {
+    //   email: "leomessi@gmail.com",
+    //   username: "Leo10",
+    //   name: "Leo Messi",
+    //   partnerUsername: "Mrs10",
+    //   birthDate: "June 24, 1987",
+    //   location: "USA",
+    // }
+  );
+  const userDetails = useSelector((state) => state.user.user);
+  useEffect(() => {
+    if (userDetails) {
+      setProfile({ name: userDetails.name, email: userDetails.email });
+    }
+  }, [userDetails]);
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
@@ -33,7 +42,9 @@ const ProfileScreen = () => {
       [key]: value,
     });
   };
-
+  if (profile.entries.length === 0) {
+    return <View>Loading Data....</View>;
+  }
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -45,20 +56,31 @@ const ProfileScreen = () => {
         />
         <ProfilePicture />
         <TouchableOpacity style={styles.editBtn} onPress={handleEditToggle}>
-          <Text style={{ paddingRight: 10, fontWeight: "500",color:"white",fontSize:18 }}>
+          <Text
+            style={{
+              paddingRight: 10,
+              fontWeight: "500",
+              color: "white",
+              fontSize: 18,
+            }}
+          >
             {isEditing ? "Save Profile" : "Edit Profile"}
           </Text>
-          <Icon name={isEditing ? "check" : "pencil"} size={18} style={{color:"white"}} />
+          <Icon
+            name={isEditing ? "check" : "pencil"}
+            size={18}
+            style={{ color: "white" }}
+          />
         </TouchableOpacity>
         <View style={styles.infoContainer}>
           <View style={styles.balanceContainer}>
-            <Text style={{fontSize:16}}>Balance</Text>
+            <Text style={{ fontSize: 16 }}>Balance</Text>
             <Text style={{ fontWeight: "500", fontSize: 18, paddingTop: 10 }}>
               $8000
             </Text>
           </View>
           <View style={styles.planContainer}>
-            <Text style={{fontSize:16}}>Plan</Text>
+            <Text style={{ fontSize: 16 }}>Plan</Text>
             <Text
               style={{
                 fontWeight: "500",
@@ -111,11 +133,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: "#FF81AE",
     padding: 8,
-    marginRight:22,
+    marginRight: 22,
     paddingHorizontal: 11,
     borderRadius: 5,
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   infoContainer: {
     flexDirection: "row",
