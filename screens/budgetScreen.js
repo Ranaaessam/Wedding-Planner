@@ -1,75 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import ProgressBar from "../components/progressBar";
 import BudgetHistoryCard from "../components/budgetHistoryCard";
 import { useTranslation } from "react-i18next";
+import {
+  fetchBudgetData,
+  calculateTotalSpent,
+} from "../StateManagement/slices/BudgetSlice";
 
 const BudgetScreen = ({ navigation }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const budgetHistory = useSelector((state) => state.budget.budgetHistory);
+  const totalBudget = useSelector((state) => state.budget.totalBudget);
+  const amountSpent = useSelector((state) => state.budget.amountSpent);
+  const budgetLeft = totalBudget - amountSpent;
 
-  const budgetHistoryData = [
-    {
-      id: "1",
-      image: "https://i.ytimg.com/vi/rBLXCpC23CM/maxresdefault.jpg",
-      type: "Venue",
-      name: "Marriott Zamalek Hotel Hall",
-      price: 2000,
-    },
-    {
-      id: "2",
-      image:
-        "https://images2.minutemediacdn.com/image/upload/c_crop,w_2500,h_1406,x_0,y_84/c_fill,w_1440,ar_16:9,f_auto,q_auto,g_auto/images/GettyImages/mmsport/90min_en_international_web/01hnwknt4jays1ea0nzr.jpg",
-      type: "Photographer",
-      name: "Martin Odegaard",
-      price: 1500,
-    },
-    {
-      id: "3",
-      image: "https://i.ytimg.com/vi/rBLXCpC23CM/maxresdefault.jpg",
-      type: "Venue",
-      name: "Marriott Zamalek Hotel Hall",
-      price: 2000,
-    },
-    {
-      id: "4",
-      image: "https://i.ytimg.com/vi/rBLXCpC23CM/maxresdefault.jpg",
-      type: "Venue",
-      name: "Marriott Zamalek Hotel Hall",
-      price: 2000,
-    },
-    {
-      id: "5",
-      image: "https://i.ytimg.com/vi/rBLXCpC23CM/maxresdefault.jpg",
-      type: "Venue",
-      name: "Marriott Zamalek Hotel Hall",
-      price: 2000,
-    },
-    {
-      id: "6",
-      image: "https://i.ytimg.com/vi/rBLXCpC23CM/maxresdefault.jpg",
-      type: "Venue",
-      name: "Marriott Zamalek Hotel Hall",
-      price: 2000,
-    },
-    {
-      id: "7",
-      image: "https://i.ytimg.com/vi/rBLXCpC23CM/maxresdefault.jpg",
-      type: "Venue",
-      name: "Marriott Zamalek Hotel Hall",
-      price: 2000,
-    },
-  ];
+  useEffect(() => {
+    dispatch(fetchBudgetData()).then(() => {
+      dispatch(calculateTotalSpent());
+    });
+  }, [dispatch]);
 
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 20, textAlign: "left" }}>
         {t("Left to spend")}
       </Text>
-      <Text style={styles.budget}>$8000</Text>
-      <ProgressBar progress={20} height={25} />
+      <Text style={styles.budget}>${budgetLeft}</Text>
+      <ProgressBar progress={(amountSpent / totalBudget) * 100} height={25} />
       <View style={styles.progressRow}>
         <Text style={styles.progressBudget}>$0</Text>
-        <Text style={styles.progressBudget}>$10000</Text>
+        <Text style={styles.progressBudget}>${totalBudget}</Text>
       </View>
       <View
         style={{ flexDirection: "row", paddingTop: 20, alignItems: "center" }}
@@ -84,7 +47,7 @@ const BudgetScreen = ({ navigation }) => {
           }}
         ></View>
         <Text style={{ textAlign: "left" }}>{t("Amount spent till now:")}</Text>
-        <Text style={styles.budgetSpent}>$2000</Text>
+        <Text style={styles.budgetSpent}>${amountSpent}</Text>
       </View>
       <View style={{ paddingTop: 30 }}>
         <Text style={{ fontSize: 22, fontWeight: "bold", textAlign: "left" }}>
@@ -101,7 +64,7 @@ const BudgetScreen = ({ navigation }) => {
         ></View>
       </View>
       <FlatList
-        data={budgetHistoryData}
+        data={budgetHistory}
         renderItem={({ item }) => (
           <BudgetHistoryCard
             image={item.image}
