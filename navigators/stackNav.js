@@ -67,12 +67,12 @@ const StackNav = () => {
       <Stack.Screen
         name="Complaint"
         component={ComplaintForm}
-        options={{ 
-          headerShown: true, 
-          headerTitle: '', 
+        options={{
+          headerShown: true,
+          headerTitle: "",
           headerBackTitleVisible: false,
-          headerTintColor: '#FF69B4', // Light pink back arrow
-          headerStyle: { backgroundColor: '#FFDFEB' }, 
+          headerTintColor: "#FF69B4", // Light pink back arrow
+          headerStyle: { backgroundColor: "#FFDFEB" },
         }}
       />
       <Stack.Screen

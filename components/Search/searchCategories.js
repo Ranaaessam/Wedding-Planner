@@ -1,66 +1,68 @@
-// CategoryScrollView.js
 import React, { useState } from "react";
-import {
-  ScrollView,
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { ScrollView, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { useDispatch } from "react-redux";
+import { filterResultsByCategory } from "../../StateManagement/slices/SearchSlice";
 
-const categories = ["Venue", "Photographer", "Caterer", "DJ", "Makeup Artist"];
+const categories = ["Venues", "Photographer", "Caterer", "Makeup Artist"];
 
 const SearchCategories = () => {
-  const [selectedCategory, setSelectedCategory] = useState("Venue");
+  const dispatch = useDispatch();
+  const [selectedCategory, setSelectedCategory] = useState("Venues");
 
   const handleCategoryPress = (category) => {
     setSelectedCategory(category);
+    dispatch(filterResultsByCategory({ category }));
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollView}
-      >
-        {categories.map((category, index) => (
-          <TouchableOpacity
-            key={index}
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.scrollView}>
+      {categories.map((category, index) => (
+        <TouchableOpacity
+          key={index}
+          style={[
+            styles.categoryButton,
+            selectedCategory === category && styles.selectedCategoryButton,
+          ]}
+          onPress={() => handleCategoryPress(category)}>
+          <Text
             style={[
-              styles.categoryButton,
-              selectedCategory === category && styles.selectedCategoryButton,
-            ]}
-            onPress={() => handleCategoryPress(category)}
-          >
-            <Text style={styles.categoryText}>{category}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-    </View>
+              styles.categoryText,
+              selectedCategory === category && styles.selectedCategoryText,
+            ]}>
+            {category}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 20,
-  },
-
-  categoryButton: {
+  scrollView: {
+    minHeight: 50,
+    maxHeight: 60,
     paddingVertical: 10,
+  },
+  categoryButton: {
     paddingHorizontal: 20,
+    paddingVertical: 10,
     borderRadius: 10,
     backgroundColor: "#e0e0e0",
     marginHorizontal: 10,
   },
   selectedCategoryButton: {
     backgroundColor: "#FF81AE",
-    color: "white",
   },
   categoryText: {
     fontSize: 14,
     color: "#000",
     fontFamily: "PoppinsLight",
+  },
+  selectedCategoryText: {
+    color: "#FFF",
   },
 });
 
