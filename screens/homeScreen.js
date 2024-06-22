@@ -20,22 +20,22 @@ const HomeScreen = ({ navigation }) => {
           navigation={navigation}
         />
         <View style={styles.container}>
-          <Text style={styles.header}>{t('Explore Venues near you')}</Text>
-            {/* Venues******************** */}
+          <Text style={styles.header}>{t("Explore Venues near you")}</Text>
+          {/* Venues******************** */}
 
           <Venues navigation={navigation} />
           <View style={{ paddingTop: 20 }}>
-            <Text style={styles.header}>{t('Suppliers')}</Text>
+            <Text style={styles.header}>{t("Suppliers")}</Text>
 
             {/* Suppliers******************** */}
             <Suppliers navigation={navigation} />
           </View>
           <View style={{ paddingTop: 20 }}>
-            <Text style={styles.header}>{t('Plan')}</Text>
+            <Text style={styles.header}>{t("Plan")}</Text>
 
             {/* Planlist******************** */}
 
-            <PlanList />
+            <PlanList navigation={navigation} />
           </View>
         </View>
       </SafeAreaView>
