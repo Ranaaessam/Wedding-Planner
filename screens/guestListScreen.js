@@ -1,4 +1,5 @@
-import React from "react";
+// src/screens/GuestListScreen.js
+import React, { useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -6,111 +7,83 @@ import {
   View,
   SectionList,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
-import { Linking } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchGuests } from "../StateManagement/slices/GuestListSlice";
 
 const GuestListScreen = () => {
-  const GUESTS = [
-    {
-      id: "0",
-      title: "M",
-      data: [
-        {
-          id: "0",
-          text: "Mazen Ayman",
-        },
-        {
-          id: "1",
-          text: "Mahmoud Hamdy",
-        },
-      ],
-    },
-    {
-      id: "1",
-      title: "S",
-      data: [
-        {
-          id: "0",
-          text: "Salah Zaher",
-        },
-        {
-          id: "1",
-          text: "Shima Atef",
-        },
-      ],
-    },
-    {
-      id: "2",
-      title: "K",
-      data: [
-        {
-          id: "0",
-          text: "Khalid ElSayed",
-        },
-      ],
-    },
-    {
-      id: "3",
-      title: "R",
-      data: [
-        {
-          id: "0",
-          text: "Rana Essam",
-        },
-      ],
-    },
-  ];
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { guests, status, error } = useSelector((state) => state.guestList);
 
-  const sortedGuests = GUESTS.map((section) => {
-    return {
-      ...section,
-      data: section.data.sort((a, b) => a.text.localeCompare(b.text)),
-    };
-  }).sort((a, b) => a.title.localeCompare(b.title));
+  useEffect(() => {
+    dispatch(fetchGuests());
+  }, [dispatch]);
 
-  const totalGuests = sortedGuests.reduce(
-    (sum, section) => sum + section.data.length,
-    0
-  );
+  // Function to transform flat array of guests into sections
+  const transformGuestsToSections = (guests) => {
+    // Create an object to hold sections
+    const sections = {};
 
-  const WEDDING_ID = "123456";
-  const GROOM_NAME = "Mr";
-  const PRIDE_NAME = "Mrs";
-  const YEAR = 2024;
-  const MONTH = 7;
-  const DAY = 10;
-  const LOCATION = "Cairo";
+    // Iterate through guests to populate sections
+    guests.forEach((guest) => {
+      const firstLetter = guest.name.charAt(0).toUpperCase();
+      if (!sections[firstLetter]) {
+        sections[firstLetter] = {
+          title: firstLetter,
+          data: [],
+        };
+      }
+      sections[firstLetter].data.push(guest);
+    });
+
+    // Convert object of sections to array and sort by title
+    const sectionsArray = Object.values(sections).sort((a, b) =>
+      a.title.localeCompare(b.title)
+    );
+
+    return sectionsArray;
+  };
+
+  const sections = transformGuestsToSections(guests);
+
+  const totalGuests = guests.length;
 
   const sendWhatsAppMessage = () => {
-    const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSf1hZmd0HHoQtKmXMkmWeETvebTsvQD6CTGWkFZNGsPN18gNA/viewform?usp=pp_url&entry.872775485=${WEDDING_ID}&entry.925082651=${GROOM_NAME}&entry.586009467=${PRIDE_NAME}&entry.256452489_year=${YEAR}&entry.256452489_month=${MONTH}&entry.256452489_day=${DAY}&entry.702515115=${LOCATION}`;
-    const message = `Please fill out this form to join the guest list: ${formUrl}`;
-    const url = `whatsapp://send?text=${encodeURIComponent(message)}`;
-
-    Linking.openURL(url).catch(() =>
-      alert("Make sure WhatsApp is installed on your device")
-    );
+    // Your WhatsApp message handling
   };
+
+  if (status === "loading") {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+
+  if (status === "failed") {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <Text style={styles.errorText}>
+          {t("Error loading guests:")} {error}
+        </Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <SectionList
-        sections={sortedGuests}
-        renderSectionHeader={({ section: { title } }) => (
-          <Text style={styles.header}>{title}</Text>
+        sections={sections}
+        renderSectionHeader={({ section }) => (
+          <Text style={styles.header}>{section.title}</Text>
         )}
-        renderItem={({ item: { text } }) => (
-          <View
-            style={[
-              styles.container,
-              { flexDirection: "row", alignItems: "center", marginBottom: 5 },
-            ]}
-          >
+        renderItem={({ item }) => (
+          <View style={styles.container}>
             <FontAwesome name="user-circle-o" size={30} />
-            <Text style={styles.item}>{text}</Text>
+            <Text style={styles.item}>{item.name}</Text>
           </View>
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
       />
       <TouchableOpacity style={styles.addButton} onPress={sendWhatsAppMessage}>
         <FontAwesome name="share-alt" size={32} color="white" />
@@ -142,17 +115,15 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   container: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 5,
     padding: 10,
   },
   item: {
     fontSize: 18,
     marginLeft: 10,
     fontWeight: "bold",
-  },
-  image: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
   },
   addButton: {
     position: "absolute",
