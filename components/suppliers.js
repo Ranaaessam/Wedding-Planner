@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 const DATA = [
   { id: "1", name: "Venue", imageUri: "https://assets.cairo360.com/app/uploads/2023/05/02/119941638_1666081876889903_2897944758434622818_n-768x512.jpeg" },
-  { id: "2", name: "Photographers", imageUri: "https://media.greatbigphotographyworld.com/wp-content/uploads/2022/04/best-cameras-for-wedding-photography.jpg" },
+  { id: "2", name: "Photographer", imageUri: "https://media.greatbigphotographyworld.com/wp-content/uploads/2022/04/best-cameras-for-wedding-photography.jpg" },
   { id: "3", name: "Make-up Artist", imageUri: "https://erinmartonphoto.com/wp-content/uploads/sites/11888/2020/06/wedding-hair-and-makeup-artist-los-angeles-2-1024x683.jpg" },
   { id: "4", name: "Cakes", imageUri: "https://www.bloomsburys.ae/uploads/products/wedg_jpg_25102021084637.jpg" },
   { id: "5", name: "Escort Cars", imageUri: "https://media.karousell.com/media/photos/products/2018/05/26/wedding_car_with_escort_cars_1527337192_a089c70a.jpg" },
