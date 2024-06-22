@@ -13,7 +13,6 @@ const getAllSuppliers = async (req, res) => {
 // #endregion
 
 // #region Get Supplier By Id
-
 const getSuppliersByID = async (req, res) => {
   try {
     if (!isValidObjectId(req.params.id)) {
@@ -35,7 +34,7 @@ const filterSuppliers = async (req, res) => {
     let query = {};
 
     if (type) {
-      query.type = new RegExp(`^${type}$`, "i");
+      query.type = new RegExp(`^${type}$`, "i"); // Fix RegExp syntax here
     }
 
     if (name) {
@@ -62,7 +61,6 @@ const filterSuppliers = async (req, res) => {
     res.status(500).json({ message: "Error filtering Suppliers", error });
   }
 };
-
 // #endregion
 
 // #region Create Supplier
@@ -75,7 +73,6 @@ const createSupplier = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
 // #endregion
 
 // #region Delete Supplier
@@ -111,7 +108,6 @@ const updateSupplier = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
 // #endregion
 
 module.exports = {

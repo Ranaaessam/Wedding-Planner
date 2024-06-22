@@ -12,9 +12,9 @@ import { Button } from "react-native-paper";
 import AvailabilityCalendar from "../components/availabilityCalendar";
 
 const ReservationScreen = ({ navigation }) => {
-  const [selectedCake, setSelectedCake] = useState(null); // State to track selected cake
-  const [selectedCar, setSelectedCar] = useState(null); // State to track selected car
-  const [selectedCaterer, setSelectedCaterer] = useState(null); // State to track selected caterer
+  const [selectedCake, setSelectedCake] = useState(null); 
+  const [selectedCar, setSelectedCar] = useState(null);
+  const [selectedCaterer, setSelectedCaterer] = useState(null); 
 
   const renderStars = () => {
     const filledStars = Math.floor(3);
