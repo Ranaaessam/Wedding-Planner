@@ -1,45 +1,31 @@
-import React from "react";
-import { StyleSheet, View, Image, Dimensions } from "react-native";
-import Carousel from "react-native-reanimated-carousel";
+import React from 'react';
+import { View, FlatList, StyleSheet, Dimensions, Image } from 'react-native';
 
-const { width: screenWidth } = Dimensions.get("window");
+const { width: screenWidth } = Dimensions.get('window');
 
-const ImageCarousel = ({ images }) => {
-  const renderItem = ({ item }) => (
-    <View style={styles.slide}>
-      <Image source={{ uri: item.uri }} style={styles.image} />
-    </View>
-  );
-
+const ImageCarousel = ({ images, renderItem, sliderWidth, itemWidth }) => {
   return (
-    <View style={styles.container}>
-      <Carousel
+    <View style={styles.carouselContainer}>
+      <FlatList
         data={images}
         renderItem={renderItem}
-        width={screenWidth}
-        height={screenWidth * 0.75}
-        loop={true}
-        autoPlay={true}
-        autoPlayInterval={3000}
+        keyExtractor={( index) => index.toString()}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        snapToInterval={itemWidth}
+        // decelerationRate="fast"
+        sliderWidth={sliderWidth}
+        itemWidth={itemWidth}
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    width: screenWidth,
-    height: screenWidth * 0.75,
-  },
-  slide: {
-    width: screenWidth,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  image: {
-    width: screenWidth,
-    height: screenWidth * 0.75,
-    resizeMode: "cover",
+  carouselContainer: {
+    marginBottom: 20,
+    borderRadius: 16,
+    overflow: 'hidden',
   },
 });
 
