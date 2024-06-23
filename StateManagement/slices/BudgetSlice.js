@@ -1,12 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// Async thunk to fetch budget data
 export const fetchBudgetData = createAsyncThunk(
   "budget/fetchBudgetData",
   async () => {
     const response = await fetch("https://jsonplaceholder.typicode.com/posts");
     const data = await response.json();
-    // Here we are mocking the data structure to match your example
     return data.slice(0, 7).map((item, index) => ({
       id: item.id.toString(),
       image: "https://i.ytimg.com/vi/rBLXCpC23CM/maxresdefault.jpg",
@@ -16,6 +14,11 @@ export const fetchBudgetData = createAsyncThunk(
     }));
   }
 );
+
+export const refundItem = createAsyncThunk("budget/refundItem", async (id) => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  return id;
+});
 
 const budgetSlice = createSlice({
   name: "budget",
@@ -50,6 +53,12 @@ const budgetSlice = createSlice({
       .addCase(fetchBudgetData.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(refundItem.fulfilled, (state, action) => {
+        const id = action.payload;
+        state.budgetHistory = state.budgetHistory.filter(
+          (item) => item.id !== id
+        );
       });
   },
 });
