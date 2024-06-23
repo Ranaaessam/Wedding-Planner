@@ -19,11 +19,11 @@ export const getAllFavourites = createAsyncThunk(
 // Add a favorite
 export const addToFavorites = createAsyncThunk(
   "favourites/add",
-  async (favourite, accountId) => {
+  async ({ favouriteItem, accountId }) => {
     try {
       const response = await axios.post(
         `API_URL/favourites?accountId=${accountId}`,
-        favourite,
+        favouriteItem,
         {
           headers: { "Content-Type": "application/json" },
         }
