@@ -16,7 +16,8 @@ import { useFonts } from "expo-font";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserProfile } from "../StateManagement/slices/ProfileSlice";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import storage from "../Storage/storage";
 
 const LoginScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -47,11 +48,14 @@ const LoginScreen = () => {
         //send user profile,,
         const token = response.headers["x-auth-token"];
         dispatch(getUserProfile(token));
-        //store user details in async storage
-        await AsyncStorage.setItem("userToken", token);
-        await AsyncStorage.setItem("userDetails", JSON.stringify(values));
-        // const obj = await AsyncStorage.getItem("userDetails");
-        // console.log(obj);
+        storage.save({
+          key: "userToken",
+          data: token,
+        });
+        storage.save({
+          key: "userDetails",
+          data: values,
+        });
 
         //navigate to home
         navigation.navigate("Home");

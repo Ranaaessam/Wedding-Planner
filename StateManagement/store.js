@@ -7,7 +7,6 @@ import budgetReducer from "./slices/BudgetSlice";
 import guestListReducer from "./slices/GuestListSlice";
 import signUpReducer from "./slices/SignUpSlice";
 import userProfileReducer from "./slices/ProfileSlice";
-import favouriteReducer from "./slices/FavouritesSlice";
 export const store = configureStore({
   reducer: {
     admin: adminReducer,
@@ -18,7 +17,6 @@ export const store = configureStore({
     guestList: guestListReducer,
     signUp: signUpReducer,
     user: userProfileReducer,
-    favourites: favouriteReducer,
   },
 });
 

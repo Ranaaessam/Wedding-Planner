@@ -10,16 +10,36 @@ import {
   ScrollView,
 } from "react-native";
 import { Provider as PaperProvider, Button, Card } from "react-native-paper";
+import { useDispatch } from "react-redux";
+import { addReview } from "../StateManagement/slices/ReviewSlice";
+import storage from "../Storage/storage";
 
 const ReviewApp = () => {
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
+  const dispatch = useDispatch();
 
   const submitReview = () => {
-    Alert.alert(
-      "Review Submitted",
-      `Rating: ${rating} stars\nComment: ${comment}`
-    );
+    //get token from storage
+    const userToken = storage.load({ key: "userToken" });
+    console.log(userToken);
+    if (comment.length > 0 && rating > 0) {
+      const reviewBody = {
+        review: comment,
+        rate: rating,
+        //lsa mt3mlt4----------------------------
+        to: "",
+        //------------------------------------
+        from: userToken,
+      };
+      dispatch(addReview(reviewBody));
+      Alert.alert(
+        "Review Submitted",
+        `Rating: ${rating} stars\nComment: ${comment}`
+      );
+      setComment("");
+      setRating(0);
+    }
   };
 
   const renderStars = () => {
