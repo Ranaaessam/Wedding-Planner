@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, FlatList, View, Text, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  FlatList,
+  View,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import SupplierCard from "../components/supplierListCard";
 import { useRoute } from "@react-navigation/native";
-import axios from "axios"; 
+import axios from "axios";
+import API_URL from "../constants";
 
 // const suppliers = [
 //   {
@@ -31,37 +38,32 @@ import axios from "axios";
 //   },
 // ];
 
-const ListviewSuppliers = ({ navigation ,route}) => {
+const ListviewSuppliers = ({ navigation, route }) => {
   const { type } = route.params;
-  const [suppliers, setSuppliers] = useState([]); 
-   console.log(type);
-   useEffect(() => {
+  const [suppliers, setSuppliers] = useState([]);
+  console.log(type);
+  useEffect(() => {
     const fetchSuppliers = async () => {
       try {
-        const response = await axios.get(`http://192.168.1.2:3000/suppliers/filter?type=${type}`);
-
+        const response = await axios.get(
+          `${API_URL}/suppliers/filter?type=${type}`
+        );
 
         setSuppliers(response.data);
-        console.log("suppliers array")
+        console.log("suppliers array");
         // console.log(suppliers.images[0])
-        console.log(response.data.location)
-        response.data.forEach(supplier => {
+        console.log(response.data.location);
+        response.data.forEach((supplier) => {
           console.log("Location:", supplier.images[0]);
         });
-
-
       } catch (error) {
         console.error("Error fetching suppliers:", error);
-        console.error("Error response:", error.response); 
-
+        console.error("Error response:", error.response);
       }
     };
-  
+
     fetchSuppliers();
   }, [type]);
-
-
-
 
   return (
     <View style={styles.container}>
@@ -69,7 +71,13 @@ const ListviewSuppliers = ({ navigation ,route}) => {
         data={suppliers}
         renderItem={({ item }) => (
           // <TouchableOpacity onPress={() => { navigation.navigate('SupplierDetails') }}>
-             <TouchableOpacity onPress={() => navigation.navigate('SupplierDetails', { supplierId: item._id,imagess:item.images })}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("SupplierDetails", {
+                supplierId: item._id,
+                imagess: item.images,
+              })
+            }>
             <SupplierCard
               image={item.images[0]}
               name={item.name}
