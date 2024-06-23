@@ -52,6 +52,9 @@ const SignUp = ({ navigation }) => {
     // repeatPassword: Yup.string()
     //   .oneOf([Yup.ref("password")], "Passwords must match")
     //   .required("Repeat password is required"),
+    budget: Yup.number()
+      .min(15000, "Budget must be greater than 15000 Egyptian pounds")
+      .required("Budget is required"),
   });
 
   // const handleSignUp = () => {
@@ -91,6 +94,7 @@ const SignUp = ({ navigation }) => {
             email: "",
             password: "",
             repeatPassword: "",
+            budget: "",
           }}
           validationSchema={signUpValidationSchema}
           onSubmit={handleSignUp}
@@ -107,7 +111,7 @@ const SignUp = ({ navigation }) => {
               <View style={styles.inputContainer}>
                 <TextInput
                   style={styles.inputs}
-                  placeholder="User name"
+                  placeholder="Groom Name"
                   onChangeText={handleChange("name")}
                   onBlur={handleBlur("name")}
                   value={values.name}
@@ -125,7 +129,7 @@ const SignUp = ({ navigation }) => {
               <View style={styles.inputContainer}>
                 <TextInput
                   style={styles.inputs}
-                  placeholder="Bride name"
+                  placeholder="Bride Name"
                   onChangeText={handleChange("brideName")}
                   onBlur={handleBlur("brideName")}
                   value={values.brideName}
@@ -139,6 +143,24 @@ const SignUp = ({ navigation }) => {
               </View>
               {errors.brideName && touched.brideName && (
                 <Text style={styles.errorText}>{errors.brideName}</Text>
+              )}
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.inputs}
+                  placeholder="Budget"
+                  onChangeText={handleChange("budget")}
+                  onBlur={handleBlur("budget")}
+                  value={values.budget}
+                />
+                <Image
+                  style={styles.inputIcon}
+                  source={{
+                    uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOr5Th6pmAfvtKw1J-uoGGvarY3G4hNFIlTw&usqp=CAU",
+                  }}
+                />
+              </View>
+              {errors.budget && touched.budget && (
+                <Text style={styles.errorText}>{errors.budget}</Text>
               )}
 
               <View style={styles.inputContainer}>
@@ -184,7 +206,7 @@ const SignUp = ({ navigation }) => {
               <View style={styles.inputContainer}>
                 <TextInput
                   style={styles.inputs}
-                  placeholder="Repeat Password"
+                  placeholder="Confirm Password"
                   secureTextEntry={passwordVisibility}
                   onChangeText={handleChange("repeatPassword")}
                   onBlur={handleBlur("repeatPassword")}
