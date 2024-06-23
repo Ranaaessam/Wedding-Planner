@@ -25,6 +25,8 @@ const createOrder = async (req, res) => {
     const supplier = await Supplier.findById(supplierID);
     supplier.occupiedDays?.push(date);
     await supplier.save();
+    client.orders?.push(newOrder._id);
+    await client.save();
     res.status(201).json({ message: "Order created successfully" });
   } catch (error) {
     res
@@ -36,7 +38,17 @@ const createOrder = async (req, res) => {
 const deleteOrder = async (req, res) => {
   try {
     const { orderID } = req.body;
+    const order = Orders.findById(orderID);
+    const supplier = Supplier.findById(order.to);
+    const client = Supplier.findById(order.from);
+    supplier.occupiedDays = supplier.occupiedDays.filter(
+      (date) => date !== order.weddingDate
+    );
+    await supplier.save();
+    client.orders = client.orders.filter((order) => order !== orderID);
+    await client.save();
     await Orders.findByIdAndDelete(orderID);
+
     res.status(200).json({ message: "Order deleted successfully" });
   } catch (error) {
     res

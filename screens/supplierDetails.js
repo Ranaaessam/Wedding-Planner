@@ -122,7 +122,9 @@ const SupplierDetails = ({ navigation, route }) => {
     if (isFavorite) {
       dispatch(removeFromFavorites(supplier.id));
     } else {
-      dispatch(addToFavorites(supplier));
+      dispatch(
+        addToFavorites({ favouriteItem: supplier, accountId: "yourAccountId" })
+      );
       setModalVisible(true);
       setTimeout(() => setModalVisible(false), 1500);
     }
