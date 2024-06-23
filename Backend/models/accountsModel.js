@@ -9,7 +9,7 @@ const accountSchema = new mongoose.Schema({
   user2Id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
-    required: true,
+    default:null
   },
   weddingdate: {
     type: Date
