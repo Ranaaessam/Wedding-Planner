@@ -14,11 +14,15 @@ import Icon from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserProfile } from "../StateManagement/slices/ProfileSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigation = useNavigation();
-
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -35,17 +39,28 @@ const LoginScreen = () => {
   const handleLogin = async (values) => {
     try {
       const response = await axios.post(
-        "http://192.168.1.7:3000/users/Login",
+        "http://192.168.1.5:3000/users/Login",
         values
       );
-      console.log(response);
+
       if (response.status == 200) {
-        console.log("Login Successful", "You have been logged in successfully");
+        //send user profile,,
+        const token = response.headers["x-auth-token"];
+        dispatch(getUserProfile(token));
+        //store user details in async storage
+        await AsyncStorage.setItem("userToken", token);
+        await AsyncStorage.setItem("userDetails", JSON.stringify(values));
+        // const obj = await AsyncStorage.getItem("userDetails");
+        // console.log(obj);
+
+        //navigate to home
         navigation.navigate("Home");
       } else {
         console.log("Login Failed", response.data.message);
         Alert.alert("invalid email or password");
       }
+      //send user
+      // dispatch(getUserProfile(values.email));
     } catch (error) {
       console.log("Error", "An error occurred during login");
       console.log(error);
@@ -61,7 +76,8 @@ const LoginScreen = () => {
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={validationSchema}
-        onSubmit={(values) => handleLogin(values)}>
+        onSubmit={(values) => handleLogin(values)}
+      >
         {({
           handleChange,
           handleBlur,
@@ -94,7 +110,8 @@ const LoginScreen = () => {
               />
               <TouchableOpacity
                 style={styles.eyeIcon}
-                onPress={togglePasswordVisibility}>
+                onPress={togglePasswordVisibility}
+              >
                 <Icon
                   name={passwordVisible ? "eye-off" : "eye"}
                   size={20}
@@ -111,7 +128,8 @@ const LoginScreen = () => {
 
             <TouchableOpacity
               style={styles.signUpLink}
-              onPress={() => navigation.navigate("SignUp")}>
+              onPress={() => navigation.navigate("SignUp")}
+            >
               <Text style={styles.signUpText}>
                 Not a user? Click here to sign up
               </Text>

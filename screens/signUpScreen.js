@@ -13,8 +13,13 @@ import {
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import {
+  registerUser,
+  salahZaher,
+} from "../StateManagement/slices/SignUpSlice";
 
-const SignUp = ({navigation}) => {
+const SignUp = ({ navigation }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [passwordShape, setPasswordShape] = useState(
     "https://tse1.mm.bing.net/th?id=OIP.PQmBVQC52i6lgjwMc1UyrAHaHa&pid=Api&P=0&h=220"
@@ -36,25 +41,38 @@ const SignUp = ({navigation}) => {
     email: Yup.string()
       .email("Please enter valid email")
       .required("Email is required"),
-    password: Yup.string()
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
-        "Password must contain at least one uppercase letter, one lowercase letter, and one number"
-      )
-      .min(6, "Password must be at least 6 characters")
+    // password: Yup.string()
+    //   .matches(
+    //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
+    //     "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+    //   )
+    //   .min(6, "Password must be at least 6 characters")
 
-      .required("Password is required"),
-    repeatPassword: Yup.string()
-      .oneOf([Yup.ref("password")], "Passwords must match")
-      .required("Repeat password is required"),
+    //   .required("Password is required"),
+    // repeatPassword: Yup.string()
+    //   .oneOf([Yup.ref("password")], "Passwords must match")
+    //   .required("Repeat password is required"),
   });
 
   // const handleSignUp = () => {
   //   navigation.navigate('Login')
   //   console.log("test");
   //   Alert.alert("test")
-    
+
   // };
+  //handle sign up
+  // const { signUp } = useSelector((state) => state.userDetails);
+  const dispatch = useDispatch();
+  const handleSignUp = (values) => {
+    const userInfo = {
+      name: values.name,
+      brideName: values.brideName,
+      email: values.email,
+      password: values.password,
+    };
+    dispatch(registerUser(userInfo));
+    navigation.navigate("Login");
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -75,7 +93,7 @@ const SignUp = ({navigation}) => {
             repeatPassword: "",
           }}
           validationSchema={signUpValidationSchema}
-          onSubmit={()=>{navigation.navigate('Login')}}
+          onSubmit={handleSignUp}
         >
           {({
             handleChange,
@@ -195,14 +213,14 @@ const SignUp = ({navigation}) => {
 
               <TouchableOpacity
                 style={[styles.buttonContainer, styles.loginButton]}
-                onPress={()=>{navigation.navigate('Login')}}
+                onPress={handleSubmit}
               >
                 <Text style={styles.loginText}>Sign Up</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.buttonContainer}
-                onPress={() => navigation.navigate('Login')}
+                onPress={() => navigation.navigate("Login")}
               >
                 <Text style={styles.btnText}>Have an account?</Text>
               </TouchableOpacity>

@@ -45,6 +45,10 @@ const supplierSchema = new Schema({
       image: String,
     },
   ],
+  occupiedDays: {
+    type: [Date],
+    default: [],
+  },
 });
 
 const Supplier = mongoose.model("Suppliers", supplierSchema);

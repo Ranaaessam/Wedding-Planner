@@ -1,5 +1,4 @@
 const User = require("../models/userModel");
-const Account = require("../models/accountsModel");
 const jwt = require("jsonwebtoken");
 
 const Registration = async (req, res) => {
@@ -9,10 +8,7 @@ const Registration = async (req, res) => {
     if (user) return res.status(400).send("user already has an account!");
     // create new user
     user = new User(req.body);
-    newAccount= new Account();
-    newAccount.user1Id = user._id;
     await user.save();
-    await newAccount.save();
     const token = jwt.sign({ userID: user._id }, "WeddingPlannerSecretKey");
     res.header("x-auth-token", token);
     res.status(200).send("ok");
