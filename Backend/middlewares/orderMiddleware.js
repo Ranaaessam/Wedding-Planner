@@ -15,7 +15,6 @@ const getUserData = async (req, res, next) => {
 
     const decoded = jwt.verify(token, "WeddingPlannerSecretKey");
     const client = await Users.findById(decoded.userID);
-
     if (!client) {
       return res.status(400).json({ message: "Invalid account ID!" });
     }
