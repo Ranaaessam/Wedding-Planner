@@ -62,11 +62,18 @@ export const removeFromFavorites = createAsyncThunk(
 const favouritesSlice = createSlice({
   name: "favourites",
   initialState: {
-    favourites: [""],
+    favourites: [],
+    filteredFavourites: [],
     status: "idle",
     error: null,
   },
-  reducers: {},
+  reducers: {
+    filterFavouritesByType: (state, action) => {
+      state.filteredFavourites = state.favourites.filter(
+        (favourite) => favourite.type === action.payload
+      );
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Handle pending, fulfilled, and rejected states for all thunks
@@ -76,6 +83,7 @@ const favouritesSlice = createSlice({
       .addCase(getAllFavourites.fulfilled, (state, action) => {
         state.status = "idle";
         state.favourites = action.payload;
+        state.filteredFavourites = action.payload; // Update filteredFavourites as well
       })
       .addCase(getAllFavourites.rejected, (state, action) => {
         state.status = "failed";
@@ -88,6 +96,7 @@ const favouritesSlice = createSlice({
       .addCase(addToFavorites.fulfilled, (state, action) => {
         state.status = "idle";
         state.favourites.push(action.payload);
+        state.filteredFavourites.push(action.payload); // Update filteredFavourites as well
       })
       .addCase(addToFavorites.rejected, (state, action) => {
         state.status = "failed";
@@ -101,6 +110,9 @@ const favouritesSlice = createSlice({
         state.favourites = state.favourites.filter(
           (fav) => fav.id !== action.payload
         );
+        state.filteredFavourites = state.filteredFavourites.filter(
+          (fav) => fav.id !== action.payload
+        ); // Update filteredFavourites as well
       })
       .addCase(removeFromFavorites.rejected, (state, action) => {
         state.status = "failed";
@@ -108,5 +120,7 @@ const favouritesSlice = createSlice({
       });
   },
 });
+
+export const { filterFavouritesByType } = favouritesSlice.actions;
 
 export default favouritesSlice.reducer;

@@ -11,6 +11,7 @@ import {
 import ProfilePicture from "../components/profilePicture";
 import Icon from "react-native-vector-icons/FontAwesome6";
 import ProgressBar from "../components/progressBar";
+import { useSelector } from "react-redux";
 
 const ProfileScreen = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -62,8 +63,7 @@ const ProfileScreen = () => {
               fontWeight: "500",
               color: "white",
               fontSize: 18,
-            }}
-          >
+            }}>
             {isEditing ? "Save Profile" : "Edit Profile"}
           </Text>
           <Icon
@@ -87,8 +87,7 @@ const ProfileScreen = () => {
                 fontSize: 18,
                 paddingTop: 5,
                 paddingBottom: 5,
-              }}
-            >
+              }}>
               20%
             </Text>
             <ProgressBar progress={20} height={5} />

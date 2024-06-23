@@ -28,6 +28,7 @@ import HomeScreen from "../screens/homeScreen";
 import ReviewScreen from "../screens/reviewScreen";
 import BottomNav from "./bottomNav";
 import VenueCard from "../components/venueCard";
+import WalletScreen from "../screens/Wallet";
 
 const Stack = createStackNavigator();
 
@@ -86,6 +87,11 @@ const StackNav = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="Wallet"
+        component={WalletScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="Settings"
         component={Settings}
         options={{
@@ -106,24 +112,20 @@ const StackNav = () => {
       <Stack.Screen
         name="FavouriteCategoryScreen"
         component={FavouriteCategoryScreen}
-        options={{ headerShown: false }}
-      ></Stack.Screen>
+        options={{ headerShown: false }}></Stack.Screen>
       <Stack.Screen
         name="ListViewSuppliers"
         component={ListviewSuppliers}
-        options={{ headerShown: false }}
-      ></Stack.Screen>
+        options={{ headerShown: false }}></Stack.Screen>
       <Stack.Screen
         name="SupplierDetails"
         component={SupplierDetails}
-        options={{ headerShown: false }}
-      ></Stack.Screen>
+        options={{ headerShown: false }}></Stack.Screen>
 
       <Stack.Screen
         name="Search"
         component={SearchScreen}
-        options={{ headerShown: false }}
-      ></Stack.Screen>
+        options={{ headerShown: false }}></Stack.Screen>
       <Stack.Screen
         name="Plan"
         component={PlanScreen}
@@ -162,13 +164,11 @@ const StackNav = () => {
       <Stack.Screen
         name="SearchResults"
         component={SearchResultsScreen}
-        options={{ headerTitle: "" }}
-      ></Stack.Screen>
+        options={{ headerTitle: "" }}></Stack.Screen>
       <Stack.Screen
         name="Review"
         component={ReviewScreen}
-        options={{ headerTitle: "" }}
-      ></Stack.Screen>
+        options={{ headerTitle: "" }}></Stack.Screen>
     </Stack.Navigator>
   );
 };
