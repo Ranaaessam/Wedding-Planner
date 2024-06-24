@@ -11,7 +11,7 @@ import {
 import { Card } from "react-native-elements";
 import Icon from "react-native-vector-icons/AntDesign";
 
-const VenueCard = ({ name, imageUri, navigation }) => {
+const VenueCard = ({ name, imageUri, navigation,venueObj }) => {
   const [isLoved, setIsLoved] = useState(false);
 
   const toggleLove = () => {
@@ -19,7 +19,7 @@ const VenueCard = ({ name, imageUri, navigation }) => {
   };
 
   return (
-    <TouchableOpacity  onPress={()=> navigation.navigate('Reservation')} >
+    <TouchableOpacity  onPress={()=> navigation.navigate('Reservation',venueObj)} >
     <Card containerStyle={styles.card}>
       <View style={styles.imageContainer}>
         <Image source={{ uri: imageUri }} style={styles.image} />

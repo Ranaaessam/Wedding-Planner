@@ -77,12 +77,14 @@ const ListviewSuppliers = ({ navigation, route }) => {
                 supplierId: item._id,
                 imagess: item.images,
               })
-            }>
+            }
+          >
             <SupplierCard
               image={item.images[0]}
               name={item.name}
               location={item.location}
               rate={item.rate}
+              navigation={navigation}
             />
           </TouchableOpacity>
         )}

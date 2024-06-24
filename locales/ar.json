@@ -74,5 +74,15 @@
   "Once you complete all the tasks, you'll be ready for your wedding day.": "بمجرد إكمال جميع المهام ، ستكون جاهزًا ليوم زفافك",
   "Refund": "استرداد",
   "Are you sure you want to refund this item?": "هل أنت متأكد أنك تريد استرداد هذا المنتج؟",
-  "Cancel": "إلغاء"
+  "Cancel": "إلغاء",
+    "Your Checklist": "قائمتك",
+    "Add New Task": "إضافة مهمة جديدة",
+    "Task Title": "عنوان المهمة",
+    "Task Description": "وصف المهمة",
+    "Add": "إضافة",
+    "No tasks added yet.": "لم تتم إضافة أي مهام حتى الآن.",
+    "Tasks": "المهام",
+    "Task Reminder": "تذكير بالمهمة",
+    "You have a pending task:": "لديك مهمة معلقة:"
+  
 }

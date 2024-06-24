@@ -8,20 +8,21 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
+  Modal,
 } from "react-native";
-import { Provider as PaperProvider, Button, Card } from "react-native-paper";
+import { Button, Card } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import { addReview } from "../StateManagement/slices/ReviewSlice";
 import storage from "../Storage/storage";
 
-const ReviewApp = () => {
+const ReviewScreen = ({ visible, onClose }) => {
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
   const dispatch = useDispatch();
 
-  const submitReview = () => {
-    //get token from storage
-    const userToken = storage.load({ key: "userToken" });
+  const submitReview = async () => {
+    // get token from storage
+    const userToken = await storage.load({ key: "userToken" });
     console.log(userToken);
     if (comment.length > 0 && rating > 0) {
       const reviewBody = {
@@ -39,6 +40,7 @@ const ReviewApp = () => {
       );
       setComment("");
       setRating(0);
+      onClose();
     }
   };
 
@@ -48,7 +50,10 @@ const ReviewApp = () => {
       stars.push(
         <TouchableOpacity key={i} onPress={() => setRating(i)}>
           <Text
-            style={[styles.star, { color: i <= rating ? "#FFD700" : "#ccc" }]}
+            style={[
+              styles.star,
+              { color: i <= rating ? "#FF81AE" : "#e0e0df" },
+            ]}
           >
             ★
           </Text>
@@ -59,9 +64,9 @@ const ReviewApp = () => {
   };
 
   return (
-    <PaperProvider>
+    <Modal visible={visible} animationType="slide" transparent={true}>
       <SafeAreaView style={styles.container}>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
+        <View style={styles.modalContent}>
           <Card style={styles.card}>
             <Card.Title title="Rate Wedding Planner" />
             <Card.Content>
@@ -74,7 +79,6 @@ const ReviewApp = () => {
                 value={comment}
               />
               <View style={styles.starsContainer}>{renderStars()}</View>
-
               <Button
                 mode="contained"
                 style={styles.submitButton}
@@ -82,27 +86,34 @@ const ReviewApp = () => {
               >
                 Submit Review
               </Button>
+              <Button mode="text" onPress={onClose}>
+                Cancel
+              </Button>
             </Card.Content>
           </Card>
-        </ScrollView>
+        </View>
       </SafeAreaView>
-    </PaperProvider>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
-  },
-  contentContainer: {
-    flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: "transparent",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "90%",
   },
   card: {
-    width: "90%", // Adjust width as needed
-    padding: 10,
+    width: "100%",
   },
   starsContainer: {
     flexDirection: "row",
@@ -123,9 +134,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   submitButton: {
-    backgroundColor: "#00b5ec",
+    backgroundColor: "#FF81AE",
     padding: 10,
   },
 });
 
-export default ReviewApp;
+export default ReviewScreen;

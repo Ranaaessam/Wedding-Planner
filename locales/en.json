@@ -54,6 +54,8 @@
   "Jewelry": "Jewelry",
   "Attire": "Attire",
   "Caterers": "Caterers",
+  "bookNow": "Book Now",
+  "addToFavorites": "Add to Favorites",
   "Entertainment": "Entertainment",
   "Decoration": "Decoration",
   "Vendor ID": "Vendor ID",
@@ -71,5 +73,16 @@
   "Amount spent till now:": "Amount spent till now: ",
   "Photographer": "Photographer",
   "History": "History",
-  "contactUs": "Contact us"
+  "contactUs": "Contact us",
+    "Your Checklist": "Your Checklist",
+    "Add New Task": "Add New Task",
+    "Task Title": "Task Title",
+    "Task Description": "Task Description",
+    "Cancel": "Cancel",
+    "Add": "Add",
+    "No tasks added yet.": "No tasks added yet.",
+    "Tasks": "Tasks",
+    "Task Reminder": "Task Reminder",
+    "You have a pending task:": "You have a pending task:"
+  
 }
