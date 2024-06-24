@@ -2,10 +2,14 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import { filterFavouritesByType } from "../../StateManagement/slices/FavouritesSlice";
+import { useDispatch } from "react-redux";
 
 const FavouriteCategory = ({ category }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigation();
   const onArrowPress = () => {
+    dispatch(filterFavouritesByType({ category }));
     navigate.navigate("FavouriteCategoryScreen", {
       categoryName: category,
       favouritesList: [

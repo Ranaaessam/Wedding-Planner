@@ -28,12 +28,13 @@ import HomeScreen from "../screens/homeScreen";
 import ReviewScreen from "../screens/reviewScreen";
 import BottomNav from "./bottomNav";
 import VenueCard from "../components/venueCard";
+import WalletScreen from "../screens/Wallet";
 
 const Stack = createStackNavigator();
 
 const StackNav = () => {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator initialRouteName="SignUp">
       <Stack.Screen
         name="Splash"
         component={SplashScreen}
@@ -83,6 +84,11 @@ const StackNav = () => {
       <Stack.Screen
         name="ContactUs"
         component={ContactUs}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Wallet"
+        component={WalletScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen

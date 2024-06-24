@@ -2,17 +2,19 @@ import React from "react";
 import { StyleSheet, FlatList, View } from "react-native";
 import FavouriteItem from "../../components/Favourites/favouriteItem";
 import { useRoute } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
 const FavouriteCategoryScreen = () => {
-  const route = useRoute();
-  const { favouritesList = [] } = route.params;
+  const filteredFavourites = useSelector(
+    (state) => state.favourites.filteredFavourites
+  );
 
   const renderItem = ({ item }) => <FavouriteItem item={item} />;
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={favouritesList}
+        data={filteredFavourites}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={styles.listContent}

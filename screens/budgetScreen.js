@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import {
   fetchBudgetData,
   calculateTotalSpent,
+  refundItem,
 } from "../StateManagement/slices/BudgetSlice";
 
 const BudgetScreen = ({ navigation }) => {
@@ -22,6 +23,12 @@ const BudgetScreen = ({ navigation }) => {
       dispatch(calculateTotalSpent());
     });
   }, [dispatch]);
+
+  const handleRefund = (id) => {
+    dispatch(refundItem(id)).then(() => {
+      dispatch(calculateTotalSpent());
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -67,11 +74,13 @@ const BudgetScreen = ({ navigation }) => {
         data={budgetHistory}
         renderItem={({ item }) => (
           <BudgetHistoryCard
+            id={item.id}
             image={item.image}
             type={item.type}
             name={item.name}
             price={item.price}
             navigation={navigation}
+            onDelete={handleRefund}
           />
         )}
         keyExtractor={(item) => item.id}

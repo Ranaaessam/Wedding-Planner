@@ -82,7 +82,6 @@ const SupplierDetails = ({ navigation, route }) => {
     },
     // ... other reviews
   ];
-
   const { supplierId } = route.params;
   const [supplier, setSupplier] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -199,7 +198,7 @@ const SupplierDetails = ({ navigation, route }) => {
             <Text>Visit Website</Text>
             <View style={{ flexDirection: "row", marginLeft: 140 }}>
               <TouchableOpacity style={styles.iconButton}>
-                <FontAwesome name="globe" size={24} color="#2196f3" />
+                <FontAwesome name="pinterest" size={24} color="#2196f3" />
               </TouchableOpacity>
               <TouchableOpacity style={styles.iconButton}>
                 <FontAwesome name="facebook-square" size={24} color="#3b5998" />
@@ -222,7 +221,7 @@ const SupplierDetails = ({ navigation, route }) => {
       <Modal
         visible={modalVisible}
         transparent={true}
-        animationType="fade"
+        animationType="slide"
         onRequestClose={() => setModalVisible(false)}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
