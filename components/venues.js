@@ -9,9 +9,7 @@ const Venues = ({navigation}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // axios.get(${API_URL}/suppliers/${supplierId});
-        const response = await fetch(`${API_URL} /suppliers/filter?type=venue`);
-       // console.log(response);
+        const response = await fetch(`${API_URL}/suppliers/filter?type=venue`);
         if (!response.ok) {
           throw new Error("Network response was not ok.");
         }

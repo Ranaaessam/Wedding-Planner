@@ -12,14 +12,15 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import AvailabilityCalendar from "../components/availabilityCalendar";
 import axios from "axios";
+import API_URL from "../constants";
 
-const ReservationScreen = ({ navigation, route }) => {
-  const venueObj = route.params;
-  const accountID = "66773bae194fe37a728f3716";
-
-  const [selectedCake, setSelectedCake] = useState(null);
-  const [selectedCar, setSelectedCar] = useState(null);
-  const [selectedCaterer, setSelectedCaterer] = useState(null);
+const ReservationScreen = ({ navigation ,route}) => {
+   const venueObj=route.params;
+   accountID="66773bae194fe37a728f3716";
+ // console.log(venueObj);
+  const [selectedCake, setSelectedCake] = useState([]); 
+  const [selectedCar, setSelectedCar] = useState([]);
+  const [selectedCaterer, setSelectedCaterer] = useState([]); 
 
   const renderStars = () => {
     const filledStars = Math.floor(3);
@@ -71,7 +72,7 @@ const ReservationScreen = ({ navigation, route }) => {
         },
       },
     },
-    "2024-06-23": {
+    "2024-06-25": {
       customStyles: {
         container: {
           backgroundColor: "red",
@@ -82,7 +83,29 @@ const ReservationScreen = ({ navigation, route }) => {
         },
       },
     },
-    "2024-06-24": {
+    "2024-06-26": {
+      customStyles: {
+        container: {
+          backgroundColor: "green",
+          borderRadius: 15,
+        },
+        text: {
+          color: "white",
+        },
+      },
+    },
+    "2024-06-27": {
+      customStyles: {
+        container: {
+          backgroundColor: "green",
+          borderRadius: 15,
+        },
+        text: {
+          color: "white",
+        },
+      },
+    },
+    "2024-06-28": {
       customStyles: {
         container: {
           backgroundColor: "green",
@@ -97,33 +120,59 @@ const ReservationScreen = ({ navigation, route }) => {
 
   const handleTimeSelect = (day, time) => {
     console.log(`Selected time on ${day}: ${time}`);
-    // Implement logic if needed for handling selected time
   };
 
-  const cartNavigate = async () => {
+  const cakes = venueObj.cakes;
+
+  const cars = venueObj.cars;
+
+
+   const caterers = venueObj.caterer;
+
+  const renderCakeItem = ({ item }) => (
+    <TouchableOpacity
+      style={[styles.item, selectedCake === item.name && styles.selectedItem]}
+      onPress={() => setSelectedCake(item)}
+    >
+      <Image source={{ uri: item.image }} style={styles.image} />
+      <Text style={styles.itemName}>{item.name}</Text>
+    </TouchableOpacity>
+  );
+
+  const renderCarItem = ({ item }) => (
+    <TouchableOpacity
+      style={[styles.item, selectedCar === item.id && styles.selectedItem]}
+      onPress={() => setSelectedCar(item)}
+    >
+      <Image source={{ uri: item.image }} style={styles.image} />
+      <Text style={styles.itemName}>{item.name}</Text>
+    </TouchableOpacity>
+  );
+
+  const renderCatererItem = ({ item }) => (
+    <TouchableOpacity
+      style={[styles.item, selectedCaterer === item.id && styles.selectedItem]}
+      onPress={() => setSelectedCaterer(item)}
+    >
+        <Image source={{ uri: item.image }} style={styles.image} />
+      <Text style={styles.itemName}>{item.name}</Text>
+      <Text style={styles.description}>{item.description}</Text>
+    </TouchableOpacity>
+  );
+
+  const cartNavigate = async ()=>{
+   // console.log("K");
     try {
-      const data = {
-        accountID: accountID,
-        venue: venueObj,
-        selectedCake: selectedCake,
-        selectedCar: selectedCar,
-        selectedCaterer: selectedCaterer,
-      };
-
-      const response = await axios.post(
-        "http://192.168.1.2:3000/account/Cart",
-        data
+      const response = await axios.post(`${API_URL}/account/Cart?accountId=${accountID}`,
+          venueObj
       );
-
-      // Assuming response.data contains cart details or confirmation
-      console.log("Cart response:", response.data);
-
-      // Navigate to the Cart screen after successful submission
-      navigation.navigate("Cart");
+     // setCartItems(response.data.cart);
+     //console.log(response.data);
+     navigation.navigate('Cart');
     } catch (error) {
-      console.error("Error navigating to cart:", error);
+      console.error("Error fetching supplier details:", error);
     }
-  };
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -154,6 +203,7 @@ const ReservationScreen = ({ navigation, route }) => {
         <Text style={styles.stepText}>Step 1: Choose your Date</Text>
         <View style={styles.calendarContainer}>
           <AvailabilityCalendar
+            // availability={venueObject.availability}
             availability={availability}
             onTimeSelect={handleTimeSelect}
           />
@@ -253,7 +303,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   header: {
-    fontSize: 22,
+    fontSize: 32,
     fontWeight: "bold",
   },
   ratingContainer: {
