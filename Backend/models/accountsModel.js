@@ -14,6 +14,11 @@ const accountSchema = new mongoose.Schema({
   weddingdate: {
     type: Date,
   },
+  budget: {
+    type: Number,
+    default: 0,
+  },
+  
   favourites: {
     type: [Object],
     default: [],
