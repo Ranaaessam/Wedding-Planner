@@ -15,22 +15,35 @@ import {
 import ProfilePicture from "../components/profilePicture";
 import Icon from "react-native-vector-icons/FontAwesome6";
 import ProgressBar from "../components/progressBar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserProfile } from "../StateManagement/slices/ProfileSlice";
+import storage from "../Storage/storage";
 
 const ProfileScreen = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [profile, setProfile] = useState({
-    email: "leomessi@gmail.com",
-    username: "Leo10",
-    name: "Leo Messi",
-    partnerUsername: "Mrs10",
-    birthDate: "June 24, 1987",
-    location: "USA",
-  });
+  const dispatch = useDispatch();
+  const [profile, setProfile] = useState(null);
+
   const userDetails = useSelector((state) => state.user.user);
+  //to get user profile throw this screen we don't need it , it's for testing ,,,
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const userId = await storage.load({ key: "userId" });
+      dispatch(getUserProfile(userId));
+    };
+    fetchUserProfile();
+  }, [dispatch]);
+  //-----------------------------------------
   useEffect(() => {
     if (userDetails) {
-      setProfile({ name: userDetails.name, email: userDetails.email });
+      setProfile({
+        image: userDetails.image,
+        budget: userDetails.budget,
+        favourites: userDetails.favourites,
+        location: userDetails.location,
+        weddingdate: userDetails.weddingdate,
+        orders: userDetails.orders,
+      });
     }
   }, [userDetails]);
 
@@ -44,11 +57,18 @@ const ProfileScreen = () => {
       [key]: value,
     });
   };
-
+  if (profile === null) {
+    return (
+      <View>
+        <Text>Loading....</Text>
+      </View>
+    );
+  }
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}>
+      style={styles.container}
+    >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView keyboardShouldPersistTaps="handled">
           <View style={styles.container}>
@@ -66,7 +86,8 @@ const ProfileScreen = () => {
                   fontWeight: "500",
                   color: "white",
                   fontSize: 18,
-                }}>
+                }}
+              >
                 {isEditing ? "Save Profile" : "Edit Profile"}
               </Text>
               <Icon
@@ -79,7 +100,8 @@ const ProfileScreen = () => {
               <View style={styles.balanceContainer}>
                 <Text style={{ fontSize: 16 }}>Balance</Text>
                 <Text
-                  style={{ fontWeight: "500", fontSize: 18, paddingTop: 10 }}>
+                  style={{ fontWeight: "500", fontSize: 18, paddingTop: 10 }}
+                >
                   $8000
                 </Text>
               </View>
@@ -91,7 +113,8 @@ const ProfileScreen = () => {
                     fontSize: 18,
                     paddingTop: 5,
                     paddingBottom: 5,
-                  }}>
+                  }}
+                >
                   20%
                 </Text>
                 <ProgressBar progress={20} height={5} />

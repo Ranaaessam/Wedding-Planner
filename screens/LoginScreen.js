@@ -46,11 +46,11 @@ const LoginScreen = () => {
 
       if (response.status == 200) {
         //send user profile,,
-        const token = response.headers["x-auth-token"];
-        dispatch(getUserProfile(token));
+        const userId = "66773957627fa3d2658f55e5";
+        dispatch(getUserProfile(userId));
         storage.save({
-          key: "userToken",
-          data: token,
+          key: "userId",
+          data: userId,
         });
         storage.save({
           key: "userDetails",
@@ -58,7 +58,8 @@ const LoginScreen = () => {
         });
 
         //navigate to home
-        navigation.navigate("Home");
+        // navigation.navigate("Home");
+        navigation.navigate("Profile");
       } else {
         console.log("Login Failed", response.data.message);
         Alert.alert("invalid email or password");
