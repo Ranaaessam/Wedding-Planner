@@ -4,8 +4,10 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { filterFavouritesByType } from "../../StateManagement/slices/FavouritesSlice";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const FavouriteCategory = ({ category }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigation();
   const onArrowPress = () => {
@@ -47,12 +49,12 @@ const FavouriteCategory = ({ category }) => {
     });
   };
   return (
-    <View style={styles.categoryItem}>
-      <Text style={styles.categoryText}>{category}</Text>
-      <TouchableOpacity onPress={onArrowPress}>
+    <TouchableOpacity onPress={onArrowPress}>
+      <View style={styles.categoryItem}>
+        <Text style={styles.categoryText}>{t(category)}</Text>
         <Icon name="arrow-forward" size={20} color="#000" />
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -73,6 +75,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: "Poppins",
     fontSize: 18,
+    textAlign: "left",
   },
 });
 

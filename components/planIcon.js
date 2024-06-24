@@ -1,8 +1,10 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
 import Icon from "react-native-vector-icons/Octicons";
 
 const PlanIcon = ({ iconName, name, navigation }) => {
+  const { t } = useTranslation();
   const handlePress = () => {
     if (name === "Budget") {
       navigation.navigate("Budget");
@@ -28,7 +30,7 @@ const PlanIcon = ({ iconName, name, navigation }) => {
       <View style={styles.circle}>
         <Icon name={iconName} size={25} color="#000" />
       </View>
-      <Text style={styles.text}>{name}</Text>
+      <Text style={styles.text}>{t(name)}</Text>
     </TouchableOpacity>
   );
 };

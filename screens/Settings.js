@@ -28,11 +28,31 @@ const SettingsScreen = ({ navigation }) => {
     setSelectedLanguage(language);
     i18n.changeLanguage(language);
     setDropdownVisible(false);
-    Alert.alert(t("languageChanged"));
+    Alert.alert(
+      t("languageChanged"),
+      "",
+      [
+        {
+          text: t("OK"), // Custom text for the OK button
+          onPress: () => console.log("OK Pressed"),
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   const handleLoggedOut = () => {
-    Alert.alert("Logged out successfully!");
+    Alert.alert(
+      t("Logged out successfully!"),
+      "",
+      [
+        {
+          text: t("OK"), // Custom text for the OK button
+          onPress: () => console.log("OK Pressed"),
+        },
+      ],
+      { cancelable: false }
+    );
     navigation.navigate("Home");
   };
 
@@ -125,19 +145,22 @@ const SettingsScreen = ({ navigation }) => {
         visible={isDropdownVisible}
         transparent={true}
         animationType="slide"
-        onRequestClose={() => setDropdownVisible(false)}>
+        onRequestClose={() => setDropdownVisible(false)}
+      >
         <TouchableWithoutFeedback onPress={() => setDropdownVisible(false)}>
           <View style={styles.modalOverlay} />
         </TouchableWithoutFeedback>
         <View style={styles.dropdown}>
           <TouchableOpacity
             style={styles.dropdownItem}
-            onPress={() => selectLanguage("en")}>
+            onPress={() => selectLanguage("en")}
+          >
             <Text style={styles.dropdownItemText}>▫ {t("english")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.dropdownItem}
-            onPress={() => selectLanguage("ar")}>
+            onPress={() => selectLanguage("ar")}
+          >
             <Text style={styles.dropdownItemText}>▫ {t("arabic")}</Text>
           </TouchableOpacity>
         </View>
@@ -186,6 +209,7 @@ const styles = StyleSheet.create({
     marginLeft: 24,
     color: "#4C134E",
     flex: 1,
+    textAlign: "left",
   },
   balanceText: {
     fontSize: 18,

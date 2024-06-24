@@ -2,6 +2,7 @@ import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import PlanIcon from "./planIcon";
 import { ScrollView } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 
 const planIcons = [
   { id: "1", iconName: "checklist", name: "Checklist" },
@@ -12,6 +13,7 @@ const planIcons = [
 ];
 
 const PlanList = ({ navigation }) => {
+  const { t } = useTranslation();
   return (
     <FlatList
       horizontal

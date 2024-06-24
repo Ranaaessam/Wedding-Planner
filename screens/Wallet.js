@@ -7,10 +7,12 @@ import {
   Dimensions,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 const { width: screenWidth } = Dimensions.get("window");
 
 const WalletScreen = () => {
+  const { t } = useTranslation();
   const [balance, setBalance] = useState(1234.56);
 
   const handleAddFundsPress = () => {
@@ -21,10 +23,10 @@ const WalletScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Wallet</Text>
+        <Text style={styles.headerTitle}>{t("Wallet")}</Text>
       </View>
       <View style={styles.balanceContainer}>
-        <Text style={styles.balanceLabel}>Current Balance</Text>
+        <Text style={styles.balanceLabel}>{t("Current Balance")}</Text>
         <Text style={styles.balanceValue}>${balance.toFixed(2)}</Text>
       </View>
     </View>

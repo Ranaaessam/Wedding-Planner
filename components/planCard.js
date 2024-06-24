@@ -1,28 +1,30 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
 const PlanCard = ({ icon, name, value, navigation }) => {
+  const { t } = useTranslation();
   let valueText = "";
 
   switch (name.toLowerCase()) {
     case "budget":
-      valueText = `${value}% Spent`;
+      valueText = `${value}% ${t("Spent")}`;
       break;
     case "guest list":
-      valueText = `${value} Guests`;
+      valueText = `${value} ${t("Guests")}`;
       break;
     case "favorites":
-      valueText = `${value} Saved`;
+      valueText = `${value} ${t("Saved")}`;
       break;
     case "booked":
-      valueText = `${value} Suppliers`;
+      valueText = `${value} ${t("Suppliers")}`;
       break;
     case "advice":
-      valueText = `${value} Saved`;
+      valueText = `${value} ${t("Saved")}`;
       break;
     case "scrapbook":
-      valueText = `${value} Notes`;
+      valueText = `${value} ${t("Notes")}`;
       break;
     default:
       valueText = `${value}`;
@@ -44,15 +46,29 @@ const PlanCard = ({ icon, name, value, navigation }) => {
         break;
       case "advice":
         Alert.alert(
-          "Upcoming feature",
-          "Look out for new advice tips coming in our next update!"
+          t("Upcoming feature"),
+          t("Look out for new advice tips coming in our next update!"),
+          [
+            {
+              text: t("OK"), // Custom text for the OK button
+              onPress: () => console.log("OK Pressed"),
+            },
+          ],
+          { cancelable: false }
         );
 
         break;
       case "scrapbook":
         Alert.alert(
-          "Upcoming feature",
-          "Look out for new scrapbook notes coming in our next update!"
+          t("Upcoming feature"),
+          t("Look out for new scrapbook notes coming in our next update!"),
+          [
+            {
+              text: t("OK"), // Custom text for the OK button
+              onPress: () => console.log("OK Pressed"),
+            },
+          ],
+          { cancelable: false }
         );
         break;
       default:
@@ -65,7 +81,7 @@ const PlanCard = ({ icon, name, value, navigation }) => {
       <View style={styles.planCard}>
         <Icon name={icon} size={32} />
 
-        <Text style={styles.text}>{name}</Text>
+        <Text style={styles.text}>{t(name)}</Text>
         <Text style={styles.text2}>{valueText}</Text>
       </View>
     </TouchableOpacity>

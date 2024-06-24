@@ -3,8 +3,10 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import ProgressBar from "../components/progressBar";
 import Icon from "react-native-vector-icons/AntDesign";
 import { CheckBox } from "react-native-elements";
+import { useTranslation } from "react-i18next";
 
 const PlanChecklist = ({ navigation }) => {
+  const { t } = useTranslation();
   return (
     <TouchableOpacity
       style={styles.checklist}
@@ -13,11 +15,11 @@ const PlanChecklist = ({ navigation }) => {
       <View style={styles.content}>
         <View style={styles.iconText}>
           <Icon name="checkcircleo" size={28} />
-          <Text style={styles.text}>Checklist</Text>
+          <Text style={styles.text}>{t("Checklist")}</Text>
         </View>
         <View style={styles.progressContainer}>
           <ProgressBar progress={20} />
-          <Text style={styles.progressText}>20% Completed</Text>
+          <Text style={styles.progressText}>20% {t("Completed")}</Text>
         </View>
       </View>
       <View style={styles.content}>
@@ -26,7 +28,9 @@ const PlanChecklist = ({ navigation }) => {
           onPress={() => {}}
           containerStyle={styles.checkBox}
         />
-        <Text style={styles.checkText}>Start spreading your wedding news</Text>
+        <Text style={styles.checkText}>
+          {t("Start spreading your wedding news")}
+        </Text>
         <Icon name="right" size={24} />
       </View>
     </TouchableOpacity>
@@ -81,6 +85,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     flex: 1,
     marginLeft: 0,
+    textAlign: "left",
   },
 });
 

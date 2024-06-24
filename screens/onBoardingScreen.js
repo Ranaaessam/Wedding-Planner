@@ -1,11 +1,11 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
+import { useTranslation } from "react-i18next";
+
 const Dots = ({ selected }) => {
   let backgroundColor;
-
   backgroundColor = selected ? "rgba(0, 0, 0, 0.8)" : "rgba(0, 0, 0, 0.3)";
-
   return (
     <View
       style={{
@@ -18,25 +18,36 @@ const Dots = ({ selected }) => {
   );
 };
 
-const Skip = ({ ...props }) => (
-  <TouchableOpacity style={{ marginHorizontal: 20 }} {...props}>
-    <Text style={{ fontSize: 20 }}>Skip</Text>
-  </TouchableOpacity>
-);
+const Skip = ({ ...props }) => {
+  const { t } = useTranslation();
+  return (
+    <TouchableOpacity style={{ marginHorizontal: 20 }} {...props}>
+      <Text style={{ fontSize: 20 }}>{t("Skip")}</Text>
+    </TouchableOpacity>
+  );
+};
 
-const Next = ({ ...props }) => (
-  <TouchableOpacity style={{ marginHorizontal: 18 }} {...props}>
-    <Text style={{ fontSize: 18 }}>Next</Text>
-  </TouchableOpacity>
-);
+const Next = ({ ...props }) => {
+  const { t } = useTranslation();
+  return (
+    <TouchableOpacity style={{ marginHorizontal: 18 }} {...props}>
+      <Text style={{ fontSize: 18 }}>{t("Next")}</Text>
+    </TouchableOpacity>
+  );
+};
 
-const Done = ({ ...props }) => (
-  <TouchableOpacity style={{ marginHorizontal: 20 }} {...props}>
-    <Text style={{ fontSize: 18 }}>Done</Text>
-  </TouchableOpacity>
-);
+const Done = ({ ...props }) => {
+  const { t } = useTranslation();
+  return (
+    <TouchableOpacity style={{ marginHorizontal: 20 }} {...props}>
+      <Text style={{ fontSize: 18 }}>{t("Done")}</Text>
+    </TouchableOpacity>
+  );
+};
 
 const OnboardingScreen = ({ navigation }) => {
+  const { t } = useTranslation();
+
   return (
     <Onboarding
       SkipButtonComponent={Skip}
@@ -54,9 +65,10 @@ const OnboardingScreen = ({ navigation }) => {
               style={{ width: 250, height: 250, borderRadius: 300 }}
             />
           ),
-          title: "Simplify your wedding journey with expert guidance",
-          subtitle:
-            "Ready to plan the wedding of your dreams? Our app offers everything you need to make your big day magical and stress-free!",
+          title: t("Simplify your wedding journey with expert guidance"),
+          subtitle: t(
+            "Ready to plan the wedding of your dreams? Our app offers everything you need to make your big day magical and stress-free!"
+          ),
           titleStyles: styles.title,
           subTitleStyles: styles.subtitle,
         },
@@ -68,9 +80,10 @@ const OnboardingScreen = ({ navigation }) => {
               style={{ width: 200, height: 250 }}
             />
           ),
-          title: "Turn your wedding vision into an unforgettable reality",
-          subtitle:
-            "Unlock the full potential of your wedding planning. Enjoy a journey filled with inspiration, organization, and joy.",
+          title: t("Turn your wedding vision into an unforgettable reality"),
+          subtitle: t(
+            "Unlock the full potential of your wedding planning. Enjoy a journey filled with inspiration, organization, and joy."
+          ),
           titleStyles: styles.title,
           subTitleStyles: styles.subtitle,
         },
@@ -82,9 +95,10 @@ const OnboardingScreen = ({ navigation }) => {
               style={{ width: 250, height: 250, borderRadius: 200 }}
             />
           ),
-          title: "Experience the joy of effortless wedding planning.",
-          subtitle:
-            "Your perfect wedding is just a tap away. Discover a world of inspiration, organization, and expert advice.",
+          title: t("Experience the joy of effortless wedding planning."),
+          subtitle: t(
+            "Your perfect wedding is just a tap away. Discover a world of inspiration, organization, and expert advice."
+          ),
           titleStyles: styles.title,
           subTitleStyles: styles.subtitle,
         },

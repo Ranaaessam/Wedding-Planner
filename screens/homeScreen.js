@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     padding: 5,
     fontWeight: "600",
     fontSize: 18,
+    textAlign: "left",
   },
 });
 

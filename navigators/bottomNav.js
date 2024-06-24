@@ -8,10 +8,12 @@ import Icon from "react-native-vector-icons/Ionicons";
 import SearchScreen from "../screens/Search/searchScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import StackNav from "./stackNav";
+import { useTranslation } from "react-i18next";
 
 const Tab = createBottomTabNavigator();
 
 const BottomNav = () => {
+  const { t } = useTranslation();
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -34,7 +36,7 @@ const BottomNav = () => {
               <Icon name={iconName} color={color} size={size} />
               {focused && (
                 <Text style={{ color: "#FF81AE", fontFamily: "Poppins" }}>
-                  {route.name}
+                  {t(route.name)}
                 </Text>
               )}
             </View>
@@ -50,7 +52,8 @@ const BottomNav = () => {
           paddingBottom: 5,
         },
         headerShown: false,
-      })}>
+      })}
+    >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen name="Plan" component={PlanScreen} />

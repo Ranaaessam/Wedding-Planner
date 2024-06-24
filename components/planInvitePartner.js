@@ -1,8 +1,10 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
 const PlanInvitePartner = ({ navigation }) => {
+  const { t } = useTranslation();
   const handlePress = () => {
     Alert.alert("Invite your partner");
   };
@@ -14,9 +16,9 @@ const PlanInvitePartner = ({ navigation }) => {
           <Icon name="mail" size={28} />
           <View>
             <Text style={styles.text}>
-              Invite your partner to plan together
+              {t("Invite your partner to plan together")}
             </Text>
-            <Text style={styles.textSecond}>Invite your partner</Text>
+            <Text style={styles.textSecond}>{t("Invite your partner")}</Text>
           </View>
         </View>
         <View style={styles.rightIcon}>
@@ -62,6 +64,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: "grey",
     fontWeight: "500",
+    textAlign: "left",
   },
   rightIcon: {
     alignItems: "center",

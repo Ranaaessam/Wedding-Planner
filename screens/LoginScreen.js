@@ -167,7 +167,8 @@ const styles = StyleSheet.create({
     flex: 2,
     backgroundColor: "#FFDFEB",
     alignItems: "center",
-    borderRadius: 30,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
     padding: 20,
   },
   input: {

@@ -15,17 +15,14 @@ import { useSelector } from "react-redux";
 
 const ProfileScreen = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [profile, setProfile] = useState(
-    {}
-    //   {
-    //   email: "leomessi@gmail.com",
-    //   username: "Leo10",
-    //   name: "Leo Messi",
-    //   partnerUsername: "Mrs10",
-    //   birthDate: "June 24, 1987",
-    //   location: "USA",
-    // }
-  );
+  const [profile, setProfile] = useState({
+    email: "leomessi@gmail.com",
+    username: "Leo10",
+    name: "Leo Messi",
+    partnerUsername: "Mrs10",
+    birthDate: "June 24, 1987",
+    location: "USA",
+  });
   const userDetails = useSelector((state) => state.user.user);
   useEffect(() => {
     if (userDetails) {
@@ -63,7 +60,8 @@ const ProfileScreen = () => {
               fontWeight: "500",
               color: "white",
               fontSize: 18,
-            }}>
+            }}
+          >
             {isEditing ? "Save Profile" : "Edit Profile"}
           </Text>
           <Icon
@@ -87,7 +85,8 @@ const ProfileScreen = () => {
                 fontSize: 18,
                 paddingTop: 5,
                 paddingBottom: 5,
-              }}>
+              }}
+            >
               20%
             </Text>
             <ProgressBar progress={20} height={5} />
