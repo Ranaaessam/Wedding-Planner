@@ -22,7 +22,7 @@ const SearchBar = () => {
         value={searchValue}
         onChangeText={handleSearch}
         onSubmitEditing={onPress}
-        placeholder="Search for venues or suppliers.."></TextInput>
+        placeholder="Search by name or location.."></TextInput>
       <IconButton
         icon="magnify"
         size={20}

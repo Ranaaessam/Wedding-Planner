@@ -1,13 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-export const getUserProfile = createAsyncThunk("UserProfile", async (token) => {
-  const response = await axios.get(`URl/clients/getProfile`, {
-    headers: {
-      "x-auth-token": token,
-    },
-  });
-  return response.data;
-});
+import API_URL from "../../constants";
+export const getUserProfile = createAsyncThunk(
+  "UserProfile",
+  async (userId) => {
+    const response = await axios.get(
+      `${API_URL}/account/profile?userId=${userId}`
+    );
+    return response.data;
+  }
+);
 
 const profileSlice = createSlice({
   name: "User",

@@ -5,11 +5,13 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Linking,
 } from "react-native";
 import { Icon } from "react-native-elements";
 import { Card, Button } from "react-native-paper";
 import axios from "axios";
 import API_URL from "../constants";
+import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
 
 const Cart = ({ navigation, route }) => {
@@ -20,6 +22,7 @@ const Cart = ({ navigation, route }) => {
   // console.log(route.params)
 
   const [cartItems, setCartItems] = useState([]);
+  const [totalPrice, settotalPrice] = useState(0);
 
   const deleteFromcart = async (itemID) => {
     try {
@@ -32,7 +35,84 @@ const Cart = ({ navigation, route }) => {
       console.error("Error fetching supplier details:", error);
     }
   };
+  const handleCheckOut = () => {
+    // console.log(typeof totalPrice, totalPrice);
 
+    axios
+      .post("https://accept.paymob.com/api/auth/tokens", {
+        api_key:
+          "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2T1Rjd09UUTVMQ0p1WVcxbElqb2lhVzVwZEdsaGJDSjkudzh4WjByODVaTll6WnJueE1nc1pKZnU5OEVFRWdFcGNoa3Y5QjNUZWF4VVlTdFp2ZnhyMDFBeE1MSGh0QWpaOTZpbVJJUTlYNUl4WmZjV09mZVgzV1E=",
+      })
+      .then((res) => {
+        // console.log(res.data.token);
+        const authToken = res.data.token;
+        const amountCents = Math.round(totalPrice * 100);
+
+        axios
+          .post("https://accept.paymob.com/api/ecommerce/orders", {
+            auth_token: authToken,
+            delivery_needed: "false",
+            amount_cents: amountCents,
+            currency: "EGP",
+            items: [],
+          })
+          .then((res) => {
+            // console.log(res.data);
+            const orderId = res.data.id;
+            axios
+              .post("https://accept.paymob.com/api/acceptance/payment_keys", {
+                auth_token: authToken,
+                amount_cents: amountCents,
+                expiration: 3600,
+                order_id: orderId,
+                billing_data: {
+                  apartment: "803",
+                  email: "claudette09@exa.com",
+                  floor: "42",
+                  first_name: "Clifford",
+                  street: "Ethan Land",
+                  building: "8028",
+                  phone_number: "+86(8)9135210487",
+                  shipping_method: "PKG",
+                  postal_code: "01898",
+                  city: "Jaskolskiburgh",
+                  country: "CR",
+                  last_name: "Nicolas",
+                  state: "Utah",
+                },
+                currency: "EGP",
+                integration_id: 4556039,
+              })
+              .then((res) => {
+                console.log(res.data);
+                Linking.openURL(
+                  `https://accept.paymob.com/api/acceptance/iframes/837986?payment_token=${res.data.token}`
+                );
+                // window.open(
+                //   `https://accept.paymob.com/api/acceptance/iframes/837986?payment_token=${res.data.token}`
+                // );
+                const order = {
+                  clientID: accountID,
+                  price: totalPrice,
+                  products: cartItems,
+                  // date: formatDate(new Date()),
+                  date: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
+                };
+                // axios.post("http://localhost:3001/orders", order).then();
+                // dispatch(clearCart());
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
@@ -43,6 +123,7 @@ const Cart = ({ navigation, route }) => {
       } catch (error) {
         console.error("Error hna", error);
       }
+      settotalPrice(calculateTotalPrice());
     };
     fetchCartItems();
   });
@@ -70,7 +151,7 @@ const Cart = ({ navigation, route }) => {
                 style={styles.image}
               />
               <View style={styles.detailsContainer}>
-                <Text style={styles.itemTitle}>{t(item.name)}</Text>
+                <Text style={styles.itemTitle}>{item.name}</Text>
                 <Text style={styles.description}>
                   {(item.cakes && item.cakes[0] && item.cakes[0].name) || ""}
                 </Text>
@@ -103,12 +184,12 @@ const Cart = ({ navigation, route }) => {
       <View style={styles.footer}>
         <View style={styles.totalContainer}>
           <Text style={styles.totalText}>{t("Total Package:")}</Text>
-          <Text style={styles.totalAmount}>${calculateTotalPrice()}</Text>
+          <Text style={styles.totalAmount}>${totalPrice}</Text>
         </View>
         <Button
           mode="contained"
           style={styles.paymentButton}
-          onPress={proceedToPayment}
+          onPress={handleCheckOut}
           labelStyle={{ fontSize: 16 }}
         >
           {t("Proceed to Payment")}

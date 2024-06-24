@@ -12,14 +12,15 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import AvailabilityCalendar from "../components/availabilityCalendar";
 import axios from "axios";
+import API_URL from "../constants";
 
 const ReservationScreen = ({ navigation, route }) => {
   const venueObj = route.params;
-  const accountID = "66773bae194fe37a728f3716";
-
-  const [selectedCake, setSelectedCake] = useState(null);
-  const [selectedCar, setSelectedCar] = useState(null);
-  const [selectedCaterer, setSelectedCaterer] = useState(null);
+  accountID = "66773bae194fe37a728f3716";
+  // console.log(venueObj);
+  const [selectedCake, setSelectedCake] = useState([]);
+  const [selectedCar, setSelectedCar] = useState([]);
+  const [selectedCaterer, setSelectedCaterer] = useState([]);
 
   const renderStars = () => {
     const filledStars = Math.floor(3);
@@ -71,7 +72,7 @@ const ReservationScreen = ({ navigation, route }) => {
         },
       },
     },
-    "2024-06-23": {
+    "2024-06-25": {
       customStyles: {
         container: {
           backgroundColor: "red",
@@ -82,7 +83,29 @@ const ReservationScreen = ({ navigation, route }) => {
         },
       },
     },
-    "2024-06-24": {
+    "2024-06-26": {
+      customStyles: {
+        container: {
+          backgroundColor: "green",
+          borderRadius: 15,
+        },
+        text: {
+          color: "white",
+        },
+      },
+    },
+    "2024-06-27": {
+      customStyles: {
+        container: {
+          backgroundColor: "green",
+          borderRadius: 15,
+        },
+        text: {
+          color: "white",
+        },
+      },
+    },
+    "2024-06-28": {
       customStyles: {
         container: {
           backgroundColor: "green",
@@ -97,31 +120,54 @@ const ReservationScreen = ({ navigation, route }) => {
 
   const handleTimeSelect = (day, time) => {
     console.log(`Selected time on ${day}: ${time}`);
-    // Implement logic if needed for handling selected time
   };
 
+  const cakes = venueObj.cakes;
+
+  const cars = venueObj.cars;
+
+  const caterers = venueObj.caterer;
+
+  const renderCakeItem = ({ item }) => (
+    <TouchableOpacity
+      style={[styles.item, selectedCake === item.name && styles.selectedItem]}
+      onPress={() => setSelectedCake(item)}>
+      <Image source={{ uri: item.image }} style={styles.image} />
+      <Text style={styles.itemName}>{item.name}</Text>
+    </TouchableOpacity>
+  );
+
+  const renderCarItem = ({ item }) => (
+    <TouchableOpacity
+      style={[styles.item, selectedCar === item.id && styles.selectedItem]}
+      onPress={() => setSelectedCar(item)}>
+      <Image source={{ uri: item.image }} style={styles.image} />
+      <Text style={styles.itemName}>{item.name}</Text>
+    </TouchableOpacity>
+  );
+
+  const renderCatererItem = ({ item }) => (
+    <TouchableOpacity
+      style={[styles.item, selectedCaterer === item.id && styles.selectedItem]}
+      onPress={() => setSelectedCaterer(item)}>
+      <Image source={{ uri: item.image }} style={styles.image} />
+      <Text style={styles.itemName}>{item.name}</Text>
+      <Text style={styles.description}>{item.description}</Text>
+    </TouchableOpacity>
+  );
+
   const cartNavigate = async () => {
+    // console.log("K");
     try {
-      const data = {
-        accountID: accountID,
-        venue: venueObj,
-        selectedCake: selectedCake,
-        selectedCar: selectedCar,
-        selectedCaterer: selectedCaterer,
-      };
-
       const response = await axios.post(
-        "http://192.168.1.2:3000/account/Cart",
-        data
+        `${API_URL}/account/Cart?accountId=${accountID}`,
+        venueObj
       );
-
-      // Assuming response.data contains cart details or confirmation
-      console.log("Cart response:", response.data);
-
-      // Navigate to the Cart screen after successful submission
+      // setCartItems(response.data.cart);
+      //console.log(response.data);
       navigation.navigate("Cart");
     } catch (error) {
-      console.error("Error navigating to cart:", error);
+      console.error("Error fetching supplier details:", error);
     }
   };
 
@@ -154,6 +200,7 @@ const ReservationScreen = ({ navigation, route }) => {
         <Text style={styles.stepText}>Step 1: Choose your Date</Text>
         <View style={styles.calendarContainer}>
           <AvailabilityCalendar
+            // availability={venueObject.availability}
             availability={availability}
             onTimeSelect={handleTimeSelect}
           />
@@ -162,17 +209,15 @@ const ReservationScreen = ({ navigation, route }) => {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.listContainer}
-        >
-          {venueObj.cakes.map((cake, index) => (
+          contentContainerStyle={styles.listContainer}>
+          {venueObj.cakes?.map((cake, index) => (
             <TouchableOpacity
               key={index}
               style={[
                 styles.item,
                 selectedCake === cake.name && styles.selectedItem,
               ]}
-              onPress={() => setSelectedCake(cake.name)}
-            >
+              onPress={() => setSelectedCake(cake.name)}>
               <Image source={{ uri: cake.image }} style={styles.image} />
               <Text style={styles.itemName}>{cake.name}</Text>
             </TouchableOpacity>
@@ -183,17 +228,15 @@ const ReservationScreen = ({ navigation, route }) => {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.listContainer}
-        >
-          {venueObj.cars.map((car, index) => (
+          contentContainerStyle={styles.listContainer}>
+          {venueObj.cars?.map((car, index) => (
             <TouchableOpacity
               key={index}
               style={[
                 styles.item,
                 selectedCar === car.name && styles.selectedItem,
               ]}
-              onPress={() => setSelectedCar(car.name)}
-            >
+              onPress={() => setSelectedCar(car.name)}>
               <Image source={{ uri: car.image }} style={styles.image} />
               <Text style={styles.itemName}>{car.name}</Text>
             </TouchableOpacity>
@@ -204,17 +247,15 @@ const ReservationScreen = ({ navigation, route }) => {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.listContainer}
-        >
-          {venueObj.caterer.map((caterer, index) => (
+          contentContainerStyle={styles.listContainer}>
+          {venueObj.caterer?.map((caterer, index) => (
             <TouchableOpacity
               key={index}
               style={[
                 styles.item,
                 selectedCaterer === caterer.name && styles.selectedItem,
               ]}
-              onPress={() => setSelectedCaterer(caterer.name)}
-            >
+              onPress={() => setSelectedCaterer(caterer.name)}>
               <Image source={{ uri: caterer.image }} style={styles.image} />
               <Text style={styles.itemName}>{caterer.name}</Text>
               <Text style={styles.description}>{caterer.description}</Text>
@@ -226,8 +267,7 @@ const ReservationScreen = ({ navigation, route }) => {
           <Button
             mode="contained"
             style={styles.button}
-            labelStyle={{ fontSize: 16, fontWeight: "bold" }}
-          >
+            labelStyle={{ fontSize: 16, fontWeight: "bold" }}>
             Next $90
           </Button>
         </TouchableOpacity>
@@ -253,7 +293,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   header: {
-    fontSize: 22,
+    fontSize: 32,
     fontWeight: "bold",
   },
   ratingContainer: {
@@ -341,6 +381,5 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
 });
-
 
 export default ReservationScreen;

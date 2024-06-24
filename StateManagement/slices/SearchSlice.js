@@ -5,7 +5,7 @@ export const searchAll = createAsyncThunk(
   "search/searchAll",
   async (searchQuery, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/search?q=${searchQuery}`);
+      const response = await axios.get(`/suppliers/filter?name=${searchQuery}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

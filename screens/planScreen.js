@@ -5,15 +5,17 @@ import PlanChecklist from "../components/planChecklist";
 import PlanInvitePartner from "../components/planInvitePartner";
 import PlanCard from "../components/planCard";
 import PlanCards from "../components/planCards";
+import { useTranslation } from "react-i18next";
 
 const PlanScreen = ({navigation}) => {
+  const {t} = useTranslation()
   return (
     <View style={styles.container}>
       <PlanCoverImage
         image={
           "https://img.freepik.com/premium-vector/avatar-wedding-couple_24911-14448.jpg"
         }
-        name={"Mr & Mrs"}
+        name={t("Mr & Mrs")}
       />
       <PlanChecklist navigation={navigation} />
       <PlanInvitePartner navigation={navigation} />

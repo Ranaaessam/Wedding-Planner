@@ -72,6 +72,7 @@ const SignUp = ({ navigation }) => {
       brideName: values.brideName,
       email: values.email,
       password: values.password,
+      budget: values.budget,
     };
     dispatch(registerUser(userInfo));
     navigation.navigate("Login");

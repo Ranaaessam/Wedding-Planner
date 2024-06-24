@@ -8,6 +8,7 @@ import guestListReducer from "./slices/GuestListSlice";
 import signUpReducer from "./slices/SignUpSlice";
 import userProfileReducer from "./slices/ProfileSlice";
 import favouritesReducer from "./slices/FavouritesSlice";
+import homeReducer from "./slices/HomeSlice";
 export const store = configureStore({
   reducer: {
     admin: adminReducer,
@@ -19,6 +20,7 @@ export const store = configureStore({
     signUp: signUpReducer,
     user: userProfileReducer,
     favourites: favouritesReducer,
+    home: homeReducer,
   },
 });
 

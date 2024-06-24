@@ -29,6 +29,9 @@ const WalletScreen = () => {
         <Text style={styles.balanceLabel}>{t("Current Balance")}</Text>
         <Text style={styles.balanceValue}>${balance.toFixed(2)}</Text>
       </View>
+      <TouchableOpacity style={styles.addButton} onPress={handleAddFundsPress}>
+        <Text style={styles.addButtonText}>{t("addFunds")}</Text>
+      </TouchableOpacity>
     </View>
   );
 };
