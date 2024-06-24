@@ -5,16 +5,21 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
+  ScrollView,
   Image,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import AvailabilityCalendar from "../components/availabilityCalendar";
+import axios from "axios";
 
-const ReservationScreen = ({ navigation }) => {
-  const [selectedCake, setSelectedCake] = useState(null); 
+const ReservationScreen = ({ navigation, route }) => {
+  const venueObj = route.params;
+  const accountID = "66773bae194fe37a728f3716";
+
+  const [selectedCake, setSelectedCake] = useState(null);
   const [selectedCar, setSelectedCar] = useState(null);
-  const [selectedCaterer, setSelectedCaterer] = useState(null); 
+  const [selectedCaterer, setSelectedCaterer] = useState(null);
 
   const renderStars = () => {
     const filledStars = Math.floor(3);
@@ -88,227 +93,158 @@ const ReservationScreen = ({ navigation }) => {
         },
       },
     },
-    // Add more availability data here
   };
 
   const handleTimeSelect = (day, time) => {
     console.log(`Selected time on ${day}: ${time}`);
+    // Implement logic if needed for handling selected time
   };
 
-  const cakes = [
-    {
-      id: "1",
-      image: {
-        uri: "https://scientificallysweet.com/wp-content/uploads/2020/09/IMG_4087-feature-2.jpg",
-      },
-      name: "Chocolate Cake",
-    },
-    {
-      id: "2",
-      image: {
-        uri: "https://thescranline.com/wp-content/uploads/2021/03/Vanilla-Cake.jpg",
-      },
-      name: "Vanilla Cake",
-    },
-    {
-      id: "3",
-      image: {
-        uri: "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2004/1/23/1/ss1d26_red_velvet_cake.jpg.rend.hgtvcom.1280.960.suffix/1371584132020.jpeg",
-      },
-      name: "Red Velvet Cake",
-    },
-    {
-      id: "4",
-      image: {
-        uri: "https://theloopywhisk.com/wp-content/uploads/2021/05/White-Chocolate-Cheesecake_730px-featured.jpg",
-      },
-      name: "Cheesecake",
-    },
-  ];
+  const cartNavigate = async () => {
+    try {
+      const data = {
+        accountID: accountID,
+        venue: venueObj,
+        selectedCake: selectedCake,
+        selectedCar: selectedCar,
+        selectedCaterer: selectedCaterer,
+      };
 
-  const cars = [
-    {
-      id: "1",
-      image: {
-        uri: "https://www.usnews.com/cmsmedia/98/f5/a877088e411ea7c093f1d2622cdb/2023-honda-cr-v-hybrid-1.jpg",
-      },
-      name: "SUV",
-    },
-    {
-      id: "2",
-      image: {
-        uri: "https://www.usnews.com/cmsmedia/12/be/5c7f3dfb4a12ab0795a9ba8144b5/2023-acura-integra-a-spec-2.jpg",
-      },
-      name: "Sedan",
-    },
-    {
-      id: "3",
-      image: {
-        uri: "https://www.cnet.com/a/img/resize/91a72b98f2e2fa37a1e87041fd5a01cdb9c8e5aa/hub/2020/06/11/851281c9-bcfd-45c0-bded-cb16e4b8b469/2021-porsche-911-turbo-s-cabriolet-009.jpg?auto=webp&width=1920",
-      },
-      name: "Convertible",
-    },
-    {
-      id: "4",
-      image: {
-        uri: "https://carsguide-res.cloudinary.com/image/upload/f_auto,fl_lossy,q_auto,t_default/v1/editorial/2017-Volkswagen-Golf-110TSI-Highline-R-Line-hatchback-yellow-press-image-why-a-hatchback-is-the-smartest-car-you-can-buy-1200x800p.jpg",
-      },
-      name: "Hatchback",
-    },
-  ];
+      const response = await axios.post(
+        "http://192.168.1.2:3000/account/Cart",
+        data
+      );
 
-  const caterers = [
-    {
-      id: "1",
-      image: {
-        uri: "https://joyfoodsunshine.com/wp-content/uploads/2022/06/chicken-kebabs-recipe-1.jpg",
-      },
-      name: "Caterer A",
-      description: "Exquisite dishes tailored to your wedding theme.",
-    },
-    {
-      id: "2",
-      image: {
-        uri: "https://i.pinimg.com/236x/db/00/d7/db00d7767863913492c207c27378d943.jpg",
-      },
-      name: "Caterer B",
-      description: "Specializes in gourmet cuisine with a twist.",
-    },
-    {
-      id: "3",
-      image: {
-        uri: "https://cdn.pixabay.com/photo/2017/05/07/08/56/pancakes-2291908_960_720.jpg",
-      },
-      name: "Caterer C",
-      description: "Offers a wide range of international flavors.",
-    },
-  ];
+      // Assuming response.data contains cart details or confirmation
+      console.log("Cart response:", response.data);
 
-  const renderCakeItem = ({ item }) => (
-    <TouchableOpacity
-      style={[styles.item, selectedCake === item.id && styles.selectedItem]}
-      onPress={() => setSelectedCake(item.id)}
-    >
-      <Image source={item.image} style={styles.image} />
-      <Text style={styles.itemName}>{item.name}</Text>
-    </TouchableOpacity>
-  );
-
-  const renderCarItem = ({ item }) => (
-    <TouchableOpacity
-      style={[styles.item, selectedCar === item.id && styles.selectedItem]}
-      onPress={() => setSelectedCar(item.id)}
-    >
-      <Image source={item.image} style={styles.image} />
-      <Text style={styles.itemName}>{item.name}</Text>
-    </TouchableOpacity>
-  );
-
-  const renderCatererItem = ({ item }) => (
-    <TouchableOpacity
-      style={[styles.item, selectedCaterer === item.id && styles.selectedItem]}
-      onPress={() => setSelectedCaterer(item.id)}
-    >
-      <Image source={item.image} style={styles.image} />
-      <Text style={styles.itemName}>{item.name}</Text>
-      <Text style={styles.description}>{item.description}</Text>
-    </TouchableOpacity>
-  );
+      // Navigate to the Cart screen after successful submission
+      navigation.navigate("Cart");
+    } catch (error) {
+      console.error("Error navigating to cart:", error);
+    }
+  };
 
   return (
-    <FlatList
-      data={[{ key: "content" }]}
-      renderItem={({ item }) => (
-        <View style={styles.container}>
-          <View style={styles.headerContainer}>
-            <Text style={styles.header}>Marriott Zamalek</Text>
-            <View style={styles.ratingContainer}>{renderStars()}</View>
-          </View>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
-            <View style={styles.locationContainer}>
-              <FontAwesome name="building" size={25} color="#FF81AE" />
-              <Text style={styles.locationText}>Saray El, Gezira St</Text>
-            </View>
-            <View style={styles.priceContainer}>
-              <Text style={styles.price}>$45</Text>
-              <Text style={styles.unit}>/ hour</Text>
-            </View>
-          </View>
-          <Image
-            source={{
-              uri: "https://i.pinimg.com/originals/65/71/d9/6571d99950851c0efd43b15b9a5efa59.jpg",
-            }}
-            style={{
-              width: "100%",
-              height: "20%",
-              marginTop: 15,
-              borderRadius: 20,
-            }}
-          ></Image>
-          <Text style={styles.stepText}>Step 1: Choose your Date</Text>
-          <View style={styles.calendarContainer}>
-            <AvailabilityCalendar
-              availability={availability}
-              onTimeSelect={handleTimeSelect}
-            />
-          </View>
-          <Text style={styles.stepText}>
-            Step 2: Choose your Favourite Cake
-          </Text>
-          <FlatList
-            data={cakes}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.listContainer}
-            renderItem={renderCakeItem}
-            keyExtractor={(item) => item.id}
-          />
-          <Text style={styles.stepText}>Step 3: Choose your Wedding Car</Text>
-          <FlatList
-            data={cars}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.listContainer}
-            renderItem={renderCarItem}
-            keyExtractor={(item) => item.id}
-          />
-          <Text style={styles.stepText}>Step 4: Choose your Caterer</Text>
-          <FlatList
-            data={caterers}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.listContainer}
-            renderItem={renderCatererItem}
-            keyExtractor={(item) => item.id}
-          />
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Cart");
-            }}
-          >
-            <Button
-              mode="contained"
-              style={styles.button}
-              labelStyle={{ fontSize: 16, fontWeight: "bold" }}
-            >
-              Next $90
-            </Button>
-          </TouchableOpacity>
+    <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.header}>{venueObj.name}</Text>
+          <View style={styles.ratingContainer}>{renderStars()}</View>
         </View>
-      )}
-      keyExtractor={(item) => item.key}
-    />
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <View style={styles.locationContainer}>
+            <FontAwesome name="building" size={25} color="#FF81AE" />
+            <Text style={styles.locationText}>{venueObj.location}</Text>
+          </View>
+          <View style={styles.priceContainer}>
+            <Text style={styles.price}>{venueObj.price}$</Text>
+            <Text style={styles.unit}>/ hour</Text>
+          </View>
+        </View>
+        <Image
+          source={{ uri: venueObj.images[0] }}
+          style={{
+            width: "100%",
+            height: 190,
+            marginTop: 15,
+            borderRadius: 20,
+          }}
+        />
+        <Text style={styles.stepText}>Step 1: Choose your Date</Text>
+        <View style={styles.calendarContainer}>
+          <AvailabilityCalendar
+            availability={availability}
+            onTimeSelect={handleTimeSelect}
+          />
+        </View>
+        <Text style={styles.stepText}>Step 2: Choose your Favourite Cake</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.listContainer}
+        >
+          {venueObj.cakes.map((cake, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.item,
+                selectedCake === cake.name && styles.selectedItem,
+              ]}
+              onPress={() => setSelectedCake(cake.name)}
+            >
+              <Image source={{ uri: cake.image }} style={styles.image} />
+              <Text style={styles.itemName}>{cake.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        <Text style={styles.stepText}>Step 3: Choose your Wedding Car</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.listContainer}
+        >
+          {venueObj.cars.map((car, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.item,
+                selectedCar === car.name && styles.selectedItem,
+              ]}
+              onPress={() => setSelectedCar(car.name)}
+            >
+              <Image source={{ uri: car.image }} style={styles.image} />
+              <Text style={styles.itemName}>{car.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        <Text style={styles.stepText}>Step 4: Choose your Caterer</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.listContainer}
+        >
+          {venueObj.caterer.map((caterer, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.item,
+                selectedCaterer === caterer.name && styles.selectedItem,
+              ]}
+              onPress={() => setSelectedCaterer(caterer.name)}
+            >
+              <Image source={{ uri: caterer.image }} style={styles.image} />
+              <Text style={styles.itemName}>{caterer.name}</Text>
+              <Text style={styles.description}>{caterer.description}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        <TouchableOpacity onPress={cartNavigate}>
+          <Button
+            mode="contained"
+            style={styles.button}
+            labelStyle={{ fontSize: 16, fontWeight: "bold" }}
+          >
+            Next $90
+          </Button>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollViewContainer: {
+    flexGrow: 1,
+    backgroundColor: "#ffffff",
+  },
   container: {
     flex: 1,
     padding: 20,
     paddingTop: 60,
-    backgroundColor: "#ffffff",
   },
   headerContainer: {
     flexDirection: "row",
@@ -353,6 +289,7 @@ const styles = StyleSheet.create({
   listContainer: {
     marginTop: 10,
     marginBottom: 20,
+    minHeight: 80,
   },
   item: {
     marginRight: 15,
@@ -376,7 +313,6 @@ const styles = StyleSheet.create({
     color: "#333333",
   },
   calendarContainer: {
-    flex: 1,
     borderWidth: 1,
     borderColor: "#e0e0df",
     borderRadius: 10,
@@ -405,5 +341,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
 });
+
 
 export default ReservationScreen;
