@@ -9,7 +9,7 @@ export const getVenuesNearLocation = createAsyncThunk(
       const locationResponse = await axios.get(
         `${API_URL}/account/profile?userId=66773957627fa3d2658f55e5`
       );
-      const location = locationResponse.data[0].location;
+      const location = locationResponse.data.location;
       const response = await axios.get(
         `${API_URL}/suppliers/filter?type=Venue&location=${location}`
       );
