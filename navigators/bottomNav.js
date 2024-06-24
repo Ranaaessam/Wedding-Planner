@@ -46,8 +46,8 @@ const BottomNav = () => {
         tabBarStyle: {
           backgroundColor: "#FFDFEB",
           borderTopWidth: 0,
-          height: 50,
-          paddingBottom: 5,
+          height: 70,
+          paddingBottom: 15,
         },
         headerShown: false,
       })}>
