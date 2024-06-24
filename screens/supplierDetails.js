@@ -11,6 +11,7 @@ import {
   Modal,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import ImageCarousel from "../components/imageCarousel";
 import axios from "axios";
 import ReviewCard from "../components/reviewCard";
@@ -21,6 +22,7 @@ import {
   removeFromFavorites,
 } from "../StateManagement/slices/FavouritesSlice";
 import { addToCart } from "../StateManagement/slices/CartSlice";
+import ReviewScreen from "./reviewScreen";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -88,6 +90,7 @@ const SupplierDetails = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [bookingModalVisible, setBookingModalVisible] = useState(false);
+  const [reviewModalVisible, setReviewModalVisible] = useState(false);
 
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favourites.favourites);
@@ -174,7 +177,8 @@ const SupplierDetails = ({ navigation, route }) => {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[styles.button, styles.bookButton]}
-              onPress={handleBookPress}>
+              onPress={handleBookPress}
+            >
               <Text style={styles.buttonText}>Book Now</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -184,12 +188,14 @@ const SupplierDetails = ({ navigation, route }) => {
                   ? styles.removeFavoriteButton
                   : styles.favoriteButton,
               ]}
-              onPress={handleFavoritePress}>
+              onPress={handleFavoritePress}
+            >
               <Text
                 style={[
                   styles.buttonText,
                   isFavorite ? { color: "white" } : { color: "black" },
-                ]}>
+                ]}
+              >
                 {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
               </Text>
             </TouchableOpacity>
@@ -208,6 +214,25 @@ const SupplierDetails = ({ navigation, route }) => {
               </TouchableOpacity>
             </View>
           </View>
+          <View
+            style={[
+              styles.socialIconsContainer,
+              {
+                justifyContent: "space-between",
+                marginTop: 20,
+              },
+            ]}
+          >
+            <Text>Reviews</Text>
+            <View style={{ flexDirection: "row", marginLeft: 140 }}>
+              <TouchableOpacity
+                style={styles.iconButton}
+                onPress={() => setReviewModalVisible(true)}
+              >
+                <MaterialIcons name="rate-review" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
+          </View>
           <FlatList
             data={reviews}
             renderItem={renderReviewCard}
@@ -222,7 +247,8 @@ const SupplierDetails = ({ navigation, route }) => {
         visible={modalVisible}
         transparent={true}
         animationType="slide"
-        onRequestClose={() => setModalVisible(false)}>
+        onRequestClose={() => setModalVisible(false)}
+      >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>Added to favorites</Text>
@@ -233,13 +259,18 @@ const SupplierDetails = ({ navigation, route }) => {
         visible={bookingModalVisible}
         transparent={true}
         animationType="fade"
-        onRequestClose={() => setBookingModalVisible(false)}>
+        onRequestClose={() => setBookingModalVisible(false)}
+      >
         <View style={styles.modalContainer}>
           <View style={styles.bookingModalContent}>
             <Text style={styles.bookingModalText}>{modalMessage}</Text>
           </View>
         </View>
       </Modal>
+      <ReviewScreen
+        visible={reviewModalVisible}
+        onClose={() => setReviewModalVisible(false)}
+      />
     </ScrollView>
   );
 };
@@ -336,7 +367,7 @@ const styles = StyleSheet.create({
   },
   reviews: {
     flexGrow: 1,
-    paddingVertical: 20,
+    paddingVertical: 10,
     backgroundColor: "#f0f0f0",
   },
   modalContainer: {
