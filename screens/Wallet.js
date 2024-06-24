@@ -6,11 +6,12 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import { useTranslation } from 'react-i18next';
 
 const { width: screenWidth } = Dimensions.get("window");
 
 const WalletScreen = () => {
+  const { t } = useTranslation();
   const [balance, setBalance] = useState(1234.56);
 
   const handleAddFundsPress = () => {
@@ -21,12 +22,15 @@ const WalletScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Wallet</Text>
+        <Text style={styles.headerTitle}>{t('wallet')}</Text>
       </View>
       <View style={styles.balanceContainer}>
-        <Text style={styles.balanceLabel}>Current Balance</Text>
+        <Text style={styles.balanceLabel}>{t('currentBalance')}</Text>
         <Text style={styles.balanceValue}>${balance.toFixed(2)}</Text>
       </View>
+      <TouchableOpacity style={styles.addButton} onPress={handleAddFundsPress}>
+        <Text style={styles.addButtonText}>{t('addFunds')}</Text>
+      </TouchableOpacity>
     </View>
   );
 };
