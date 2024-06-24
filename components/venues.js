@@ -12,12 +12,7 @@ const Venues = ({ navigation }) => {
       showsHorizontalScrollIndicator={false}
       style={styles.scrollView}>
       {venueData.map((venue) => (
-        <VenueCard
-          key={venue._id}
-          name={venue.name}
-          imageUri={venue.imageUri}
-          navigation={navigation}
-        />
+           <VenueCard key={venue._id} name={venue.name} imageUri={venue.images[0]} venueObj={venue} navigation={navigation}  />
       ))}
     </ScrollView>
   );
