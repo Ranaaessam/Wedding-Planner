@@ -1,3 +1,4 @@
+const Account = require("../models/accountsModel");
 const Orders = require("../models/orderModel");
 const Supplier = require("../models/supplierModel");
 const Users = require("../models/userModel");
@@ -14,12 +15,15 @@ const getUserData = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, "WeddingPlannerSecretKey");
-    const client = await Users.findById(decoded.userID);
-    if (!client) {
+    const account = await Account.find({
+      $or: [{ user1Id: decoded.userID }, { user2Id: decoded.userID }],
+    });
+    console.log(account);
+    if (!account) {
       return res.status(400).json({ message: "Invalid account ID!" });
     }
 
-    req.body.client = client;
+    req.body.client = account;
     next();
   } catch (error) {
     return res
@@ -62,8 +66,8 @@ const checkIfDateIsAvailable = async (req, res, next) => {
       return res.status(404).json({ message: "Supplier not found" });
     }
 
-    console.log(supplier.occupiedDays);
-    console.log(new Date(date).toISOString());
+    // console.log(supplier.occupiedDays);
+    // console.log(new Date(date).toISOString());
     const dateToCheck = new Date(date).toISOString();
     const isDateOccupied = supplier.occupiedDays.some(
       (occupiedDate) => new Date(occupiedDate).toISOString() === dateToCheck

@@ -1,17 +1,40 @@
-import React from 'react';
+import React, { useState , useEffect} from 'react';
 import { View, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Card, Button } from 'react-native-paper';
+import axios from 'axios';
+import API_URL from '../constants';
 
-const Cart = ({ navigation }) => {
-  const cartItems = [
-    { id: '1', title: 'Cars', price: 10, description: 'This is item 1 description. It could be longer to demonstrate wrapping within the card boundaries.', image: require('../assets/Images/cars.avif') },
-    { id: '2', title: 'Decorations', price: 20, description: 'This is item 2 description.', image: require('../assets/Images/decorations.avif') },
-    { id: '3', title: 'Item 3', price: 30, description: 'This is item 3 description.', image: require('../assets/Images/venue1.avif') },
-    { id: '4', title: 'Item 4', price: 40, description: 'This is item 4 description.', image: require('../assets/Images/venue1.avif') },
-    { id: '5', title: 'Item 5', price: 50, description: 'This is item 5 description.', image: require('../assets/Images/venue1.avif') },
-  ];
+const Cart = ({ navigation,route }) => {
+  const userId="667745386a459633a0b64a88";
+  const accountID="66773bae194fe37a728f3716";
+  // console.log("paramss");
+  // console.log(route.params)
 
+  const [cartItems,setCartItems]=useState([]);
+
+  const deleteFromcart=async (itemID)=>{
+    try {
+      const response = await axios.delete(`${API_URL}/account/cart?accountId=${accountID}&itemId=${itemID}`);
+      
+      setCartItems(response.data.cart);
+    } catch (error) {
+      console.error("Error fetching supplier details:", error);
+    }
+
+  }
+ 
+  useEffect(() => {
+    const fetchCartItems= async () => {
+      try {
+        const response = await axios.get(`${API_URL}/account/profile?userId=${userId}`);
+        setCartItems(response.data.cart);
+      } catch (error) {
+        console.error("Error hna", error);
+      }
+    };
+    fetchCartItems();
+  });
   const calculateTotalPrice = () => {
     return cartItems.reduce((total, item) => total + item.price, 0);
   };
@@ -20,12 +43,7 @@ const Cart = ({ navigation }) => {
     alert('Proceeding to payment...');
   };
 
-  const renderDesc = (text) => {
-    if (text.length > 50) {
-      return `${text.substring(0, 50)}...`;
-    }
-    return text;
-  };
+
 
   return (
     <View style={styles.container}>
@@ -34,16 +52,19 @@ const Cart = ({ navigation }) => {
       <FlatList
         data={cartItems}
         renderItem={({ item  }) => (
-          <TouchableOpacity onPress={()=>{navigation.navigate('SupplierDetails')}}>
             <Card style={styles.card}>
               <View style={styles.cardContent}>
-                <Card.Cover source={item.image} style={styles.image} />
+              <Card.Cover source={{ uri: item.images[0] }} style={styles.image} />
                 <View style={styles.detailsContainer}>
-                  <Text style={styles.itemTitle}>{item.title}</Text>
-                  <Text style={styles.description}>{renderDesc(item.description)}</Text>
+                <Text style={styles.itemTitle}>{item.name}</Text>
+<Text style={styles.description}>{(item.cakes && item.cakes[0] && item.cakes[0].name) || ""}</Text>
+<Text style={styles.description}>{(item.cars && item.cars[0] && item.cars[0].name) || ""}</Text>
+<Text style={styles.description}>{(item.caterer && item.caterer[0] && item.caterer[0].name) || ""}</Text>
+
+
                   <Text style={styles.price}>Price: ${item.price}</Text>
                 </View>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity onPress={() => deleteFromcart(item._id)}>
                   <Icon 
                     name="trash" 
                     type="font-awesome" 
@@ -54,7 +75,6 @@ const Cart = ({ navigation }) => {
                 </TouchableOpacity>
               </View>
             </Card>
-          </TouchableOpacity>
         )}
         keyExtractor={item => item.id}
         contentContainerStyle={styles.contentContainer}

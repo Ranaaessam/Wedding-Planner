@@ -2,6 +2,8 @@ const router = require("express").Router();
 const orderController = require("../controllers/orderController");
 const orderMiddleware = require("../middlewares/orderMiddleware");
 
+router.get("/get", orderController.getOrders);
+router.get("/getByID", orderController.getOrderByUserIDAndSupplierID);
 router.post(
   "/create",
   orderMiddleware.getUserData,
@@ -9,7 +11,6 @@ router.post(
   orderMiddleware.checkIfDateIsAvailable,
   orderController.createOrder
 );
-router.get("/get", orderController.getOrders);
 router.delete(
   "/delete",
   orderMiddleware.getUserData,

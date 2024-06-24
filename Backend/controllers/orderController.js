@@ -1,5 +1,6 @@
 const Orders = require("../models/orderModel");
 const Supplier = require("../models/supplierModel");
+const { isValidObjectId } = require("mongoose");
 
 const getOrders = async (req, res) => {
   try {
@@ -12,6 +13,41 @@ const getOrders = async (req, res) => {
   }
 };
 
+const getOrderByUserIDAndSupplierID = async (req, res) => {
+  try {
+    const { userID, supplierID } = req.query;
+
+    if (!userID || !supplierID) {
+      return res
+        .status(400)
+        .json({ message: "userID and supplierID are required" });
+    }
+
+    if (!isValidObjectId(userID) || !isValidObjectId(supplierID)) {
+      return res
+        .status(400)
+        .json({ message: "Invalid userID or supplierID format" });
+    }
+
+    const orders = await Orders.find({
+      from: userID,
+      to: supplierID,
+    });
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: "No orders found" });
+    }
+
+    return res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+// Helper function to validate ObjectId format
 const createOrder = async (req, res) => {
   try {
     const { supplierID, date, client } = req.body;
@@ -59,6 +95,7 @@ const deleteOrder = async (req, res) => {
 
 module.exports = {
   getOrders,
+  getOrderByUserIDAndSupplierID,
   createOrder,
   deleteOrder,
 };
