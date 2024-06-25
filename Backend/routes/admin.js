@@ -9,17 +9,17 @@ const adminMiddleware = require("../middlewares/adminMiddleware");
 router.get("/users", adminController.getUsers);
 router.get("/allUsers", adminController.getAllUsers);
 
-router.delete("/users", adminController.deleteUser);
+router.delete("/users/:id", adminController.deleteUser);
 // #endregion
 
 // #region Order Management
 router.get("/orders", adminController.getOrders);
-router.delete("/orders", adminController.deleteOrder);
+router.delete("/orders/:id", adminController.deleteOrder);
 // #endregion
 
 // #region Supplier Management
 router.get("/suppliers", adminController.getSuppliers);
-router.delete("/suppliers", adminController.deleteSupplier);
+router.delete("/suppliers/:id", adminController.deleteSupplier);
 // #endregion
 
 // #region Complaint Management

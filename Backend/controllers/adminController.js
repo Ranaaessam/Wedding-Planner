@@ -45,16 +45,16 @@ const getAllUsers = async (req, res) => {
 };
 const deleteUser = async (req, res) => {
   try {
-    const { id } = req.body;
-    console.log("back");
-    console.log(req.body);
+    const id = req.params.id;
     console.log(id);
+
     if (!isValidObjectId(id)) {
       return res.status(400).json({ message: "Invalid user id" });
     }
     await User.findByIdAndDelete(id);
     return res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
+    console.log(error);
     return res.status(500).json(error);
   }
 };
@@ -72,7 +72,7 @@ const getSuppliers = async (req, res) => {
 
 const deleteSupplier = async (req, res) => {
   try {
-    const { id } = req.body;
+    const id = req.params.id;
     if (!isValidObjectId(id)) {
       return res.status(400).json({ message: "Invalid supplier id" });
     }
@@ -96,7 +96,7 @@ const getOrders = async (req, res) => {
 
 const deleteOrder = async (req, res) => {
   try {
-    const { id } = req.body;
+    const id = req.params.id;
     if (!isValidObjectId(id)) {
       return res.status(400).json({ message: "Invalid order id" });
     }

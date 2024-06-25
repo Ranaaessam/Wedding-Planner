@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API_URL from "../../constants";
+import axios from "axios";
 
 // Async thunks for users
 export const getAllUsers = createAsyncThunk("admin/getAllUsers", async () => {
-  const response = await fetch(`${API_URL}/account`);
+  const response = await fetch(`${API_URL}/admin/allUsers`);
   const data = await response.json();
   return data;
 });
@@ -11,18 +12,7 @@ export const getAllUsers = createAsyncThunk("admin/getAllUsers", async () => {
 export const deleteUser = createAsyncThunk(
   "admin/deleteUser",
   async (userId) => {
-    // Replace this with your API call
-    console.log(userId);
-    await fetch(`${API_URL}/users`, {
-      method: "DELETE",
-      body: { id: userId },
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log("deleted");
-    getAllUsers();
-    console.log("deleted555");
+    const response = await axios.delete(`${API_URL}/admin/users/${userId}`);
 
     return userId;
   }
@@ -33,7 +23,7 @@ export const getAllSuppliers = createAsyncThunk(
   "admin/getAllSuppliers",
   async () => {
     // Replace this with your API call
-    const response = await fetch(`${API_URL}/suppliers`);
+    const response = await fetch(`${API_URL}/admin/suppliers`);
     const data = await response.json();
     return data;
   }
@@ -43,7 +33,7 @@ export const deleteSupplier = createAsyncThunk(
   "admin/deleteSupplier",
   async (supplierId) => {
     // Replace this with your API call
-    await fetch(`https://your-api.com/suppliers/${supplierId}`, {
+    await fetch(`https://your-api.com/admin/suppliers/${supplierId}`, {
       method: "DELETE",
     });
     return supplierId;
@@ -53,7 +43,7 @@ export const deleteSupplier = createAsyncThunk(
 // Async thunks for orders
 export const getAllOrders = createAsyncThunk("admin/getAllOrders", async () => {
   // Replace this with your API call
-  const response = await fetch("https://jsonplaceholder.typicode.com/users");
+  const response = await fetch(`${API_URL}/admin/orders`);
   const data = await response.json();
   return data;
 });
@@ -62,7 +52,7 @@ export const deleteOrder = createAsyncThunk(
   "admin/deleteOrder",
   async (orderId) => {
     // Replace this with your API call
-    await fetch(`https://your-api.com/orders/${orderId}`, {
+    await fetch(`${API_URL}/admin/orders/${orderId}`, {
       method: "DELETE",
     });
     return orderId;
@@ -74,7 +64,7 @@ export const getAllComplaints = createAsyncThunk(
   "admin/getAllComplaints",
   async () => {
     // Replace this with your API call
-    const response = await fetch("https://jsonplaceholder.typicode.com/users");
+    const response = await fetch(`${API_URL}/admin/complaints`);
     const data = await response.json();
     return data;
   }
