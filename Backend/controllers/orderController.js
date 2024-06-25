@@ -133,13 +133,13 @@ const getOrderedProductsForUser = async (req, res) => {
 // Helper function to validate ObjectId format
 const createOrder = async (req, res) => {
   try {
-    const { items, date, client } = req.body;
+    const { items, date, price, client } = req.body;
     const newOrder = new Orders({
       items: items,
       weddingDate: date,
       from: client._id,
-      supplierType: supplier.type,
-      price: supplier.price,
+
+      price: price,
     });
 
     await newOrder.save();
