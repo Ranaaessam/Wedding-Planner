@@ -1,11 +1,13 @@
-// AvatarComponent.js
 import React, { useState } from "react";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
+import { useDispatch } from "react-redux";
+import { updateProfile } from "../StateManagement/slices/ProfileSlice";
 
-const profilePicture = ({ imgUrl }) => {
-  const [profilePicture, setProfilePicture] = useState(imgUrl);
+const ProfilePicture = ({ imgUrl }) => {
+  const [imageUri, setImageUri] = useState(imgUrl);
+  const dispatch = useDispatch();
 
   const selectImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -14,13 +16,17 @@ const profilePicture = ({ imgUrl }) => {
       aspect: [4, 3],
       quality: 1,
     });
-    setProfilePicture(result.uri);
+
+    if (!result.cancelled) {
+      setImageUri(result.assets[0].uri);
+      dispatch(updateProfile({ image: result.assets[0].uri }));
+    }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.avatarContainer}>
-        <Image source={{ uri: imgUrl }} style={styles.avatar} />
+        <Image source={{ uri: imageUri }} style={styles.avatar} />
         <TouchableOpacity
           style={styles.editIconContainer}
           onPress={selectImage}
@@ -64,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default profilePicture;
+export default ProfilePicture;
