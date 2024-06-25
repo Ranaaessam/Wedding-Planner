@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Home from "../screens/homeScreen";
 import Cart from "../screens/Cart";
@@ -9,11 +9,39 @@ import SearchScreen from "../screens/Search/searchScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import StackNav from "./stackNav";
 import { useTranslation } from "react-i18next";
+import storage from "../Storage/storage";
 
 const Tab = createBottomTabNavigator();
 
 const BottomNav = () => {
+  const [userId, setUserId] = useState(null);
+  const [accountID, setAccountID] = useState(null);
+
+  useEffect(() => {
+    const fetchIDs = async () => {
+      try {
+        const fetchedUserId = await storage.load({ key: "userId" });
+        const fetchedAccountID = await storage.load({ key: "accountId" });
+        setUserId(fetchedUserId);
+        setAccountID(fetchedAccountID);
+      } catch (error) {
+        console.error("Error loading IDs:", error);
+      }
+    };
+    fetchIDs();
+  }, []);
+
   const { t } = useTranslation();
+
+  if (userId === null || accountID === null) {
+    // Optionally, you can return a loading screen here until the IDs are loaded.
+    return (
+      <View style={styles.loadingContainer}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -57,12 +85,22 @@ const BottomNav = () => {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen name="Plan" component={PlanScreen} />
-      <Tab.Screen name="Cart" component={Cart} />
+      <Tab.Screen
+        name="Cart"
+        component={Cart}
+        initialParams={{ userId, accountID }} // Pass the IDs here
+      />
       <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default BottomNav;

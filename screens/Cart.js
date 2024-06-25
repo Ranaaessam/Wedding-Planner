@@ -13,11 +13,12 @@ import axios from "axios";
 import API_URL from "../constants";
 import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
+import storage from "../Storage/storage";
 
 const Cart = ({ navigation, route }) => {
   const { t } = useTranslation();
-  const userId = "667745386a459633a0b64a88";
-  const accountID = "66773bae194fe37a728f3716";
+  const { userId, accountID } = route.params; // Access userId and accountID here
+
   // console.log("paramss");
   // console.log(route.params)
 
@@ -84,7 +85,6 @@ const Cart = ({ navigation, route }) => {
                 integration_id: 4556039,
               })
               .then((res) => {
-                console.log(res.data);
                 Linking.openURL(
                   `https://accept.paymob.com/api/acceptance/iframes/837986?payment_token=${res.data.token}`
                 );
@@ -113,6 +113,7 @@ const Cart = ({ navigation, route }) => {
         console.log(err);
       });
   };
+
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
@@ -127,6 +128,7 @@ const Cart = ({ navigation, route }) => {
     };
     fetchCartItems();
   });
+
   const calculateTotalPrice = () => {
     return cartItems.reduce((total, item) => total + item.price, 0);
   };
@@ -147,9 +149,13 @@ const Cart = ({ navigation, route }) => {
           <Card style={styles.card}>
             <View style={styles.cardContent}>
               <Card.Cover
-                source={{ uri: item.images[0] }}
+                source={{
+                  uri:
+                    item.images && item.images.length > 0 ? item.images[0] : "",
+                }}
                 style={styles.image}
               />
+
               <View style={styles.detailsContainer}>
                 <Text style={styles.itemTitle}>{item.name}</Text>
                 <Text style={styles.description}>

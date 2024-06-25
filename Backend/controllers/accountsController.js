@@ -37,7 +37,7 @@ const getAccountByUserID = async (req, res) => {
 const AddToCart = async (req, res) => {
   const { accountId } = req.query;
   const newCartItem = req.body;
-
+  console.log("dddddddddddddddddddddd");
   try {
     const account = await Account.findByIdAndUpdate(
       accountId,

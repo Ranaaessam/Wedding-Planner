@@ -22,70 +22,19 @@ import {
   getAllFavourites,
   removeFromFavorites,
 } from "../StateManagement/slices/FavouritesSlice";
-import { addToCart } from "../StateManagement/slices/CartSlice";
+import {
+  addToCart,
+  getAllCartItems,
+} from "../StateManagement/slices/CartSlice";
 import ReviewScreen from "./reviewScreen";
 import storage from "../Storage/storage";
+import { getSupplierReview } from "../StateManagement/slices/ReviewSlice";
+import { getReviewsBySupplierID } from "../Backend/controllers/reviewsController";
+import { getReviews } from "../StateManagement/slices/ReviewSlice";
 
 const { width: screenWidth } = Dimensions.get("window");
 
 const SupplierDetails = ({ navigation, route }) => {
-  const reviews = [
-    {
-      id: 1,
-      avatarUrl: "https://randomuser.me/api/portraits/men/1.jpg",
-      name: "John Doe",
-      date: "June 18, 2024",
-      review:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget justo sed elit pharetra interdum consectetur adipiscing elit.",
-      rating: 4.5,
-    },
-    {
-      id: 2,
-      avatarUrl: "https://randomuser.me/api/portraits/women/2.jpg",
-      name: "Jane Smith",
-      date: "June 18, 2024",
-      review:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget justo sed elit pharetra interdum consectetur adipiscing elit.",
-      rating: 4.0,
-    },
-    {
-      id: 3,
-      avatarUrl: "https://randomuser.me/api/portraits/men/3.jpg",
-      name: "Bob Johnson",
-      date: "June 18, 2024",
-      review:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget justo sed elit pharetra interdum consectetur adipiscing elit.",
-      rating: 3.5,
-    },
-    {
-      id: 4,
-      avatarUrl: "https://randomuser.me/api/portraits/women/4.jpg",
-      name: "Emily Davis",
-      date: "June 18, 2024",
-      review:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget justo sed elit pharetra interdum consectetur adipiscing elit.",
-      rating: 5.0,
-    },
-    {
-      id: 5,
-      avatarUrl: "https://randomuser.me/api/portraits/men/5.jpg",
-      name: "Michael Brown",
-      date: "June 18, 2024",
-      review:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget justo sed elit pharetra interdum consectetur adipiscing elit.",
-      rating: 3.0,
-    },
-    {
-      id: 6,
-      avatarUrl: "https://randomuser.me/api/portraits/women/6.jpg",
-      name: "Olivia Taylor",
-      date: "June 18, 2024",
-      review:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget justo sed elit pharetra interdum consectetur adipiscing elit.",
-      rating: 4.5,
-    },
-    // ... other reviews
-  ];
   const { supplierId } = route.params;
   const [supplier, setSupplier] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -93,7 +42,7 @@ const SupplierDetails = ({ navigation, route }) => {
   const [modalMessage, setModalMessage] = useState("");
   const [bookingModalVisible, setBookingModalVisible] = useState(false);
   const [reviewModalVisible, setReviewModalVisible] = useState(false);
-
+  const allReviews = useSelector((state) => state.review.review);
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favourites.favourites);
   const bookedItems = useSelector((state) => state.cart.cartItems);
@@ -102,6 +51,7 @@ const SupplierDetails = ({ navigation, route }) => {
     dispatch(getAllFavourites());
   }, []);
 
+  const reviews = useSelector((state) => state.review.review);
   useEffect(() => {
     const fetchSupplierDetails = async () => {
       try {
@@ -114,19 +64,41 @@ const SupplierDetails = ({ navigation, route }) => {
     };
 
     fetchSupplierDetails();
+    dispatch(getSupplierReview({ supplierId: supplierId }));
   }, [supplierId, favorites]);
+  //-------------------------------------------
+  useEffect(() => {
+    const fetchSupplierReviews = async () => {
+      try {
+        dispatch(getReviews(supplierId));
+      } catch (error) {
+        console.error("Error fetching supplier details:", error);
+      }
+    };
 
-  const handleBookPress = () => {
-    if (bookedItems.some((item) => item._id === supplier.id)) {
-      setModalMessage("Already booked!");
-    } else {
-      dispatch(addToCart({ cartItem: supplier, accountId: "yourAccountId" }));
-      setModalMessage("Booked successfully!");
+    fetchSupplierReviews();
+  }, []);
+
+  const handleBookPress = async () => {
+    try {
+      const accountId = await storage.load({ key: "accountId" });
+
+      // Check if the supplier is already booked
+      if (bookedItems.some((item) => item._id === supplier._id)) {
+        setModalMessage("Already booked!");
+      } else {
+        // Dispatch addToCart action only if not already booked
+        dispatch(addToCart({ cartItem: supplier, accountId: accountId }));
+        setModalMessage("Booked successfully!");
+      }
+
+      // Display booking modal
+      setBookingModalVisible(true);
+      setTimeout(() => setBookingModalVisible(false), 1500);
+    } catch (error) {
+      console.error("Error booking supplier:", error);
     }
-    setBookingModalVisible(true);
-    setTimeout(() => setBookingModalVisible(false), 1500);
   };
-
   const handleFavoritePress = async () => {
     try {
       const accountId = await storage.load({ key: "accountId" });
@@ -149,11 +121,11 @@ const SupplierDetails = ({ navigation, route }) => {
 
   const renderReviewCard = ({ item }) => (
     <ReviewCard
-      avatarUrl={item.avatarUrl}
+      avatarUrl="https://media.istockphoto.com/id/1494104649/photo/ai-chatbot-artificial-intelligence-digital-concept.jpg?s=612x612&w=0&k=20&c=1Zq2sj3W0tWcpc-n1fVt4dQQOBGhtwcAk1H2eQ5MAbI="
       name={item.name}
       date={item.date}
       review={item.review}
-      rating={item.rating}
+      rating={item.rate}
     />
   );
 
@@ -168,6 +140,9 @@ const SupplierDetails = ({ navigation, route }) => {
       </View>
     );
   }
+  const handleReview = () => {
+    setReviewModalVisible(true);
+  };
 
   return (
     <ScrollView>
@@ -241,16 +216,16 @@ const SupplierDetails = ({ navigation, route }) => {
             <View style={{ flexDirection: "row", marginLeft: 140 }}>
               <TouchableOpacity
                 style={styles.iconButton}
-                onPress={() => setReviewModalVisible(true)}
+                onPress={handleReview}
               >
                 <MaterialIcons name="rate-review" size={24} color="black" />
               </TouchableOpacity>
             </View>
           </View>
           <FlatList
-            data={reviews}
+            data={allReviews}
             renderItem={renderReviewCard}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.reviews}
@@ -284,6 +259,7 @@ const SupplierDetails = ({ navigation, route }) => {
       <ReviewScreen
         visible={reviewModalVisible}
         onClose={() => setReviewModalVisible(false)}
+        supplierId={supplier._id}
       />
     </ScrollView>
   );

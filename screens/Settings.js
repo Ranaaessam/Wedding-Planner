@@ -15,6 +15,7 @@ import ContactUs from "./ContactUs";
 import ProfileScreen from "./profileScreen.js";
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n.js";
+import storage from "../Storage/storage.js";
 
 const SettingsScreen = ({ navigation }) => {
   const { t } = useTranslation();
@@ -48,7 +49,12 @@ const SettingsScreen = ({ navigation }) => {
       [
         {
           text: t("OK"), // Custom text for the OK button
-          onPress: () => console.log("OK Pressed"),
+          onPress: async () => {
+            await storage.remove({ key: "accountId" });
+            await storage.remove({ key: "userId" });
+            await storage.remove({ key: "token" });
+            navigation.navigate("Login");
+          },
         },
       ],
       { cancelable: false }
@@ -145,19 +151,22 @@ const SettingsScreen = ({ navigation }) => {
         visible={isDropdownVisible}
         transparent={true}
         animationType="slide"
-        onRequestClose={() => setDropdownVisible(false)}>
+        onRequestClose={() => setDropdownVisible(false)}
+      >
         <TouchableWithoutFeedback onPress={() => setDropdownVisible(false)}>
           <View style={styles.modalOverlay} />
         </TouchableWithoutFeedback>
         <View style={styles.dropdown}>
           <TouchableOpacity
             style={styles.dropdownItem}
-            onPress={() => selectLanguage("en")}>
+            onPress={() => selectLanguage("en")}
+          >
             <Text style={styles.dropdownItemText}>▫ {t("english")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.dropdownItem}
-            onPress={() => selectLanguage("ar")}>
+            onPress={() => selectLanguage("ar")}
+          >
             <Text style={styles.dropdownItemText}>▫ {t("arabic")}</Text>
           </TouchableOpacity>
         </View>
