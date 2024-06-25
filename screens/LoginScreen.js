@@ -42,7 +42,6 @@ const LoginScreen = () => {
   const handleLogin = async (values) => {
     try {
       const response = await axios.post(`${API_URL}/users/Login`, values);
-
       if (response.status === 200) {
         const userId = response.data.userId;
         const accountId = response.data.accountId;

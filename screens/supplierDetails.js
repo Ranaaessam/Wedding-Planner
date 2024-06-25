@@ -22,7 +22,10 @@ import {
   getAllFavourites,
   removeFromFavorites,
 } from "../StateManagement/slices/FavouritesSlice";
-import { addToCart } from "../StateManagement/slices/CartSlice";
+import {
+  addToCart,
+  getAllCartItems,
+} from "../StateManagement/slices/CartSlice";
 import ReviewScreen from "./reviewScreen";
 import storage from "../Storage/storage";
 
@@ -86,6 +89,7 @@ const SupplierDetails = ({ navigation, route }) => {
     },
     // ... other reviews
   ];
+
   const { supplierId } = route.params;
   const [supplier, setSupplier] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -116,15 +120,25 @@ const SupplierDetails = ({ navigation, route }) => {
     fetchSupplierDetails();
   }, [supplierId, favorites]);
 
-  const handleBookPress = () => {
-    if (bookedItems.some((item) => item._id === supplier.id)) {
-      setModalMessage("Already booked!");
-    } else {
-      dispatch(addToCart({ cartItem: supplier, accountId: "yourAccountId" }));
-      setModalMessage("Booked successfully!");
+  const handleBookPress = async () => {
+    try {
+      const accountId = await storage.load({ key: "accountId" });
+
+      // Check if the supplier is already booked
+      if (bookedItems.some((item) => item._id === supplier._id)) {
+        setModalMessage("Already booked!");
+      } else {
+        // Dispatch addToCart action only if not already booked
+        dispatch(addToCart({ cartItem: supplier, accountId: accountId }));
+        setModalMessage("Booked successfully!");
+      }
+
+      // Display booking modal
+      setBookingModalVisible(true);
+      setTimeout(() => setBookingModalVisible(false), 1500);
+    } catch (error) {
+      console.error("Error booking supplier:", error);
     }
-    setBookingModalVisible(true);
-    setTimeout(() => setBookingModalVisible(false), 1500);
   };
 
   const handleFavoritePress = async () => {

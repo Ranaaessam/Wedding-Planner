@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import storage from "../../Storage/storage";
+import API_URL from "../../constants";
 
 // Get all cart items
 export const getAllCartItems = createAsyncThunk(
@@ -20,7 +22,7 @@ export const addToCart = createAsyncThunk(
   async ({ cartItem, accountId }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `API_URL/cart?accountId=${accountId}`,
+        `${API_URL}/account/cart?accountId=${accountId}`,
         cartItem,
         {
           headers: { "Content-Type": "application/json" },
@@ -43,7 +45,10 @@ export const removeFromCart = createAsyncThunk(
   "cart/remove",
   async (cartItemId, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(`API_URL/cart/${cartItemId}`);
+      const accountId = await storage.load({ key: "accountId" });
+      const response = await axios.delete(
+        `${API_URL}/account/cart?accountId=${accountId}&itemId=${cartItemId}`
+      );
 
       if (response.status !== 200) {
         throw new Error("Failed to remove item from cart");
