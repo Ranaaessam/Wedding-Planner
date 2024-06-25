@@ -42,6 +42,17 @@ export const getReviews = createAsyncThunk(
   }
 );
 
+export const getReviews = createAsyncThunk(
+  "GetAllReviews",
+  async (supplierId) => {
+    const response = await axios.get(
+      `${API_URL}/reviews?SupplierID=${supplierId}`
+    );
+    console.log(response.data);
+    return response.data;
+  }
+);
+
 const reviewSlice = createSlice({
   name: "review",
   initialState: {
