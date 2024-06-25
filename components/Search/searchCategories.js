@@ -3,7 +3,7 @@ import { ScrollView, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
 import { filterResultsByCategory } from "../../StateManagement/slices/SearchSlice";
 
-const categories = ["venue", "Photographer", "caterer", "Make-up Artist"];
+const categories = ["venue", "Photographer", "Make-up Artist"];
 
 const SearchCategories = () => {
   const dispatch = useDispatch();
