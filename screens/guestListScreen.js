@@ -12,15 +12,26 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Linking } from "react-native";
 import { fetchGuests } from "../StateManagement/slices/GuestListSlice";
+import storage from "../Storage/storage";
 
 const GuestListScreen = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { guests, status, error } = useSelector((state) => state.guestList);
+  const userDetails = useSelector((state) => state.user.user);
 
   useEffect(() => {
     dispatch(fetchGuests());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const userId = await storage.load({ key: "userId" });
+      dispatch(getUserProfile(userId));
+    };
+    fetchUserProfile();
   }, [dispatch]);
 
   // Function to transform flat array of guests into sections
@@ -30,7 +41,7 @@ const GuestListScreen = () => {
 
     // Iterate through guests to populate sections
     guests.forEach((guest) => {
-      const firstLetter = guest.name.charAt(0).toUpperCase();
+      const firstLetter = guest.enteredName.charAt(0).toUpperCase();
       if (!sections[firstLetter]) {
         sections[firstLetter] = {
           title: firstLetter,
@@ -53,11 +64,23 @@ const GuestListScreen = () => {
   const totalGuests = guests.length;
 
   const sendWhatsAppMessage = () => {
-    // Your WhatsApp message handling
+    const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSf1hZmd0HHoQtKmXMkmWeETvebTsvQD6CTGWkFZNGsPN18gNA/viewform?usp=pp_url&entry.872775485=${userDetails._id}`;
+    const message = `Please fill out this form to join the guest list: ${formUrl}`;
+    const url = `whatsapp://send?text=${encodeURIComponent(message)}`;
+
+    Linking.openURL(url).catch(() =>
+      alert("Make sure WhatsApp is installed on your device")
+    );
   };
 
   if (status === "loading") {
-    return <ActivityIndicator size="large" color="#0000ff" />;
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator size="large" color="#FF81AE" />
+        </View>
+      </SafeAreaView>
+    );
   }
 
   if (status === "failed") {
@@ -80,10 +103,12 @@ const GuestListScreen = () => {
         renderItem={({ item }) => (
           <View style={styles.container}>
             <FontAwesome name="user-circle-o" size={30} />
-            <Text style={styles.item}>{item.name}</Text>
+            <View style={styles.guestInfo}>
+              <Text style={styles.item}>{item.enteredName}</Text>
+            </View>
           </View>
         )}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.timeStamp}
       />
       <TouchableOpacity style={styles.addButton} onPress={sendWhatsAppMessage}>
         <FontAwesome name="share-alt" size={32} color="white" />
@@ -120,10 +145,16 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     padding: 10,
   },
+  guestInfo: {
+    marginLeft: 10,
+  },
   item: {
     fontSize: 18,
-    marginLeft: 10,
     fontWeight: "bold",
+  },
+  details: {
+    fontSize: 14,
+    color: "#888",
   },
   addButton: {
     position: "absolute",
@@ -163,6 +194,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

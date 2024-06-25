@@ -7,19 +7,19 @@ const VenueTypes = [
     id: 1,
     title: "Venue",
     imageUrl:
-      "https://plus.unsplash.com/premium_photo-1682089297123-85459da8036b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://media.istockphoto.com/id/175559502/photo/classy-wedding-setting.jpg?s=1024x1024&w=is&k=20&c=516lnkUiHkwK4YVRRgcj7fu6ZiViyLTh2pDsRd-nZss=",
   },
   {
     id: 2,
     title: "Photographer",
     imageUrl:
-      "https://images.unsplash.com/photo-1444492417251-9c84a5fa18e0?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://media.istockphoto.com/id/485818676/photo/holding-a-full-frame-camera.webp?b=1&s=170667a&w=0&k=20&c=zypw-ho8ME1kwi5gbqqVw9GWdyNAYQ6IX6ZNMLqLmTU=",
   },
   {
     id: 3,
     title: "Make-up Artist",
     imageUrl:
-      "https://images.unsplash.com/photo-1444492417251-9c84a5fa18e0?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://media.istockphoto.com/id/624945444/photo/young-bridesmaid-holding-the-palette-of-blusher.webp?b=1&s=170667a&w=0&k=20&c=E0kIPTru_H08vPNU8EqsZ7WeSnEnrRWTodORh7fOJIU=",
   },
 ];
 

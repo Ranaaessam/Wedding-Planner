@@ -19,10 +19,12 @@ import API_URL from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToFavorites,
+  getAllFavourites,
   removeFromFavorites,
 } from "../StateManagement/slices/FavouritesSlice";
 import { addToCart } from "../StateManagement/slices/CartSlice";
 import ReviewScreen from "./reviewScreen";
+import storage from "../Storage/storage";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -95,12 +97,17 @@ const SupplierDetails = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favourites.favourites);
   const bookedItems = useSelector((state) => state.cart.cartItems);
+
+  useEffect(() => {
+    dispatch(getAllFavourites());
+  }, []);
+
   useEffect(() => {
     const fetchSupplierDetails = async () => {
       try {
         const response = await axios.get(`${API_URL}/suppliers/${supplierId}`);
         setSupplier(response.data);
-        setIsFavorite(favorites.some((item) => item.id === supplierId));
+        setIsFavorite(favorites.some((item) => item._id === supplierId));
       } catch (error) {
         console.error("Error fetching supplier details:", error);
       }
@@ -110,7 +117,7 @@ const SupplierDetails = ({ navigation, route }) => {
   }, [supplierId, favorites]);
 
   const handleBookPress = () => {
-    if (bookedItems.some((item) => item.id === supplier.id)) {
+    if (bookedItems.some((item) => item._id === supplier.id)) {
       setModalMessage("Already booked!");
     } else {
       dispatch(addToCart({ cartItem: supplier, accountId: "yourAccountId" }));
@@ -120,17 +127,24 @@ const SupplierDetails = ({ navigation, route }) => {
     setTimeout(() => setBookingModalVisible(false), 1500);
   };
 
-  const handleFavoritePress = () => {
-    if (isFavorite) {
-      dispatch(removeFromFavorites(supplier.id));
-    } else {
-      dispatch(
-        addToFavorites({ favouriteItem: supplier, accountId: "yourAccountId" })
-      );
-      setModalVisible(true);
-      setTimeout(() => setModalVisible(false), 1500);
+  const handleFavoritePress = async () => {
+    try {
+      const accountId = await storage.load({ key: "accountId" });
+      if (isFavorite) {
+        dispatch(removeFromFavorites(supplier._id));
+        setIsFavorite(false);
+      } else {
+        dispatch(
+          addToFavorites({ favouriteItem: supplier, accountId: accountId })
+        );
+        setIsFavorite(true);
+        setModalVisible(true);
+        setTimeout(() => setModalVisible(false), 1500);
+      }
+      dispatch(getAllFavourites());
+    } catch (error) {
+      console.error("Error loading account ID or updating favorites:", error);
     }
-    setIsFavorite(!isFavorite);
   };
 
   const renderReviewCard = ({ item }) => (

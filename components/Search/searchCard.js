@@ -1,16 +1,25 @@
 import React from "react";
-import { View, Text, StyleSheet, ImageBackground, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  TouchableOpacity,
+} from "react-native";
 
-const SearchCard = ({ title, imageUrl,navigation }) => {
+const SearchCard = ({ title, imageUrl, navigation }) => {
+  const handlePress = () => {
+    navigation.navigate("ListViewSuppliers", { type: title });
+  };
   return (
-    <TouchableOpacity onPress={()=>{navigation.navigate('SupplierDetails')}}>
-    <View style={styles.card}>
-      <ImageBackground source={{ uri: imageUrl }} style={styles.image}>
-        <View style={styles.overlay}>
-          <Text style={styles.title}>{title}</Text>
-        </View>
-      </ImageBackground>
-    </View>
+    <TouchableOpacity onPress={handlePress}>
+      <View style={styles.card}>
+        <ImageBackground source={{ uri: imageUrl }} style={styles.image}>
+          <View style={styles.overlay}>
+            <Text style={styles.title}>{title}</Text>
+          </View>
+        </ImageBackground>
+      </View>
     </TouchableOpacity>
   );
 };

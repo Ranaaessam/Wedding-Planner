@@ -2,17 +2,19 @@
 import React, { useState } from "react";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-// import { launchImageLibrary } from "react-native-image-picker";
+import * as ImagePicker from "expo-image-picker";
 
 const profilePicture = ({ imgUrl }) => {
   const [profilePicture, setProfilePicture] = useState(imgUrl);
 
-  const selectImage = () => {
-    // launchImageLibrary({ mediaType: "photo" }, (response) => {
-    //   if (response.assets && response.assets.length > 0) {
-    //     setProfilePicture(response.assets[0].uri);
-    //   }
-    // });
+  const selectImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    setProfilePicture(result.uri);
   };
 
   return (
@@ -21,7 +23,8 @@ const profilePicture = ({ imgUrl }) => {
         <Image source={{ uri: imgUrl }} style={styles.avatar} />
         <TouchableOpacity
           style={styles.editIconContainer}
-          onPress={selectImage}>
+          onPress={selectImage}
+        >
           <Icon name="edit" size={22} color="white" />
         </TouchableOpacity>
       </View>

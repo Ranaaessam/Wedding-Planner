@@ -35,6 +35,7 @@ const SearchResultsScreen = ({ navigation }) => {
           {filteredResults.map((result, index) => (
             <SearchResultItem
               key={index}
+              supplierId={result._id}
               name={result.name}
               category={result.type}
               location={result.location}

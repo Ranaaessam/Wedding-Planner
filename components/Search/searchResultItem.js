@@ -2,11 +2,18 @@ import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
-const SearchResultItem = ({ name, category, location, image, navigation }) => {
+const SearchResultItem = ({
+  name,
+  category,
+  location,
+  image,
+  navigation,
+  supplierId,
+}) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("SupplierDetails");
+        navigation.navigate("SupplierDetails", { supplierId: supplierId });
       }}
     >
       <View style={styles.container}>

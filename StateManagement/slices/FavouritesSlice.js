@@ -1,15 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import API_URL from "../../constants";
+import storage from "../../Storage/storage";
 
 // Get all favorites
 export const getAllFavourites = createAsyncThunk(
   "favourites/fetchAll",
   async () => {
+    const accountId = await storage.load({ key: "accountId" });
+
     try {
       const response = await axios.get(
-        "https://jsonplaceholder.typicode.com/posts"
+        `${API_URL}/account/favourites?accountId=${accountId}`
       );
-      return response.data;
+      console.log(response.data.favourites);
+      return response.data.favourites;
     } catch (error) {
       return Promise.reject(error.message);
     }
@@ -22,7 +27,7 @@ export const addToFavorites = createAsyncThunk(
   async ({ favouriteItem, accountId }) => {
     try {
       const response = await axios.post(
-        `API_URL/favourites?accountId=${accountId}`,
+        `${API_URL}/account/favourites?accountId=${accountId}`,
         favouriteItem,
         {
           headers: { "Content-Type": "application/json" },
@@ -45,8 +50,12 @@ export const addToFavorites = createAsyncThunk(
 export const removeFromFavorites = createAsyncThunk(
   "favourites/remove",
   async (favouriteId) => {
+    const accountId = await storage.load({ key: "accountId" });
+    console.log("favouriteId", favouriteId, "accountId", accountId);
     try {
-      const response = await axios.delete(`API_URL/favourites/${favouriteId}`);
+      const response = await axios.delete(
+        `${API_URL}/account/favourites?itemId=${favouriteId}&accountId=${accountId}`
+      );
 
       if (!response.status === 200) {
         throw new Error("Failed to remove favorite");
@@ -70,7 +79,7 @@ const favouritesSlice = createSlice({
   reducers: {
     filterFavouritesByType: (state, action) => {
       state.filteredFavourites = state.favourites.filter(
-        (favourite) => favourite.type === action.payload
+        (favourite) => favourite.type === action.payload.category
       );
     },
   },
