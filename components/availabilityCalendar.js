@@ -29,8 +29,8 @@ const AvailabilityCalendar = ({ availability, onTimeSelect }) => {
 
     if (
       availability[day.dateString] &&
-      availability[day.dateString].customStyles.container.backgroundColor ===
-        "green"
+      availability[day.dateString].customStyles.container.backgroundColor !==
+        "red"
     ) {
       // Example times
       setTimes(["09:00 AM - 10:00 AM", "10:00 AM - 11:00 AM"]);
@@ -50,7 +50,8 @@ const AvailabilityCalendar = ({ availability, onTimeSelect }) => {
     <TouchableOpacity
       activeOpacity={0.4}
       style={styles.timeItem}
-      onPress={() => onTimePress(item)}>
+      onPress={() => onTimePress(item)}
+    >
       <Text style={styles.timeText}>{item}</Text>
       {selectedTime === item && (
         <Icon name="check" size={20} color="#FF81AE" style={styles.checkIcon} />
