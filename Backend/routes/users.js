@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const UsersControllers= require("../controllers/usersController");
+const UsersController= require("../controllers/usersController");
 const userValidator = require ("../middlewares/userMWValidator");
 const authValidator = require("../middlewares/authMWvalidator");
 
 
 
-router.get("/",UsersControllers.getAllUsers);
-router.post("/Registration",userValidator,UsersControllers.Registration);
-router.post("/Login",authValidator,UsersControllers.Login);
+router.get("/",UsersController.getAllUsers);
+router.post("/Registration",userValidator,UsersController.Registration);
+router.post("/Login",authValidator,UsersController.Login);
+router.post("/invite",UsersController.invite);
 
 module.exports = router;
