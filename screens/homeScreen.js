@@ -1,15 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import Venues from "../components/venues";
 import Suppliers from "../components/suppliers";
 import Header from "../components/header";
 import PlanList from "../components/planList";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getVenuesNearLocation } from "../StateManagement/slices/HomeSlice";
+import storage from "../Storage/storage";
+import { getUserProfile } from "../StateManagement/slices/ProfileSlice";
 
 const HomeScreen = ({ navigation }) => {
   const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,16 +25,25 @@ const HomeScreen = ({ navigation }) => {
     { key: "suppliers" },
     { key: "plan" },
   ];
+  //-----------------------------------
+  const userDetails = useSelector((state) => state.user.user);
 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const userId = await storage.load({ key: "userId" });
+      dispatch(getUserProfile(userId));
+    };
+    fetchUserProfile();
+  }, [dispatch]);
   const renderItem = ({ item }) => {
     switch (item.key) {
       case "header":
         return (
           <Header
-            imageUri={
-              "https://i.pinimg.com/564x/aa/10/8b/aa108b7ea07eab894954153872bf4863.jpg"
-            }
+            imageUri={userDetails.image}
+            // imageUri={userDetails.image}
             name={t("Mr & Mrs")}
+            userName={userDetails.name}
             navigation={navigation}
           />
         );

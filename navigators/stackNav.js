@@ -34,7 +34,11 @@ const Stack = createStackNavigator();
 
 const StackNav = () => {
   return (
-    <Stack.Navigator initialRouteName="Home">
+<<<<<<< Updated upstream
+    <Stack.Navigator initialRouteName="Splash">
+=======
+    <Stack.Navigator initialRouteName="Login">
+>>>>>>> Stashed changes
       <Stack.Screen
         name="Splash"
         component={SplashScreen}

@@ -22,6 +22,7 @@ import {
   updateProfile,
 } from "../StateManagement/slices/ProfileSlice";
 import storage from "../Storage/storage";
+import { useTranslation } from "react-i18next";
 
 const ProfileScreen = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -32,6 +33,7 @@ const ProfileScreen = () => {
 
   const userDetails = useSelector((state) => state.user.user);
   const plan = useSelector((state) => state.user.plan);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -106,7 +108,7 @@ const ProfileScreen = () => {
                   fontSize: 18,
                 }}
               >
-                {isEditing ? "Save Profile" : "Edit Profile"}
+                {isEditing ? t("saveProfile") : t("editProfile")}
               </Text>
               <Icon
                 name={isEditing ? "check" : "pencil"}
@@ -116,7 +118,7 @@ const ProfileScreen = () => {
             </TouchableOpacity>
             <View style={styles.infoContainer}>
               <View style={styles.balanceContainer}>
-                <Text style={{ fontSize: 16 }}>Budget</Text>
+                <Text style={{ fontSize: 16 }}>{t("budget")}</Text>
                 {isEditing ? (
                   <TextInput
                     style={styles.data}
@@ -132,7 +134,8 @@ const ProfileScreen = () => {
                 )}
               </View>
               <View style={styles.planContainer}>
-                <Text style={{ fontSize: 16 }}>Plan</Text>
+                <Text style={{ fontSize: 16 }}>{t("plan")}</Text>
+                {/* <Text style={{ fontSize: 16 }}>Plan</Text> */}
                 <Text
                   style={{
                     fontWeight: "500",
@@ -141,7 +144,8 @@ const ProfileScreen = () => {
                     paddingBottom: 5,
                   }}
                 >
-                  {plan ? `${plan}%` : "No Plan"}
+                  {plan ? `${plan}%` : t("No Plan")}
+                  {/* {plan ? `${plan}%` : "No Plan"} */}
                 </Text>
                 <ProgressBar progress={plan} height={5} />
               </View>
@@ -150,7 +154,7 @@ const ProfileScreen = () => {
               {Object.entries(profile).map(([key, value]) => (
                 <View key={key} style={styles.detailRow}>
                   <Text style={styles.head}>
-                    {key.charAt(0).toUpperCase() + key.slice(1)}
+                    {t(`${key.charAt(0).toUpperCase() + key.slice(1)}`)}
                   </Text>
                   {isEditing ? (
                     <TextInput

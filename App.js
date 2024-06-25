@@ -1,16 +1,13 @@
-import React, { useEffect } from "react";
-import { Linking, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import StackNav from "./navigators/stackNav";
-import AdminNav from "./navigators/adminNav";
 import { Provider } from "react-redux";
 import store from "./StateManagement/store";
-import BottomNav from "./navigators/bottomNav";
-import DeepLinking from "react-native-deep-linking";
-import API_URL from "./constants";
+import { ThemeProvider, useTheme } from "./ThemeContext";
 
-export default function App() {
+const App = () => {
   let [fontsLoaded] = useFonts({
     Poppins: require("./assets/fonts/Poppins-Medium.ttf"),
     PoppinsLight: require("./assets/fonts/Poppins-Light.ttf"),
@@ -18,52 +15,36 @@ export default function App() {
     PoppinsBold: require("./assets/fonts/Poppins-Bold.ttf"),
   });
 
-  // useEffect(() => {
-  //   // Handle initial URL if app was opened with a deep link
-  //   const handleInitialUrl = async () => {
-  //     const url = await Linking.getInitialURL();
-  //     if (url) {
-  //       Linking.openURL(url);
-  //     }
-  //   };
-
-  //   handleInitialUrl();
-
-  //   // Add event listener to handle incoming URLs
-  //   Linking.addEventListener('url', (event) => {
-  //     Linking.openURL(event.url);
-  //   });
-
-  //   // Clean up event listener
-  //   return () => {
-  //     Linking.removeAllListeners('url');
-  //   };
-  // }, []);
-
-  // const linking = {
-  //   prefixes: [Linking.createURL('/')],
-  //   config: {
-  //     screens: {
-  //       SignUp: 'users/Registration',
-  //       // Add other screens if necessary
-  //     },
-  //   },
-  // };
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <View style={styles.container}>
-          <StackNav />
-          {/* <AdminNav /> */}
-        </View>
-      </NavigationContainer>
+      <ThemeProvider>
+        <ThemedApp />
+      </ThemeProvider>
     </Provider>
   );
-}
+};
+
+const ThemedApp = () => {
+  const { theme } = useTheme();
+
+  return (
+    <NavigationContainer>
+      <View style={[styles.container, { backgroundColor: theme.background }]}>
+        <StackNav />
+         {/* <AdminNav /> */}
+      </View>
+    </NavigationContainer>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
 });
+
+export default App;

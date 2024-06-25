@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+// SettingsScreen.js
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -11,17 +12,17 @@ import {
   Alert,
 } from "react-native";
 import { Icon } from "react-native-elements";
+import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
 import ContactUs from "./ContactUs";
 import ProfileScreen from "./profileScreen.js";
-import { useTranslation } from "react-i18next";
-import i18n from "../i18n.js";
 import storage from "../Storage/storage.js";
+import { useTheme,themes } from "../ThemeContext";
 
 const SettingsScreen = ({ navigation }) => {
   const { t } = useTranslation();
-  // Default language
+  const { theme, toggleTheme } = useTheme();
   const [selectedLanguage, setSelectedLanguage] = useState("en");
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [balance, setBalance] = useState(1234.56); // Mock balance
 
@@ -34,7 +35,7 @@ const SettingsScreen = ({ navigation }) => {
       "",
       [
         {
-          text: t("OK"), // Custom text for the OK button
+          text: t("OK"),
           onPress: () => console.log("OK Pressed"),
         },
       ],
@@ -61,7 +62,6 @@ const SettingsScreen = ({ navigation }) => {
     );
     navigation.navigate("Home");
   };
-
   const data = [
     {
       id: "profile",
@@ -106,7 +106,7 @@ const SettingsScreen = ({ navigation }) => {
       id: "darkMode",
       icon: "adjust",
       text: t("darkMode"),
-      onPress: () => setIsDarkMode((prev) => !prev),
+      onPress: () => toggleTheme(),
     },
     {
       id: "logout",
@@ -119,15 +119,18 @@ const SettingsScreen = ({ navigation }) => {
   ];
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.optionContainer} onPress={item.onPress}>
-      <Icon name={item.icon} type="font-awesome" style={styles.icon} />
-      <Text style={styles.optionText}>{item.text}</Text>
-      {item.balance && <Text style={styles.balanceText}>{item.balance}</Text>}
-      {item.id === "language" && <Icon name="caret-down" type="font-awesome" />}
+    <TouchableOpacity
+      style={[styles.optionContainer, { backgroundColor: theme.card }]}
+      onPress={item.onPress}
+    >
+      <Icon name={item.icon} type="font-awesome" color={theme.text} style={styles.icon} />
+      <Text style={[styles.optionText, { color: theme.text }]}>{item.text}</Text>
+      {item.balance && <Text style={[styles.balanceText, { color: theme.text }]}>{item.balance}</Text>}
+      {item.id === "language" && <Icon name="caret-down" type="font-awesome" color={theme.text} />}
       {item.id === "darkMode" && (
         <Switch
-          value={isDarkMode}
-          onValueChange={() => setIsDarkMode((x) => !x)}
+          value={theme === themes.dark}
+          onValueChange={toggleTheme}
           style={styles.switch}
         />
       )}
@@ -135,10 +138,10 @@ const SettingsScreen = ({ navigation }) => {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={styles.header}>
-        <Icon name="gear" type="font-awesome" size={24} />
-        <Text style={styles.title}>{t("settings")}</Text>
+        <Icon name="gear" type="font-awesome" size={24} color={theme.text} />
+        <Text style={[styles.title, { color: theme.text }]}>{t("settings")}</Text>
       </View>
       <FlatList
         data={data}
@@ -156,18 +159,18 @@ const SettingsScreen = ({ navigation }) => {
         <TouchableWithoutFeedback onPress={() => setDropdownVisible(false)}>
           <View style={styles.modalOverlay} />
         </TouchableWithoutFeedback>
-        <View style={styles.dropdown}>
+        <View style={[styles.dropdown, { backgroundColor: theme.card }]}>
           <TouchableOpacity
             style={styles.dropdownItem}
             onPress={() => selectLanguage("en")}
           >
-            <Text style={styles.dropdownItemText}>▫ {t("english")}</Text>
+            <Text style={[styles.dropdownItemText, { color: theme.text }]}>▫ {t("english")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.dropdownItem}
             onPress={() => selectLanguage("ar")}
           >
-            <Text style={styles.dropdownItemText}>▫ {t("arabic")}</Text>
+            <Text style={[styles.dropdownItemText, { color: theme.text }]}>▫ {t("arabic")}</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -178,7 +181,6 @@ const SettingsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f0f0f0",
     paddingTop: 40,
     paddingHorizontal: 15,
   },
@@ -190,13 +192,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#333",
     marginLeft: 10,
   },
   optionContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
     paddingVertical: 18,
     paddingHorizontal: 26,
     marginBottom: 18,
@@ -212,27 +212,27 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: 18,
-    marginLeft: 24,
-    color: "#4C134E",
-    flex: 1,
-    textAlign: "left",
+    marginLeft: 10,
   },
   balanceText: {
-    fontSize: 18,
-    color: "#4C134E",
+    marginLeft: "auto",
+    fontSize: 16,
+  },
+  switch: {
+    marginLeft: "auto",
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
   dropdown: {
     position: "absolute",
-    width: "100%",
+    top: "30%",
+    left: "10%",
+    right: "10%",
     backgroundColor: "#fff",
     borderRadius: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    top: 400,
+    padding: 20,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -247,7 +247,6 @@ const styles = StyleSheet.create({
   },
   dropdownItemText: {
     fontSize: 18,
-    color: "#4C134E",
   },
 });
 

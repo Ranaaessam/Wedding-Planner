@@ -84,6 +84,15 @@ const RemoveFromCart = async (req, res) => {
   }
 };
 
+const clearCart = async (req, res) => {
+  try {
+    const accountId = req.query.accountId;
+    const account = await Account.findByIdAndUpdate(accountId, { cart: [] });
+    res.json("Cart cleared successfully!");
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 const getAllFavouritesByAccountID = async (req, res) => {
   try {
     const { accountId } = req.query;
@@ -229,6 +238,7 @@ module.exports = {
   getAllAccounts,
   getAccountByUserID,
   AddToCart,
+  clearCart,
   RemoveFromCart,
   AddToFavourites,
   RemoveFromfavourites,
