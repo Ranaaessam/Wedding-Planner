@@ -133,10 +133,9 @@ const getOrderedProductsForUser = async (req, res) => {
 // Helper function to validate ObjectId format
 const createOrder = async (req, res) => {
   try {
-    const { supplierID, date, client } = req.body;
-    const supplier = await Supplier.findById(supplierID);
+    const { items, date, client } = req.body;
     const newOrder = new Orders({
-      to: supplierID,
+      items: items,
       weddingDate: date,
       from: client._id,
       supplierType: supplier.type,
@@ -144,9 +143,13 @@ const createOrder = async (req, res) => {
     });
 
     await newOrder.save();
-    supplier.occupiedDays?.push(date);
-    await supplier.save();
-    client.orders?.push(newOrder._id);
+
+    for (const supplier of items) {
+      supplier.occupiedDays.push(date);
+      await supplier.save();
+    }
+
+    client.orders.push(newOrder._id);
     await client.save();
     res.status(201).json({ message: "Order created successfully" });
   } catch (error) {
