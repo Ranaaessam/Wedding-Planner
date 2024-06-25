@@ -3,14 +3,17 @@ import { ScrollView, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
 import { filterResultsByCategory } from "../../StateManagement/slices/SearchSlice";
 
-const categories = ["Venues", "Photographer", "Caterer", "Makeup Artist"];
+const categories = ["venue", "Photographer", "caterer", "Make-up Artist"];
 
 const SearchCategories = () => {
   const dispatch = useDispatch();
-  const [selectedCategory, setSelectedCategory] = useState("Venues");
+  const [selectedCategory, setSelectedCategory] = useState("venue");
 
   const handleCategoryPress = (category) => {
     setSelectedCategory(category);
+    console.log(
+      `Dispatching filterResultsByCategory with category: ${category}`
+    );
     dispatch(filterResultsByCategory({ category }));
   };
 
@@ -18,7 +21,8 @@ const SearchCategories = () => {
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.scrollView}>
+      contentContainerStyle={styles.scrollView}
+    >
       {categories.map((category, index) => (
         <TouchableOpacity
           key={index}
@@ -26,12 +30,14 @@ const SearchCategories = () => {
             styles.categoryButton,
             selectedCategory === category && styles.selectedCategoryButton,
           ]}
-          onPress={() => handleCategoryPress(category)}>
+          onPress={() => handleCategoryPress(category)}
+        >
           <Text
             style={[
               styles.categoryText,
               selectedCategory === category && styles.selectedCategoryText,
-            ]}>
+            ]}
+          >
             {category}
           </Text>
         </TouchableOpacity>

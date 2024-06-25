@@ -11,7 +11,8 @@ const SearchResultsScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(filterResultsByCategory({ category: "Venues" }));
+    console.log("Initial dispatch for category: venue");
+    dispatch(filterResultsByCategory({ category: "venue" }));
   }, [dispatch]);
 
   const hasResults = filteredResults.length > 0;
@@ -35,9 +36,9 @@ const SearchResultsScreen = ({ navigation }) => {
             <SearchResultItem
               key={index}
               name={result.name}
-              category={result.category}
+              category={result.type}
               location={result.location}
-              image={result.image}
+              image={result.images[0]} // Ensure there's at least one image
               navigation={navigation}
             />
           ))}

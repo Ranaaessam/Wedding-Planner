@@ -23,7 +23,7 @@ const VenueTypes = [
   },
 ];
 
-const SearchScreen = ({navigation}) => {
+const SearchScreen = ({ navigation }) => {
   const [search, setSearch] = useState("");
   return (
     <SafeAreaView style={styles.container}>
@@ -32,7 +32,7 @@ const SearchScreen = ({navigation}) => {
         <Text style={styles.headerStyle}> Popular Venue Types </Text>
         <ScrollView
           horizontal
-          showsHorizontalScrollIndicator="false"
+          showsHorizontalScrollIndicator={false}
           style={styles.venueTypes}
         >
           {VenueTypes.map((venue) => (
@@ -40,14 +40,14 @@ const SearchScreen = ({navigation}) => {
               key={venue.id}
               title={venue.title}
               imageUrl={venue.imageUrl}
-              navigation ={navigation}
+              navigation={navigation}
             ></SearchCard>
           ))}
         </ScrollView>
         <Text style={styles.headerStyle}> Explore Popular Suppliers </Text>
         <ScrollView
           horizontal
-          showsHorizontalScrollIndicator="false"
+          showsHorizontalScrollIndicator={false}
           style={styles.venueTypes}
         >
           {VenueTypes.map((venue) => (
@@ -55,7 +55,7 @@ const SearchScreen = ({navigation}) => {
               key={venue.id}
               title={venue.title}
               imageUrl={venue.imageUrl}
-              navigation ={navigation}
+              navigation={navigation}
             ></SearchCard>
           ))}
         </ScrollView>

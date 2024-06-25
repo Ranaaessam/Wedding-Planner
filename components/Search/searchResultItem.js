@@ -2,25 +2,29 @@ import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
-const SearchResultItem = ({ name, category, location, image , navigation }) => {
+const SearchResultItem = ({ name, category, location, image, navigation }) => {
   return (
-    <TouchableOpacity onPress={()=>{navigation.navigate('SupplierDetails')}}>
-    <View style={styles.container}>
-      <Image source={{ uri: image }} style={styles.image} />
-      <View style={styles.info}>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.category}>{category}</Text>
-        <View style={styles.locationContainer}>
-          <Icon
-            name="location-outline"
-            size={16}
-            color="#aaa"
-            style={styles.locationIcon}
-          />
-          <Text style={styles.location}>{location}</Text>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate("SupplierDetails");
+      }}
+    >
+      <View style={styles.container}>
+        <Image source={{ uri: image }} style={styles.image} />
+        <View style={styles.info}>
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.category}>{category}</Text>
+          <View style={styles.locationContainer}>
+            <Icon
+              name="location-outline"
+              size={16}
+              color="#aaa"
+              style={styles.locationIcon}
+            />
+            <Text style={styles.location}>{location}</Text>
+          </View>
         </View>
       </View>
-    </View>
     </TouchableOpacity>
   );
 };
