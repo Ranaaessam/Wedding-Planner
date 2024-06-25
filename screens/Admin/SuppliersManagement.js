@@ -25,7 +25,7 @@ const SuppliersManagement = () => {
 
   useEffect(() => {
     dispatch(getAllSuppliers());
-  }, [status, dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     setFilteredSuppliers(suppliers);
@@ -61,10 +61,7 @@ const SuppliersManagement = () => {
 
   const renderItem = ({ item }) => (
     <View style={styles.supplierCard}>
-      <Image
-        source={{ uri: item.profilePicture }}
-        style={styles.profilePicture}
-      />
+      <Image source={{ uri: item.images[0] }} style={styles.profilePicture} />
       <View style={styles.supplierInfo}>
         <Text style={styles.name}>{item.name}</Text>
         <Text style={styles.location}>{item.location}</Text>
