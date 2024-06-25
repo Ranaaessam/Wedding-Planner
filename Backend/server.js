@@ -12,6 +12,7 @@ const adminRoutes = require("./routes/admin");
 const accountRoutes = require("./routes/account");
 const ordersRoutes = require("./routes/orders");
 const reservations = require("./routes/reservation");
+const complaintsRoutes = require("./routes/complaints");
 mongoose.connect(
   "mongodb+srv://Rana123:Rana123@cluster0.tzw4ssh.mongodb.net/weddingPlanner"
 );
@@ -30,6 +31,7 @@ app.use("/admin", adminRoutes);
 app.use("/account", accountRoutes);
 app.use("/orders", ordersRoutes);
 app.use("/reservation", reservations);
+app.use("/complaints", complaintsRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

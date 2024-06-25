@@ -1,7 +1,7 @@
 const { isValidObjectId } = require("mongoose");
 const User = require("../models/userModel");
 const Order = require("../models/orderModel");
-// const Complaint = require("../models/complaintModel");
+const Complaint = require("../models/complaintModel");
 const Supplier = require("../models/supplierModel");
 const Account = require("../models/accountsModel");
 // #region User Management
@@ -111,8 +111,8 @@ const deleteOrder = async (req, res) => {
 // #region Complaint Management
 const getComplaints = async (req, res) => {
   try {
-    // const complaints = await Complaint.find({});
-    // return res.status(200).json(complaints);
+    const complaints = await Complaint.find({});
+    return res.status(200).json(complaints);
   } catch (error) {
     return res.status(500).json(error);
   }
