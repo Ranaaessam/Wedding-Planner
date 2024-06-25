@@ -8,17 +8,26 @@ import {
   fetchBudgetData,
   calculateTotalSpent,
   refundItem,
-  getUserBudget,
 } from "../StateManagement/slices/BudgetSlice";
+import { getUserProfile } from "../StateManagement/slices/ProfileSlice";
 
 const BudgetScreen = ({ navigation }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const userDetails = useSelector((state) => state.user.user);
-  const budgetHistory = userDetails.budget;
-  const totalBudget = useSelector((state) => state.budget.totalBudget);
+
+  const budgetHistory = useSelector((state) => state.budget.budgetHistory);
+  const totalBudget = userDetails.budget;
   const amountSpent = useSelector((state) => state.budget.amountSpent);
   const budgetLeft = totalBudget - amountSpent;
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const userId = await storage.load({ key: "userId" });
+      dispatch(getUserProfile(userId));
+    };
+    fetchUserProfile();
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchBudgetData());

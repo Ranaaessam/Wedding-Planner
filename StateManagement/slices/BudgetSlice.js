@@ -5,6 +5,7 @@ export const fetchBudgetData = createAsyncThunk(
   "budget/fetchBudgetData",
   async () => {
     const accountId = await storage.load({ key: "accountId" });
+    // const accountId = "667a80f6e50f45e1fb219168";
 
     try {
       const ordersResponse = await fetch(
@@ -14,7 +15,7 @@ export const fetchBudgetData = createAsyncThunk(
         throw new Error("Failed to fetch orders");
       }
       const orders = await ordersResponse.json();
-
+      console.log(orders);
       const productsResponse = await fetch(
         `${API_URL}/suppliers/retrieveSuppliersByIds`,
         {
