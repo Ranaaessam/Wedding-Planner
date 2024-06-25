@@ -21,7 +21,6 @@ import API_URL from "../constants";
 
 const LoginScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [isInvalid, setIsInvalid] = useState(false);
   const [visible, setVisible] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -43,33 +42,37 @@ const LoginScreen = () => {
   const handleLogin = async (values) => {
     try {
       const response = await axios.post(`${API_URL}/users/Login`, values);
-      console.log("Login Response", response);
 
       if (response.status === 200) {
-        const userId = "66773957627fa3d2658f55e5";
+        const userId = response.data.userId;
+        const accountId = response.data.accountId;
         dispatch(getUserProfile(userId));
+        storage.save({
+          key: "token",
+          data: response.headers["x-auth-token"],
+        });
         storage.save({
           key: "userId",
           data: userId,
         });
         storage.save({
-          key: "userDetails",
-          data: values,
+          key: "accountId",
+          data: accountId,
         });
 
         // Navigate to home
-        navigation.navigate("Profile");
+        navigation.navigate("Home");
       } else {
         console.log("Login Failed", response.data.message);
         Alert.alert("Invalid email or password");
-        setIsInvalid(true);
-        setVisible(true); // Show Snackbar
+
+        setVisible(true);
       }
     } catch (error) {
       console.log("Error", "An error occurred during login");
       console.log(error);
-      setIsInvalid(true);
-      setVisible(true); // Show Snackbar
+
+      setVisible(true);
     }
   };
 
@@ -145,6 +148,10 @@ const LoginScreen = () => {
       </Formik>
 
       <Snackbar
+        style={{
+          backgroundColor: "red",
+          bottom: "10%",
+        }}
         visible={visible}
         onDismiss={() => setVisible(false)}
         duration={Snackbar.DURATION_SHORT}
@@ -208,7 +215,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     marginTop: "15%",
-    width: "100%",
+    width: "90%",
   },
   buttonText: {
     color: "white",
