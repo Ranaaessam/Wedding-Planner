@@ -143,13 +143,16 @@ const createOrder = async (req, res) => {
 
     await newOrder.save();
 
+    // Update occupiedDays for each supplier
     for (const supplier of items) {
-      supplier.occupiedDays.push(date);
-      await supplier.save();
+      const foundSupplier = await Supplier.findById(supplier._id);
+      foundSupplier.occupiedDays.push(date);
+      await foundSupplier.save();
     }
 
     client.orders.push(newOrder._id);
     await client.save();
+
     res.status(201).json({ message: "Order created successfully" });
   } catch (error) {
     res
