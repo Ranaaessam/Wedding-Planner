@@ -3,6 +3,7 @@ const User = require("../models/userModel");
 const Order = require("../models/orderModel");
 // const Complaint = require("../models/complaintModel");
 const Supplier = require("../models/supplierModel");
+const Account = require("../models/accountsModel");
 // #region User Management
 const getUsers = async (req, res) => {
   try {
@@ -13,6 +14,35 @@ const getUsers = async (req, res) => {
   }
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    const [users, accounts] = await Promise.all([
+      User.find({}),
+      Account.find({}),
+    ]);
+
+    const accountMap = accounts.reduce((acc, account) => {
+      acc[account.user1Id]
+        ? acc[account.user1Id].push(account)
+        : (acc[account.user1Id] = [account]);
+      if (account.user2Id) {
+        acc[account.user2Id]
+          ? acc[account.user2Id].push(account)
+          : (acc[account.user2Id] = [account]);
+      }
+      return acc;
+    }, {});
+
+    let combinedUsersAndAccounts = users.map((user) => ({
+      ...user.toObject(),
+      accounts: accountMap[user._id] || [],
+    }));
+
+    return res.status(200).json(combinedUsersAndAccounts);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.body;
@@ -88,6 +118,7 @@ const getComplaints = async (req, res) => {
 module.exports = {
   getUsers,
   deleteUser,
+  getAllUsers,
   getSuppliers,
   deleteSupplier,
   getOrders,

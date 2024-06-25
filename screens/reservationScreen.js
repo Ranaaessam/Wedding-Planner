@@ -135,7 +135,7 @@ const ReservationScreen = ({ navigation, route }) => {
           selectedCake: selectedCake,
           selectedCar: selectedCar,
           selectedCaterer: selectedCaterer,
-          // weddingDate:
+          // weddingDate: selectedDay,
         }
       );
       navigation.navigate("Cart");
@@ -176,6 +176,7 @@ const ReservationScreen = ({ navigation, route }) => {
             // availability={venueObject.availability}
             availability={availability}
             onTimeSelect={handleTimeSelect}
+            occupiedDays={venueObj.occupiedDays}
           />
         </View>
         <Text style={styles.stepText}>Step 2: Choose your Favourite Cake</Text>

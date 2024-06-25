@@ -3,10 +3,12 @@ const router = express.Router();
 const adminController = require("../controllers/adminController");
 const adminMiddleware = require("../middlewares/adminMiddleware");
 
-router.use(adminMiddleware.checkIfAdmin);
+// router.use(adminMiddleware.checkIfAdmin);
 
 // #region User Management
 router.get("/users", adminController.getUsers);
+router.get("/allUsers", adminController.getAllUsers);
+
 router.delete("/users", adminController.deleteUser);
 // #endregion
 
