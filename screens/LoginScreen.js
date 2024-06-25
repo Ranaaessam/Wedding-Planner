@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// axios.defaults.baseURL = 'http://localhost:3000';
 import {
   StyleSheet,
   Text,
@@ -12,18 +11,22 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Icon from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
-import { useFonts } from "expo-font";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserProfile } from "../StateManagement/slices/ProfileSlice";
+import { Snackbar } from "react-native-paper";
 
 import storage from "../Storage/storage";
+import API_URL from "../constants";
 
 const LoginScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
+  const [visible, setVisible] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -33,19 +36,16 @@ const LoginScreen = () => {
       .email("Invalid email address")
       .required("Email is required"),
     password: Yup.string()
-      .min(8, "Password must be at least 8 characters")
+      .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
   });
 
   const handleLogin = async (values) => {
     try {
-      const response = await axios.post(
-        "http://192.168.1.5:3000/users/Login",
-        values
-      );
+      const response = await axios.post(`${API_URL}/users/Login`, values);
+      console.log("Login Response", response);
 
-      if (response.status == 200) {
-        //send user profile,,
+      if (response.status === 200) {
         const userId = "66773957627fa3d2658f55e5";
         dispatch(getUserProfile(userId));
         storage.save({
@@ -57,18 +57,19 @@ const LoginScreen = () => {
           data: values,
         });
 
-        //navigate to home
-        // navigation.navigate("Home");
+        // Navigate to home
         navigation.navigate("Profile");
       } else {
         console.log("Login Failed", response.data.message);
-        Alert.alert("invalid email or password");
+        Alert.alert("Invalid email or password");
+        setIsInvalid(true);
+        setVisible(true); // Show Snackbar
       }
-      //send user
-      // dispatch(getUserProfile(values.email));
     } catch (error) {
       console.log("Error", "An error occurred during login");
       console.log(error);
+      setIsInvalid(true);
+      setVisible(true); // Show Snackbar
     }
   };
 
@@ -142,6 +143,18 @@ const LoginScreen = () => {
           </View>
         )}
       </Formik>
+
+      <Snackbar
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        duration={Snackbar.DURATION_SHORT}
+        action={{
+          label: "Close",
+          onPress: () => setVisible(false),
+        }}
+      >
+        Invalid email or password. Please try again.
+      </Snackbar>
     </View>
   );
 };

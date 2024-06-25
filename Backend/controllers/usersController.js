@@ -3,7 +3,6 @@ const Account = require("../models/accountsModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-
 const Registration = async (req, res) => {
   try {
     let user = await User.findOne({ email: req.body.email }).exec();
@@ -23,7 +22,7 @@ const Registration = async (req, res) => {
 
     // Set default values if not provided in req.body
     const weddingdate = req.body.weddingdate || null;
-    const location = req.body.location || '';
+    const location = req.body.location || "";
     const budget = req.body.budget || 0;
 
     const account = new Account({
@@ -52,17 +51,20 @@ const Registration = async (req, res) => {
   }
 };
 
-
 const Login = async (req, res) => {
   try {
-    
-    let user = await User.findOne({ email: req.body.email }).exec();
+    let user = await User.findOne({
+      email: req.body.email.toLowerCase(),
+    }).exec();
+
     if (!user) {
       return res.status(400).send("Invalid email or password.");
     }
 
-   
-    const validPassword = await bcrypt.compare(req.body.password, user.password);
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
     if (!validPassword) {
       return res.status(400).send("Invalid email or password.");
     }
@@ -70,18 +72,20 @@ const Login = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, "WeddingPlannerSecretKey");
 
     const account = await Account.findOne({
-      $or: [{ user1Id: user._id }, { user2Id: user._id }]
+      $or: [{ user1Id: user._id }, { user2Id: user._id }],
     });
 
     res.header("x-auth-token", token);
     res.status(200).json({
       message: "Logged in successfully",
       userId: user._id,
-      accountId: account ? account._id : null, 
+      accountId: account ? account._id : null,
     });
   } catch (err) {
     console.error("Error during login:", err);
-    res.status(500).send({ message: "An error occurred during login", error: err.message });
+    res
+      .status(500)
+      .send({ message: "An error occurred during login", error: err.message });
   }
 };
 
