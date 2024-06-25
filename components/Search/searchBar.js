@@ -4,9 +4,11 @@ import { StyleSheet, TextInput, View } from "react-native";
 import { IconButton } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import { searchAll } from "../../StateManagement/slices/SearchSlice";
+import { useTranslation } from "react-i18next";
 const SearchBar = () => {
   const navigate = useNavigation();
   const dispatch = useDispatch();
+  const {t}= useTranslation();
   const [searchValue, setSearch] = useState("");
   const handleSearch = (text) => {
     setSearch(text);
@@ -22,7 +24,7 @@ const SearchBar = () => {
         value={searchValue}
         onChangeText={handleSearch}
         onSubmitEditing={onPress}
-        placeholder="Search by name"
+        placeholder={t("Search by name")}
       ></TextInput>
       <IconButton
         icon="magnify"
