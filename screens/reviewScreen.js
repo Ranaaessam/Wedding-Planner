@@ -21,29 +21,13 @@ const ReviewScreen = ({ visible, onClose, supplierId }) => {
   const dispatch = useDispatch();
 
   const submitReview = async () => {
-    try {
-      const userToken = await storage.load({ key: "userId" });
-      if (comment.length > 0 && rating > 0) {
-        const reviewBody = {
-          review: comment,
-          rate: rating,
-          to: supplierId,
-          from: userToken,
-        };
-        dispatch(addReview(reviewBody));
-        Alert.alert(
-          "Review Submitted",
-          `Rating: ${rating} stars\nComment: ${comment}`
-        );
-        setComment("");
-        setRating(0);
-        onClose();
-      }
-    } catch (error) {
-      console.error("Error submitting review:", error);
-    }
+    const r = await dispatch(
+      addReview({ review: comment, rate: rating, to: supplierId })
+    );
+    setComment("");
+    setRating(0);
+    onClose();
   };
-
   const renderStars = () => {
     let stars = [];
     for (let i = 1; i <= 5; i++) {
