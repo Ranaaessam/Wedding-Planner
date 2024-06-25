@@ -107,7 +107,7 @@ const getPlanPercentage = async (req, res) => {
     }
 
     const count = supplierTypes.size;
-    const percentage = (count / 11) * 100;
+    const percentage = (count / 3) * 100;
     res.status(200).json({ percentage });
   } catch (error) {
     res

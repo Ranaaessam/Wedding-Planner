@@ -12,6 +12,18 @@ export const getUserProfile = createAsyncThunk(
   }
 );
 
+export const updateProfile = createAsyncThunk("UpdateProfile", async (data) => {
+  {
+    const accountId = await storage.load({ key: "accountId" });
+
+    const response = await axios.patch(
+      `${API_URL}/account?accountId=${accountId}`,
+      { account: data }
+    );
+    return response.data;
+  }
+});
+
 export const getPlanPercentage = createAsyncThunk(
   "PlanPercentage",
   async () => {

@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getPlanPercentage,
   getUserProfile,
+  updateProfile,
 } from "../StateManagement/slices/ProfileSlice";
 import storage from "../Storage/storage";
 
@@ -56,15 +57,21 @@ const ProfileScreen = () => {
     }
   }, [userDetails]);
 
+  useEffect(() => {
+    if (!isEditing && profile) {
+      dispatch(updateProfile(profile));
+    }
+  }, [profile, isEditing, dispatch]);
+
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
   };
 
   const handleChange = (key, value) => {
-    setProfile({
-      ...profile,
+    setProfile((prevProfile) => ({
+      ...prevProfile,
       [key]: value,
-    });
+    }));
   };
 
   if (profile === null) {
@@ -107,7 +114,7 @@ const ProfileScreen = () => {
             </TouchableOpacity>
             <View style={styles.infoContainer}>
               <View style={styles.balanceContainer}>
-                <Text style={{ fontSize: 16 }}>Balance</Text>
+                <Text style={{ fontSize: 16 }}>Budget</Text>
                 {isEditing ? (
                   <TextInput
                     style={styles.data}
