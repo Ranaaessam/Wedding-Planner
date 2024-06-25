@@ -14,38 +14,6 @@ const FavouriteCategory = ({ category }) => {
     dispatch(filterFavouritesByType({ category }));
     navigate.navigate("FavouriteCategoryScreen", {
       categoryName: category,
-      favouritesList: [
-        {
-          title: "Title",
-          description: "Description",
-          image: require("../../assets/Images/hall.jpg"),
-          price: 100,
-        },
-        {
-          title: "Title",
-          description: "Description",
-          image: require("../../assets/Images/hall.jpg"),
-          price: 100,
-        },
-        {
-          title: "Title",
-          description: "Description",
-          image: require("../../assets/Images/hall.jpg"),
-          price: 100,
-        },
-        {
-          title: "Title",
-          description: "Description",
-          image: require("../../assets/Images/hall.jpg"),
-          price: 100,
-        },
-        {
-          title: "Title",
-          description: "Description",
-          image: require("../../assets/Images/hall.jpg"),
-          price: 100,
-        },
-      ],
     });
   };
   return (

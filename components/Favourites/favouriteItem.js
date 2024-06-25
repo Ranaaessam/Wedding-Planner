@@ -1,29 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 
 const FavouriteItem = ({ item }) => {
   const [liked, setLiked] = useState(false);
 
+  useEffect(() => {
+    console.log(item);
+  }, [item]);
+
   const toggleLike = () => {
     setLiked(!liked);
   };
 
+  if (!item) {
+    return null;
+  }
+
+  const imageUrl =
+    item.images && item.images.length > 0 ? item.images[0] : null;
+  const name = item.name || "No name available";
+  const rate = item.rate || "No rate available";
+  const price = item.price || "No price available";
+
   return (
     <View style={styles.card}>
-      <Image source={item.image} style={styles.image} />
+      {imageUrl ? (
+        <Image source={{ uri: imageUrl }} style={styles.image} />
+      ) : (
+        <View style={styles.imagePlaceholder}>
+          <Text>No Image</Text>
+        </View>
+      )}
       <View style={styles.details}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.description}>{item.description}</Text>
-        <Text style={styles.price}>${item.price}</Text>
+        <Text style={styles.title}>{name}</Text>
+        <Text style={styles.description}>⭐ : {rate}.0</Text>
+        <Text style={styles.price}>${price}</Text>
       </View>
-      <TouchableOpacity onPress={toggleLike} style={styles.iconContainer}>
-        <Icon
-          name={liked ? "heart" : "heart-o"}
-          type="font-awesome"
-          color={liked ? "red" : "grey"}
-        />
-      </TouchableOpacity>
     </View>
   );
 };
@@ -45,6 +58,14 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 10,
+  },
+  imagePlaceholder: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+    backgroundColor: "#ccc",
+    justifyContent: "center",
+    alignItems: "center",
   },
   details: {
     flex: 1,

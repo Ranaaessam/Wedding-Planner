@@ -80,6 +80,17 @@ const RemoveFromCart = async (req, res) => {
     });
   }
 };
+
+const getAllFavouritesByAccountID = async (req, res) => {
+  try {
+    const { accountId } = req.query;
+    const favourites = await Account.findById(accountId).select("favourites");
+    res.json(favourites);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 //favourites
 const AddToFavourites = async (req, res) => {
   const { accountId } = req.query;
@@ -164,4 +175,5 @@ module.exports = {
   AddToFavourites,
   RemoveFromfavourites,
   updateAccount,
+  getAllFavouritesByAccountID,
 };
