@@ -4,6 +4,7 @@ const orderMiddleware = require("../middlewares/orderMiddleware");
 
 router.get("/get", orderController.getOrders);
 router.get("/getByID", orderController.getOrderByUserIDAndSupplierID);
+router.get("/getSupplierTypesByID", orderController.getOrderTypesForUser);
 router.post(
   "/create",
   orderMiddleware.getUserData,

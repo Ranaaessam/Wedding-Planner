@@ -47,6 +47,33 @@ const getOrderByUserIDAndSupplierID = async (req, res) => {
   }
 };
 
+const getOrderTypesForUser = async (req, res) => {
+  try {
+    const { userID } = req.query;
+
+    if (!userID) {
+      return res.status(400).json({ message: "userID required" });
+    }
+
+    const orders = await Orders.find({});
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: "No orders found" });
+    }
+
+    const supplierTypes = await Orders.distinct("supplierType", {
+      from: userID,
+    });
+
+    return res.status(200).json(supplierTypes);
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
 // Helper function to validate ObjectId format
 const createOrder = async (req, res) => {
   try {
@@ -121,4 +148,5 @@ module.exports = {
   createOrder,
   deleteOrder,
   getPlanPercentage,
+  getOrderTypesForUser,
 };

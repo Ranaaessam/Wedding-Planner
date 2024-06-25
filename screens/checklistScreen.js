@@ -1,20 +1,45 @@
-// App.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, View, FlatList, Text, StyleSheet } from "react-native";
 import { Checkbox, FAB } from "react-native-paper";
 import ProgressBar from "../components/progressBar";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTypes } from "../StateManagement/slices/CheckListSlice";
 
 const CheckListScreen = () => {
   const { t } = useTranslation();
+  const plan = useSelector((state) => state.user.plan);
+  const dispatch = useDispatch();
 
   const [tasks, setTasks] = useState([
     { id: "1", text: "Venue", completed: false },
-    { id: "2", text: "Photographer", completed: true },
+    { id: "2", text: "Photographer", completed: false },
+    { id: "3", text: "Makeup Artist", completed: false },
   ]);
 
+  useEffect(() => {
+    dispatch(fetchTypes());
+  }, [dispatch]);
+
+  const types = useSelector((state) => state.checklist.types);
+
+  useEffect(() => {
+    if (types.length > 0) {
+      updateTaskCompletion(types);
+    }
+  }, [types]);
+
+  const updateTaskCompletion = (types) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => ({
+        ...task,
+        completed: types.includes(task.text),
+      }))
+    );
+  };
+
   const toggleTaskCompletion = (id) => {
-    setTasks(
+    setTasks((tasks) =>
       tasks.map((task) =>
         task.id === id ? { ...task, completed: !task.completed } : task
       )
@@ -22,7 +47,7 @@ const CheckListScreen = () => {
   };
 
   const clearCompletedTasks = () => {
-    setTasks(tasks.filter((task) => !task.completed));
+    setTasks((tasks) => tasks.filter((task) => !task.completed));
   };
 
   return (
@@ -43,10 +68,10 @@ const CheckListScreen = () => {
         }}
       >
         <Text style={{ fontSize: 18, fontWeight: "bold", paddingRight: 10 }}>
-          20%
+          {plan ? `${plan}%` : "0%"}
         </Text>
 
-        <ProgressBar height={10} progress={20}></ProgressBar>
+        <ProgressBar height={10} progress={plan}></ProgressBar>
       </View>
       <View
         style={{
@@ -123,7 +148,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   checkbox: {
-    borderRadius: 50, // Make it circular
+    borderRadius: 50,
   },
 });
 

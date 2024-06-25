@@ -4,8 +4,10 @@ import ProgressBar from "../components/progressBar";
 import Icon from "react-native-vector-icons/AntDesign";
 import { CheckBox } from "react-native-elements";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 const PlanChecklist = ({ navigation }) => {
+  const plan = useSelector((state) => state.user.plan);
   const { t } = useTranslation();
   return (
     <TouchableOpacity
@@ -18,8 +20,10 @@ const PlanChecklist = ({ navigation }) => {
           <Text style={styles.text}>{t("Checklist")}</Text>
         </View>
         <View style={styles.progressContainer}>
-          <ProgressBar progress={20} />
-          <Text style={styles.progressText}>20% {t("Completed")}</Text>
+          <ProgressBar progress={plan} />
+          <Text style={styles.progressText}>
+            {plan ? `${plan}%` : "0%"} {t("Completed")}
+          </Text>
         </View>
       </View>
       <View style={styles.content}>
