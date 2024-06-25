@@ -13,8 +13,6 @@ router.get(
 router.post(
   "/create",
   orderMiddleware.getUserData,
-  orderMiddleware.checkForID,
-  orderMiddleware.checkIfDateIsAvailable,
   orderController.createOrder
 );
 router.delete(

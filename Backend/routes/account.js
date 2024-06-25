@@ -9,7 +9,7 @@ router.get("/guestList", AccountsController.getGuestList);
 
 router.post("/Cart", AccountsController.AddToCart);
 router.delete("/Cart", AccountsController.RemoveFromCart);
-
+router.post("/Cart/clear", AccountsController.clearCart);
 router.post("/Favourites", AccountsController.AddToFavourites);
 router.delete("/Favourites", AccountsController.RemoveFromfavourites);
 router.get("/Favourites", AccountsController.getAllFavouritesByAccountID);
