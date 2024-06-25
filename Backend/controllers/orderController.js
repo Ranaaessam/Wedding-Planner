@@ -13,6 +13,35 @@ const getOrders = async (req, res) => {
   }
 };
 
+const getOrderForUser = async (req, res) => {
+  try {
+    const { userID } = req.query;
+
+    if (!userID) {
+      return res.status(400).json({ message: "userID is required" });
+    }
+
+    if (!isValidObjectId(userID)) {
+      return res.status(400).json({ message: "Invalid userID format" });
+    }
+
+    const orders = await Orders.find({
+      from: userID,
+    });
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: "No orders found" });
+    }
+
+    return res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
 const getOrderByUserIDAndSupplierID = async (req, res) => {
   try {
     const { userID, supplierID } = req.query;
@@ -74,6 +103,33 @@ const getOrderTypesForUser = async (req, res) => {
   }
 };
 
+const getOrderedProductsForUser = async (req, res) => {
+  try {
+    const { userID } = req.query;
+
+    if (!userID) {
+      return res.status(400).json({ message: "userID required" });
+    }
+
+    const orders = await Orders.find({});
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: "No orders found" });
+    }
+
+    const boughtProducts = await Orders.distinct("to", {
+      from: userID,
+    });
+
+    return res.status(200).json(boughtProducts);
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
 // Helper function to validate ObjectId format
 const createOrder = async (req, res) => {
   try {
@@ -84,6 +140,7 @@ const createOrder = async (req, res) => {
       weddingDate: date,
       from: client._id,
       supplierType: supplier.type,
+      price: supplier.price,
     });
 
     await newOrder.save();
@@ -149,4 +206,6 @@ module.exports = {
   deleteOrder,
   getPlanPercentage,
   getOrderTypesForUser,
+  getOrderForUser,
+  getOrderedProductsForUser,
 };

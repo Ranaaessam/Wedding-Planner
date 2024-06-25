@@ -67,27 +67,33 @@ const UsersManagement = () => {
     setFilteredUsers(filteredData);
   };
 
-  const renderItem = ({ item }) => (
-    <View style={styles.userCard}>
-      <Image source={{ uri: item.image }} style={styles.profilePic} />
-      <View style={styles.userInfo}>
-        <Text style={styles.userName}>{item.name}</Text>
-        <Text style={styles.weddingDate}>Wedding Date: {item.weddingDate}</Text>
-        <View style={styles.budgetContainer}>
-          <Icon
-            name="attach-money"
-            size={20}
-            color="#4CAF50"
-            style={styles.budgetIcon}
-          />
-          <Text style={styles.budgetText}>{item.budget}</Text>
+  const renderItem = ({ item }) => {
+    const user = item.accounts.length > 0 ? item.accounts[0] : {};
+
+    return (
+      <View style={styles.userCard}>
+        <Image source={{ uri: user.image }} style={styles.profilePic} />
+        <View style={styles.userInfo}>
+          <Text style={styles.userName}>{item.name}</Text>
+          <Text style={styles.weddingDate}>
+            Wedding Date: {user.weddingdate}
+          </Text>
+          <View style={styles.budgetContainer}>
+            <Icon
+              name="attach-money"
+              size={20}
+              color="#4CAF50"
+              style={styles.budgetIcon}
+            />
+            <Text style={styles.budgetText}>{user.budget}</Text>
+          </View>
         </View>
+        <TouchableOpacity onPress={() => handleDeleteUser(item._id)}>
+          <Icon name="delete" size={24} color="#FF6347" />
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => handleDeleteUser(item._id)}>
-        <Icon name="delete" size={24} color="#FF6347" />
-      </TouchableOpacity>
-    </View>
-  );
+    );
+  };
 
   return (
     <View style={styles.container}>

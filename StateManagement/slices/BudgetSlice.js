@@ -1,17 +1,45 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import API_URL from "../../constants";
 
 export const fetchBudgetData = createAsyncThunk(
   "budget/fetchBudgetData",
   async () => {
-    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
-    const data = await response.json();
-    return data.slice(0, 7).map((item, index) => ({
-      id: item.id.toString(),
-      image: "https://i.ytimg.com/vi/rBLXCpC23CM/maxresdefault.jpg",
-      type: index % 2 === 0 ? "Venue" : "Photographer",
-      name: item.title,
-      price: Math.floor(Math.random() * 5000),
-    }));
+    const accountId = await storage.load({ key: "accountId" });
+
+    try {
+      const ordersResponse = await fetch(
+        `${API_URL}/orders/getOrderedProductsForUser?userID=${accountId}`
+      );
+      if (!ordersResponse.ok) {
+        throw new Error("Failed to fetch orders");
+      }
+      const orders = await ordersResponse.json();
+
+      const productsResponse = await fetch(
+        `${API_URL}/suppliers/retrieveSuppliersByIds`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ids: orders }),
+        }
+      );
+      if (!productsResponse.ok) {
+        throw new Error("Failed to fetch products");
+      }
+      const products = await productsResponse.json();
+      return products.map((product) => ({
+        id: product._id,
+        price: product.price,
+        type: product.type,
+        name: product.name,
+        image: product.images[0],
+      }));
+    } catch (error) {
+      console.error("Error fetching budget data:", error);
+      throw error;
+    }
   }
 );
 
@@ -24,7 +52,6 @@ const budgetSlice = createSlice({
   name: "budget",
   initialState: {
     budgetHistory: [],
-    totalBudget: 100000,
     amountSpent: 0,
     status: "idle",
     error: null,
@@ -58,6 +85,10 @@ const budgetSlice = createSlice({
         const id = action.payload;
         state.budgetHistory = state.budgetHistory.filter(
           (item) => item.id !== id
+        );
+        state.amountSpent = state.budgetHistory.reduce(
+          (total, item) => total + item.price,
+          0
         );
       });
   },

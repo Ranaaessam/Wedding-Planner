@@ -24,10 +24,8 @@ const ComplaintsManagement = () => {
   const [replyText, setReplyText] = useState("");
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(getAllComplaints());
-    }
-  }, [status, dispatch]);
+    dispatch(getAllComplaints());
+  }, [dispatch]);
 
   const replyToComplaint = (complaintId) => {
     setCurrentComplaintId(complaintId);
@@ -35,7 +33,6 @@ const ComplaintsManagement = () => {
   };
 
   const handleSendReply = () => {
-    // Logic to handle sending reply and updating state goes here
     setReplyText("");
     setModalVisible(false);
     Alert.alert(
@@ -54,7 +51,7 @@ const ComplaintsManagement = () => {
         <Text style={styles.complaintDate}>Date: {item.date}</Text>
         <Text style={styles.complaintDetails}>{item.details}</Text>
       </View>
-      <TouchableOpacity onPress={() => replyToComplaint(item.id)}>
+      <TouchableOpacity onPress={() => replyToComplaint(item._id)}>
         <Icon name="reply" size={30} color="#4CAF50" />
       </TouchableOpacity>
     </View>
@@ -70,7 +67,7 @@ const ComplaintsManagement = () => {
       ) : (
         <FlatList
           data={complaints}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item._id}
           renderItem={renderItem}
           contentContainerStyle={styles.listContainer}
         />

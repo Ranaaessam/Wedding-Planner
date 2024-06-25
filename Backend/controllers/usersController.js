@@ -2,8 +2,7 @@ const User = require("../models/userModel");
 const Account = require("../models/accountsModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const nodemailer = require('nodemailer');
-
+const nodemailer = require("nodemailer");
 
 const Registration = async (req, res) => {
   try {
@@ -107,7 +106,9 @@ const invite = async (req, res) => {
     const accountId = req.body.accountId;
     const account = await Account.findById(accountId);
     if (!account) {
-      return res.status(404).json({ error: `Account with ID ${accountId} not found` });
+      return res
+        .status(404)
+        .json({ error: `Account with ID ${accountId} not found` });
     }
 
     // Find the sender user to get the password
@@ -119,11 +120,17 @@ const invite = async (req, res) => {
       if (senderUser) {
         senderName = senderUser.name;
       } else {
-        return res.status(404).json({ error: `User with ID ${account.user1Id} not found` });
+        return res
+          .status(404)
+          .json({ error: `User with ID ${account.user1Id} not found` });
       }
     } else {
       // Handle case where user1Id doesn't exist (though it should ideally exist)
-      return res.status(400).json({ error: `Account with ID ${accountId} does not have user1Id populated` });
+      return res
+        .status(400)
+        .json({
+          error: `Account with ID ${accountId} does not have user1Id populated`,
+        });
     }
 
     // Check if the user already exists by email
@@ -139,7 +146,7 @@ const invite = async (req, res) => {
     }
 
     // Determine which user ID field to populate based on whether user2Id is already set
-    const userFieldToUpdate = account.user1Id ? 'user2Id' : 'user1Id';
+    const userFieldToUpdate = account.user1Id ? "user2Id" : "user1Id";
     account[userFieldToUpdate] = existingUser._id;
 
     // Save the updated account
@@ -148,20 +155,24 @@ const invite = async (req, res) => {
     // Send an email to the user with the generated password (if needed)
     //await sendEmail(req.body.email, req.body.name, senderName, senderUser.password);
 
-    console.log(`User ${req.body.name} (${req.body.email}) added to account ${accountId} with the same password as the sender user`);
-    
+    console.log(
+      `User ${req.body.name} (${req.body.email}) added to account ${accountId} with the same password as the sender user`
+    );
+
     // Send success response
-    return res.status(200).json({ message: `User ${req.body.name} (${req.body.email}) added to account ${accountId} successfully` });
+    return res
+      .status(200)
+      .json({
+        message: `User ${req.body.name} (${req.body.email}) added to account ${accountId} successfully`,
+      });
   } catch (error) {
     console.error("Error inviting user:", error);
     // Send error response
-    return res.status(500).json({ error: "Error inviting user", details: error.message });
+    return res
+      .status(500)
+      .json({ error: "Error inviting user", details: error.message });
   }
 };
-
-
-
-
 
 // const sendEmail = async (email, name, senderName, password) => {
 //   try {
@@ -193,5 +204,5 @@ module.exports = {
   getAllUsers,
   Registration,
   Login,
-  invite
+  invite,
 };

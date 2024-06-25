@@ -24,6 +24,20 @@ const getSuppliersByID = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+const getSuppliersByIDs = async (req, res) => {
+  const { ids } = req.body;
+  if (!ids || !Array.isArray(ids)) {
+    return res.status(400).send("IDs array is required in the request body");
+  }
+
+  try {
+    const objects = await Supplier.find({ _id: { $in: ids } });
+    res.status(200).json(objects);
+  } catch (error) {
+    console.error("Error retrieving objects by IDs:", error);
+    res.status(500).send("Internal Server Error");
+  }
+};
 // #endregion
 
 // #region Filter Suppliers
@@ -117,4 +131,5 @@ module.exports = {
   createSupplier,
   deleteSupplier,
   updateSupplier,
+  getSuppliersByIDs,
 };

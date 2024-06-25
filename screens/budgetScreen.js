@@ -8,20 +8,21 @@ import {
   fetchBudgetData,
   calculateTotalSpent,
   refundItem,
+  getUserBudget,
 } from "../StateManagement/slices/BudgetSlice";
 
 const BudgetScreen = ({ navigation }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const budgetHistory = useSelector((state) => state.budget.budgetHistory);
+  const userDetails = useSelector((state) => state.user.user);
+  const budgetHistory = userDetails.budget;
   const totalBudget = useSelector((state) => state.budget.totalBudget);
   const amountSpent = useSelector((state) => state.budget.amountSpent);
   const budgetLeft = totalBudget - amountSpent;
 
   useEffect(() => {
-    dispatch(fetchBudgetData()).then(() => {
-      dispatch(calculateTotalSpent());
-    });
+    dispatch(fetchBudgetData());
+    dispatch(calculateTotalSpent());
   }, [dispatch]);
 
   const handleRefund = (id) => {

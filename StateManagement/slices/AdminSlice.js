@@ -13,7 +13,8 @@ export const deleteUser = createAsyncThunk(
   "admin/deleteUser",
   async (userId) => {
     const response = await axios.delete(`${API_URL}/admin/users/${userId}`);
-
+    const data = await response.data;
+    return data;
     return userId;
   }
 );
@@ -33,7 +34,7 @@ export const deleteSupplier = createAsyncThunk(
   "admin/deleteSupplier",
   async (supplierId) => {
     // Replace this with your API call
-    await fetch(`https://your-api.com/admin/suppliers/${supplierId}`, {
+    await fetch(`${API_URL}/admin/suppliers/${supplierId}`, {
       method: "DELETE",
     });
     return supplierId;
@@ -74,18 +75,12 @@ export const getAllComplaints = createAsyncThunk(
 export const getStatistics = createAsyncThunk(
   "admin/getStatistics",
   async () => {
-    const usersResponse = await fetch(
-      "https://jsonplaceholder.typicode.com/users"
-    );
+    const usersResponse = await fetch(`${API_URL}/admin/allUsers`);
     const usersData = await usersResponse.json();
-    const suppliersResponse = await fetch(
-      "https://jsonplaceholder.typicode.com/post"
-    );
+    const suppliersResponse = await fetch(`${API_URL}/admin/suppliers`);
     const suppliersData = await suppliersResponse.json();
 
-    const venuesResponse = await fetch(
-      "https://jsonplaceholder.typicode.com/users"
-    );
+    const venuesResponse = await fetch(`${API_URL}/admin/suppliers?type=venue`);
     const venuesData = await venuesResponse.json();
 
     const usersCount = usersData.length;

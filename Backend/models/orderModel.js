@@ -6,6 +6,7 @@ const orderSchema = new mongoose.Schema({
   weddingDate: { type: Date, required: true },
   supplierType: { type: String, required: true },
   isPaid: { type: Boolean, default: false },
+  price: { type: Number, required: true },
 });
 const Order = mongoose.model("Order", orderSchema);
 module.exports = Order;

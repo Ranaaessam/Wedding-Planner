@@ -23,10 +23,8 @@ const OrdersManagement = () => {
   const [filteredOrders, setFilteredOrders] = useState(orders);
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(getAllOrders());
-    }
-  }, [status, dispatch]);
+    dispatch(getAllOrders());
+  }, [dispatch]);
 
   useEffect(() => {
     setFilteredOrders(orders);
@@ -63,7 +61,7 @@ const OrdersManagement = () => {
   const renderItem = ({ item }) => (
     <View style={styles.orderCard}>
       <View style={styles.orderInfo}>
-        <Text style={styles.username}>{item.username}</Text>
+        <Text style={styles.username}>{item._id}</Text>
         <Text style={styles.orderDate}>Date: {item.date}</Text>
         <View style={styles.priceContainer}>
           <Icon
@@ -75,7 +73,7 @@ const OrdersManagement = () => {
           <Text style={styles.priceText}>{item.price}</Text>
         </View>
       </View>
-      <TouchableOpacity onPress={() => handleDeleteOrder(item.id)}>
+      <TouchableOpacity onPress={() => handleDeleteOrder(item._id)}>
         <Icon name="delete" size={24} color="#FF6347" />
       </TouchableOpacity>
     </View>
@@ -98,7 +96,7 @@ const OrdersManagement = () => {
       ) : (
         <FlatList
           data={filteredOrders}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item._id}
           renderItem={renderItem}
           contentContainerStyle={styles.listContainer}
         />
