@@ -5,6 +5,7 @@ const AccountsController = require("../controllers/accountsController");
 router.get("/", AccountsController.getAllAccounts);
 router.patch("/", AccountsController.updateAccount);
 router.get("/profile", AccountsController.getAccountByUserID);
+router.get("/guestList", AccountsController.getGuestList);
 
 router.post("/Cart", AccountsController.AddToCart);
 router.delete("/Cart", AccountsController.RemoveFromCart);

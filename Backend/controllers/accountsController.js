@@ -1,4 +1,7 @@
 const Account = require("../models/accountsModel");
+const { google } = require("googleapis");
+const credentials = require("../credentials.json");
+
 const { isValidObjectId } = require("mongoose");
 const getAllAccounts = async (req, res) => {
   try {
@@ -167,6 +170,61 @@ const updateAccount = async (req, res) => {
   }
 };
 
+const authClient = new google.auth.JWT(
+  credentials.client_email,
+  null,
+  credentials.private_key.replace(/\\n/g, "\n"),
+  ["https://www.googleapis.com/auth/spreadsheets"]
+);
+
+const service = google.sheets({ version: "v4", auth: authClient });
+
+const getGuestList = async (req, res) => {
+  try {
+    console.log("Authorizing...");
+    const startAuth = Date.now();
+    await authClient.authorize();
+    const endAuth = Date.now();
+    console.log(`Authorization took ${endAuth - startAuth} ms`);
+
+    console.log("Fetching rows...");
+    const startFetch = Date.now();
+    const response = await service.spreadsheets.values.get({
+      auth: authClient,
+      spreadsheetId: "1s6einhareR_FoDQlFyfVe8xfhDSPpMQF-6RNc4n1EWM",
+      range: "A:H",
+    });
+    const endFetch = Date.now();
+    console.log(`Fetching rows took ${endFetch - startFetch} ms`);
+
+    const answers = [];
+
+    const rows = response.data.values;
+
+    if (rows && rows.length) {
+      rows.shift();
+
+      for (const row of rows) {
+        answers.push({
+          timeStamp: row[0],
+          weddingId: row[1],
+          groomName: row[2],
+          brideName: row[3],
+          date: row[4],
+          location: row[5],
+          enteredName: row[6],
+          note: row[7],
+        });
+      }
+    } else {
+      console.log("No data found.");
+    }
+    res.json(answers);
+  } catch (error) {
+    process.exit(1);
+  }
+};
+
 module.exports = {
   getAllAccounts,
   getAccountByUserID,
@@ -175,5 +233,6 @@ module.exports = {
   AddToFavourites,
   RemoveFromfavourites,
   updateAccount,
+  getGuestList,
   getAllFavouritesByAccountID,
 };

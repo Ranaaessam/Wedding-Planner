@@ -1,16 +1,18 @@
 // src/redux/slices/guestListSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
-// Example API endpoint
-const API_URL = "https://jsonplaceholder.typicode.com/users";
+import API_URL from "../../constants";
+import storage from "../../Storage/storage";
 
 // Async thunk to fetch guests from an API
 export const fetchGuests = createAsyncThunk(
   "guestList/fetchGuests",
   async () => {
-    const response = await fetch(API_URL);
+    const accountId = await storage.load({ key: "accountId" });
+    const response = await fetch(
+      `${API_URL}/account/guestList?accountId=${accountId}`
+    );
     const data = await response.json();
-    return data;
+    return data.filter((guest) => guest.weddingId === accountId);
   }
 );
 
