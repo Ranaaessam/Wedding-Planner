@@ -51,14 +51,15 @@ const getOrderByUserIDAndSupplierID = async (req, res) => {
 const createOrder = async (req, res) => {
   try {
     const { supplierID, date, client } = req.body;
+    const supplier = await Supplier.findById(supplierID);
     const newOrder = new Orders({
       to: supplierID,
       weddingDate: date,
       from: client._id,
+      supplierType: supplier.type,
     });
 
     await newOrder.save();
-    const supplier = await Supplier.findById(supplierID);
     supplier.occupiedDays?.push(date);
     await supplier.save();
     client.orders?.push(newOrder._id);
@@ -93,9 +94,31 @@ const deleteOrder = async (req, res) => {
   }
 };
 
+const getPlanPercentage = async (req, res) => {
+  try {
+    const client = req.body.client;
+    const orderIDs = client.orders;
+    const supplierTypes = new Set();
+    for (const orderID of orderIDs) {
+      const order = await Orders.findById(orderID);
+      if (order && order.supplierType) {
+        supplierTypes.add(order.supplierType);
+      }
+    }
+
+    const count = supplierTypes.size;
+    const percentage = (count / 11) * 100;
+    res.status(200).json({ percentage });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
+};
 module.exports = {
   getOrders,
   getOrderByUserIDAndSupplierID,
   createOrder,
   deleteOrder,
+  getPlanPercentage,
 };

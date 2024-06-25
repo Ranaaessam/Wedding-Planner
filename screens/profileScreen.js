@@ -16,16 +16,22 @@ import ProfilePicture from "../components/profilePicture";
 import Icon from "react-native-vector-icons/FontAwesome6";
 import ProgressBar from "../components/progressBar";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserProfile } from "../StateManagement/slices/ProfileSlice";
+import {
+  getPlanPercentage,
+  getUserProfile,
+} from "../StateManagement/slices/ProfileSlice";
 import storage from "../Storage/storage";
 
 const ProfileScreen = () => {
   const [isEditing, setIsEditing] = useState(false);
   const dispatch = useDispatch();
   const [profile, setProfile] = useState(null);
+  const [image, setImage] = useState("");
+  const [budget, setBudget] = useState("");
 
   const userDetails = useSelector((state) => state.user.user);
-  //to get user profile throw this screen we don't need it , it's for testing ,,,
+  const plan = useSelector((state) => state.user.plan);
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       const userId = await storage.load({ key: "userId" });
@@ -33,17 +39,20 @@ const ProfileScreen = () => {
     };
     fetchUserProfile();
   }, [dispatch]);
-  //-----------------------------------------
+
+  useEffect(() => {
+    dispatch(getPlanPercentage());
+  }, [dispatch]);
+
   useEffect(() => {
     if (userDetails) {
       setProfile({
-        image: userDetails.image,
-        budget: userDetails.budget,
-        favourites: userDetails.favourites,
         location: userDetails.location,
         weddingdate: userDetails.weddingdate,
         orders: userDetails.orders,
       });
+      setImage(userDetails.image);
+      setBudget(userDetails.budget);
     }
   }, [userDetails]);
 
@@ -57,6 +66,7 @@ const ProfileScreen = () => {
       [key]: value,
     });
   };
+
   if (profile === null) {
     return (
       <View>
@@ -64,6 +74,7 @@ const ProfileScreen = () => {
       </View>
     );
   }
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -78,7 +89,7 @@ const ProfileScreen = () => {
               }}
               style={styles.avatar}
             />
-            <ProfilePicture />
+            <ProfilePicture imgUrl={image} />
             <TouchableOpacity style={styles.editBtn} onPress={handleEditToggle}>
               <Text
                 style={{
@@ -99,11 +110,19 @@ const ProfileScreen = () => {
             <View style={styles.infoContainer}>
               <View style={styles.balanceContainer}>
                 <Text style={{ fontSize: 16 }}>Balance</Text>
-                <Text
-                  style={{ fontWeight: "500", fontSize: 18, paddingTop: 10 }}
-                >
-                  $8000
-                </Text>
+                {isEditing ? (
+                  <TextInput
+                    style={styles.data}
+                    value={budget}
+                    onChangeText={(text) => setBudget(text)}
+                  />
+                ) : (
+                  <Text
+                    style={{ fontWeight: "500", fontSize: 18, paddingTop: 10 }}
+                  >
+                    ${budget}
+                  </Text>
+                )}
               </View>
               <View style={styles.planContainer}>
                 <Text style={{ fontSize: 16 }}>Plan</Text>
@@ -115,9 +134,9 @@ const ProfileScreen = () => {
                     paddingBottom: 5,
                   }}
                 >
-                  20%
+                  {plan ? `${plan}%` : "No Plan"}
                 </Text>
-                <ProgressBar progress={20} height={5} />
+                <ProgressBar progress={plan} height={5} />
               </View>
             </View>
             <View style={styles.detailsContainer}>
@@ -131,7 +150,6 @@ const ProfileScreen = () => {
                       style={styles.data}
                       value={value}
                       onChangeText={(text) => handleChange(key, text)}
-                      onFocus={() => console.log(`Focused on ${key}`)}
                     />
                   ) : (
                     <Text style={styles.data}>{value}</Text>
@@ -207,14 +225,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "500",
     paddingVertical: 0,
-    marginVertical: 0,
+    marginVertical: 5,
     height: 20,
     alignItems: "center",
   },
   divider: {
     backgroundColor: "#e0e0df",
     height: 1,
-    marginVertical: 5,
+    marginVertical: 10,
   },
   detailRow: {
     marginBottom: 10,

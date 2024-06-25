@@ -17,4 +17,10 @@ router.delete(
   orderMiddleware.checkIfOrderExists,
   orderController.deleteOrder
 );
+
+router.get(
+  "/PlanPercentage",
+  orderMiddleware.getUserData,
+  orderController.getPlanPercentage
+);
 module.exports = router;

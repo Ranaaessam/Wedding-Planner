@@ -4,10 +4,8 @@ import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 // import { launchImageLibrary } from "react-native-image-picker";
 
-const profilePicture = () => {
-  const [profilePicture, setProfilePicture] = useState(
-    "https://www.mortsandmore.com/wp-content/uploads/2016/01/Thumb.jpg"
-  );
+const profilePicture = ({ imgUrl }) => {
+  const [profilePicture, setProfilePicture] = useState(imgUrl);
 
   const selectImage = () => {
     // launchImageLibrary({ mediaType: "photo" }, (response) => {
@@ -20,15 +18,11 @@ const profilePicture = () => {
   return (
     <View style={styles.container}>
       <View style={styles.avatarContainer}>
-        <Image
-          source={
-            profilePicture ? { uri: profilePicture } : { uri: profilePicture }
-          }
-          style={styles.avatar}
-        />
+        <Image source={{ uri: imgUrl }} style={styles.avatar} />
         <TouchableOpacity
           style={styles.editIconContainer}
-          onPress={selectImage}>
+          onPress={selectImage}
+        >
           <Icon name="edit" size={22} color="white" />
         </TouchableOpacity>
       </View>
@@ -60,8 +54,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF81AE",
     borderRadius: 20,
     padding: 4,
-    width:30,
-    height:30
+    width: 30,
+    height: 30,
   },
 });
 

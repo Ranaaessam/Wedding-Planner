@@ -21,7 +21,6 @@ import API_URL from "../constants";
 
 const LoginScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [isInvalid, setIsInvalid] = useState(false);
   const [visible, setVisible] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -43,18 +42,22 @@ const LoginScreen = () => {
   const handleLogin = async (values) => {
     try {
       const response = await axios.post(`${API_URL}/users/Login`, values);
-      console.log("Login Response", response);
 
       if (response.status === 200) {
-        const userId = "66773957627fa3d2658f55e5";
+        const userId = response.data.userId;
+        const accountId = response.data.accountId;
         dispatch(getUserProfile(userId));
+        storage.save({
+          key: "token",
+          data: response.headers["x-auth-token"],
+        });
         storage.save({
           key: "userId",
           data: userId,
         });
         storage.save({
-          key: "userDetails",
-          data: values,
+          key: "accountId",
+          data: accountId,
         });
 
         // Navigate to home

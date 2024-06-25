@@ -15,10 +15,9 @@ const getUserData = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, "WeddingPlannerSecretKey");
-    const account = await Account.find({
-      $or: [{ user1Id: decoded.userID }, { user2Id: decoded.userID }],
+    const account = await Account.findOne({
+      $or: [{ user1Id: decoded.userId }, { user2Id: decoded.userId }],
     });
-    console.log(account);
     if (!account) {
       return res.status(400).json({ message: "Invalid account ID!" });
     }

@@ -5,7 +5,9 @@ const bcrypt = require("bcrypt");
 
 const Registration = async (req, res) => {
   try {
-    let user = await User.findOne({ email: req.body.email }).exec();
+    let user = await User.findOne({
+      email: req.body.email.toLowerCase(),
+    }).exec();
     if (user) {
       return res.status(400).send("User already has an account!");
     }
@@ -13,7 +15,7 @@ const Registration = async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
     user = new User({
-      email: req.body.email,
+      email: req.body.email.toLowerCase(),
       name: req.body.name,
       password: hashedPassword,
     });

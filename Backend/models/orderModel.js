@@ -4,6 +4,7 @@ const orderSchema = new mongoose.Schema({
   from: { type: mongoose.Schema.Types.ObjectId, required: true }, // Client
   to: { type: mongoose.Schema.Types.ObjectId, required: true }, // Supplier
   weddingDate: { type: Date, required: true },
+  supplierType: { type: String, required: true },
   isPaid: { type: Boolean, default: false },
 });
 const Order = mongoose.model("Order", orderSchema);
