@@ -67,17 +67,6 @@ const SupplierDetails = ({ navigation, route }) => {
     dispatch(getSupplierReview({ supplierId: supplierId }));
   }, [supplierId, favorites]);
   //-------------------------------------------
-  useEffect(() => {
-    const fetchSupplierReviews = async () => {
-      try {
-        dispatch(getReviews(supplierId));
-      } catch (error) {
-        console.error("Error fetching supplier details:", error);
-      }
-    };
-
-    fetchSupplierReviews();
-  }, []);
 
   const handleBookPress = async () => {
     try {
