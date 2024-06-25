@@ -15,32 +15,32 @@ import { useDispatch } from "react-redux";
 import { addReview } from "../StateManagement/slices/ReviewSlice";
 import storage from "../Storage/storage";
 
-const ReviewScreen = ({ visible, onClose }) => {
+const ReviewScreen = ({ visible, onClose, supplierId }) => {
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
   const dispatch = useDispatch();
 
   const submitReview = async () => {
-    // get token from storage
-    const userToken = await storage.load({ key: "userToken" });
-    console.log(userToken);
-    if (comment.length > 0 && rating > 0) {
-      const reviewBody = {
-        review: comment,
-        rate: rating,
-        //lsa mt3mlt4----------------------------
-        to: "",
-        //------------------------------------
-        from: userToken,
-      };
-      dispatch(addReview(reviewBody));
-      Alert.alert(
-        "Review Submitted",
-        `Rating: ${rating} stars\nComment: ${comment}`
-      );
-      setComment("");
-      setRating(0);
-      onClose();
+    try {
+      const userToken = await storage.load({ key: "userId" });
+      if (comment.length > 0 && rating > 0) {
+        const reviewBody = {
+          review: comment,
+          rate: rating,
+          to: supplierId,
+          from: userToken,
+        };
+        dispatch(addReview(reviewBody));
+        Alert.alert(
+          "Review Submitted",
+          `Rating: ${rating} stars\nComment: ${comment}`
+        );
+        setComment("");
+        setRating(0);
+        onClose();
+      }
+    } catch (error) {
+      console.error("Error submitting review:", error);
     }
   };
 
