@@ -5,19 +5,19 @@ import SearchCard from "../../components/Search/searchCard";
 const VenueTypes = [
   {
     id: 1,
-    title: "Hotel",
+    title: "Venue",
     imageUrl:
       "https://plus.unsplash.com/premium_photo-1682089297123-85459da8036b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: 2,
-    title: "Outdoor",
+    title: "Photographer",
     imageUrl:
       "https://images.unsplash.com/photo-1444492417251-9c84a5fa18e0?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: 3,
-    title: "Outdoor",
+    title: "Make-up Artist",
     imageUrl:
       "https://images.unsplash.com/photo-1444492417251-9c84a5fa18e0?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
@@ -29,21 +29,6 @@ const SearchScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <SearchBar></SearchBar>
-        <Text style={styles.headerStyle}> Popular Venue Types </Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.venueTypes}
-        >
-          {VenueTypes.map((venue) => (
-            <SearchCard
-              key={venue.id}
-              title={venue.title}
-              imageUrl={venue.imageUrl}
-              navigation={navigation}
-            ></SearchCard>
-          ))}
-        </ScrollView>
         <Text style={styles.headerStyle}> Explore Popular Suppliers </Text>
         <ScrollView
           horizontal
@@ -75,11 +60,11 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     width: "88%",
     marginHorizontal: 25,
-    marginTop: "10%",
+    marginTop: "90%",
     color: "#4C134E",
   },
   venueTypes: {
-    marginVertical: 10,
+    marginVertical: 20,
     marginLeft: 30,
   },
 });

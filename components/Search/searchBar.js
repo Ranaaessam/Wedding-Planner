@@ -22,12 +22,14 @@ const SearchBar = () => {
         value={searchValue}
         onChangeText={handleSearch}
         onSubmitEditing={onPress}
-        placeholder="Search by name or location.."></TextInput>
+        placeholder="Search by name"
+      ></TextInput>
       <IconButton
         icon="magnify"
         size={20}
         iconColor="#4C134E"
-        onPress={onPress}></IconButton>
+        onPress={onPress}
+      ></IconButton>
     </View>
   );
 };

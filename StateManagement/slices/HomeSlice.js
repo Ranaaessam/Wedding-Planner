@@ -1,15 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import API_URL from "../../constants";
+import storage from "../../Storage/storage";
 
 export const getVenuesNearLocation = createAsyncThunk(
   "home/getVenuesNearLocation",
   async (_, { rejectWithValue }) => {
     try {
+      const userID = await storage.load({ key: "userId" });
       const locationResponse = await axios.get(
-        `${API_URL}/account/profile?userId=66773957627fa3d2658f55e5`
+        `${API_URL}/account/profile?userId=${userID}`
       );
       const location = locationResponse.data.location;
+      console.log(location);
       const response = await axios.get(
         `${API_URL}/suppliers/filter?type=Venue&location=${location}`
       );
