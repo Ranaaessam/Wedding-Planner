@@ -59,11 +59,13 @@ const ComplaintsManagement = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Complaints</Text>
-      {status === "loading" ? (
-        <Text>Loading...</Text>
-      ) : status === "failed" ? (
+      {status === "failed" ? (
         <Text>{error}</Text>
+      ) : complaints.length === 0 ? (
+        <View style={styles.noComplaintsContainer}>
+          <Icon name="info-outline" size={50} color="#00796b" />
+          <Text style={styles.noComplaintsText}>No Complaints</Text>
+        </View>
       ) : (
         <FlatList
           data={complaints}
@@ -72,7 +74,6 @@ const ComplaintsManagement = () => {
           contentContainerStyle={styles.listContainer}
         />
       )}
-
       <Modal
         animationType="slide"
         transparent={true}
@@ -218,6 +219,17 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 16,
+    fontWeight: "bold",
+  },
+  noComplaintsContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noComplaintsText: {
+    marginTop: 10,
+    fontSize: 20,
+    color: "#00796b",
     fontWeight: "bold",
   },
 });

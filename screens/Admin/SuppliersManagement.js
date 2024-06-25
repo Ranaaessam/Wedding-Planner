@@ -43,7 +43,13 @@ const SuppliersManagement = () => {
         {
           text: "Delete",
           onPress: () => {
-            dispatch(deleteSupplier(supplierId));
+            dispatch(deleteSupplier(supplierId))
+              .then(() => {
+                dispatch(getAllSuppliers());
+              })
+              .catch((error) => {
+                console.error("Failed to delete supplier:", error);
+              });
           },
           style: "destructive",
         },

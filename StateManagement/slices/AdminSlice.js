@@ -91,7 +91,7 @@ export const getStatistics = createAsyncThunk(
       (supplier) => supplier.type === "Photographer"
     ).length;
     const makeupArtistsCount = suppliersData.filter(
-      (supplier) => supplier.type === "Makeup Artist"
+      (supplier) => supplier.type === "Make-up Artist"
     ).length;
     const floristsCount = suppliersData.filter(
       (supplier) => supplier.type === "Florist"

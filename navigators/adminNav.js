@@ -20,13 +20,13 @@ const AdminNav = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="Users Management" component={UsersManagement} />
-      <Stack.Screen name="OrdersManagement" component={OrdersManagement} />
+      <Stack.Screen name="Orders Management" component={OrdersManagement} />
       <Stack.Screen
-        name="SuppliersManagement"
+        name="Suppliers Management"
         component={SuppliersManagement}
       />
       <Stack.Screen
-        name="ComplaintsManagement"
+        name="Complaints Management"
         component={ComplaintsManagement}
       />
     </Stack.Navigator>

@@ -61,16 +61,16 @@ const AdminDashboard = ({ navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("OrdersManagement");
+              navigation.navigate("Orders Management");
             }}
             activeOpacity={0.7}>
             <Icon name="analytics" size={40} color="#b846a6" />
-            <Text style={styles.cardText}>Reservations</Text>
+            <Text style={styles.cardText}>Orders</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("SuppliersManagement");
+              navigation.navigate("Suppliers Management");
             }}
             activeOpacity={0.7}>
             <Icon name="sell" size={40} color="#FF81ae" />
@@ -79,7 +79,7 @@ const AdminDashboard = ({ navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("ComplaintsManagement");
+              navigation.navigate("Complaints Management");
             }}
             activeOpacity={0.7}>
             <Icon name="report" size={40} color="#FF81ae" />
@@ -95,7 +95,7 @@ const AdminDashboard = ({ navigation }) => {
             labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
             datasets: [
               {
-                data: [20, 45, 28, 80, 99, statistics?.usersCount || 10],
+                data: [1, 3, 7, 10, 13, statistics?.usersCount || 10],
               },
             ],
           }}
@@ -128,7 +128,7 @@ const AdminDashboard = ({ navigation }) => {
             labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
             datasets: [
               {
-                data: [30, 60, 45, 70, 85, statistics?.suppliersCount || 10],
+                data: [1, 2, 4, 7, 10, statistics?.suppliersCount || 10],
               },
             ],
           }}
