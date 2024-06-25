@@ -138,7 +138,6 @@ const createOrder = async (req, res) => {
       items: items,
       weddingDate: date,
       from: client._id,
-
       price: price,
     });
 
