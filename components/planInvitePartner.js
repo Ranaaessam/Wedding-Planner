@@ -8,10 +8,10 @@ import {
   Alert,
   Modal,
   TextInput,
-  Button,
 } from "react-native";
-import { color } from "react-native-elements/dist/helpers";
 import Icon from "react-native-vector-icons/AntDesign";
+import axios from "axios";
+import API_URL from "../constants";
 
 const PlanInvitePartner = ({ navigation }) => {
   const { t } = useTranslation();
@@ -20,10 +20,13 @@ const PlanInvitePartner = ({ navigation }) => {
   const [nameError, setNameError] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const accountId = "667a9b0ab88a1379814771eb";
+
   const handlePress = () => {
     setModalVisible(true);
   };
-  const handleInvite = () => {
+
+  const handleInvite = async () => {
     setEmailError("");
     setNameError("");
 
@@ -38,17 +41,25 @@ const PlanInvitePartner = ({ navigation }) => {
       return;
     }
 
-    // Validate name
     if (!name.trim()) {
       setNameError("Please enter a name.");
       return;
     }
 
-    // Proceed with sending invitation
-    Alert.alert(`This Email: ${email} added successfully to the account!`);
-    setModalVisible(false);
-    setEmail("");
-    setName("");
+    try {
+      const response = await axios.post(`${API_URL}/users/invite`, {
+        name: name,
+        email: email,
+        accountId: accountId,
+      });
+
+      Alert.alert(`This Email: ${email} added successfully to this account!`);
+      setModalVisible(false);
+      setEmail("");
+      setName("");
+    } catch (error) {
+      Alert.alert("Error inviting user", error.message);
+    }
   };
 
   return (
