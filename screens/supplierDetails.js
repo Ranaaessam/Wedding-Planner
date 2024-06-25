@@ -28,6 +28,8 @@ import {
 } from "../StateManagement/slices/CartSlice";
 import ReviewScreen from "./reviewScreen";
 import storage from "../Storage/storage";
+import { getReviewsBySupplierID } from "../Backend/controllers/reviewsController";
+import { getReviews } from "../StateManagement/slices/ReviewSlice";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -97,7 +99,7 @@ const SupplierDetails = ({ navigation, route }) => {
   const [modalMessage, setModalMessage] = useState("");
   const [bookingModalVisible, setBookingModalVisible] = useState(false);
   const [reviewModalVisible, setReviewModalVisible] = useState(false);
-
+  const allReviews = useSelector((state) => state.review.review);
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favourites.favourites);
   const bookedItems = useSelector((state) => state.cart.cartItems);
@@ -119,6 +121,18 @@ const SupplierDetails = ({ navigation, route }) => {
 
     fetchSupplierDetails();
   }, [supplierId, favorites]);
+  //-------------------------------------------
+  useEffect(() => {
+    const fetchSupplierReviews = async () => {
+      try {
+        dispatch(getReviews(supplierId));
+      } catch (error) {
+        console.error("Error fetching supplier details:", error);
+      }
+    };
+
+    fetchSupplierReviews();
+  }, []);
 
   const handleBookPress = async () => {
     try {
@@ -163,11 +177,11 @@ const SupplierDetails = ({ navigation, route }) => {
 
   const renderReviewCard = ({ item }) => (
     <ReviewCard
-      avatarUrl={item.avatarUrl}
-      name={item.name}
-      date={item.date}
+      avatarUrl="https://media.istockphoto.com/id/1494104649/photo/ai-chatbot-artificial-intelligence-digital-concept.jpg?s=612x612&w=0&k=20&c=1Zq2sj3W0tWcpc-n1fVt4dQQOBGhtwcAk1H2eQ5MAbI="
+      // name={item.name}
+      // date={item.date}
       review={item.review}
-      rating={item.rating}
+      rating={item.rate}
     />
   );
 
@@ -182,6 +196,9 @@ const SupplierDetails = ({ navigation, route }) => {
       </View>
     );
   }
+  const handleReview = () => {
+    setReviewModalVisible(true);
+  };
 
   return (
     <ScrollView>
@@ -255,16 +272,16 @@ const SupplierDetails = ({ navigation, route }) => {
             <View style={{ flexDirection: "row", marginLeft: 140 }}>
               <TouchableOpacity
                 style={styles.iconButton}
-                onPress={() => setReviewModalVisible(true)}
+                onPress={handleReview}
               >
                 <MaterialIcons name="rate-review" size={24} color="black" />
               </TouchableOpacity>
             </View>
           </View>
           <FlatList
-            data={reviews}
+            data={allReviews}
             renderItem={renderReviewCard}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item._id}
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.reviews}
@@ -298,6 +315,7 @@ const SupplierDetails = ({ navigation, route }) => {
       <ReviewScreen
         visible={reviewModalVisible}
         onClose={() => setReviewModalVisible(false)}
+        supplierId={supplierId}
       />
     </ScrollView>
   );
