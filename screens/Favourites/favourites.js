@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import FavouriteCategory from "../../components/Favourites/favouriteCategory";
+import { useDispatch } from "react-redux";
+import { getAllFavourites } from "../../StateManagement/slices/FavouritesSlice";
 
 const categories = [
   "Venue",
@@ -12,6 +14,10 @@ const categories = [
 ];
 
 const Favourites = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllFavourites());
+  }, [dispatch]);
   return (
     <ScrollView style={styles.listStyle}>
       {categories.map((category, index) => (

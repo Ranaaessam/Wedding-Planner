@@ -23,6 +23,7 @@ import {
 } from "../StateManagement/slices/FavouritesSlice";
 import { addToCart } from "../StateManagement/slices/CartSlice";
 import ReviewScreen from "./reviewScreen";
+import storage from "../Storage/storage";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -95,12 +96,13 @@ const SupplierDetails = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favourites.favourites);
   const bookedItems = useSelector((state) => state.cart.cartItems);
+
   useEffect(() => {
     const fetchSupplierDetails = async () => {
       try {
         const response = await axios.get(`${API_URL}/suppliers/${supplierId}`);
         setSupplier(response.data);
-        setIsFavorite(favorites.some((item) => item.id === supplierId));
+        setIsFavorite(favorites.some((item) => item._id === supplierId));
       } catch (error) {
         console.error("Error fetching supplier details:", error);
       }
@@ -110,7 +112,7 @@ const SupplierDetails = ({ navigation, route }) => {
   }, [supplierId, favorites]);
 
   const handleBookPress = () => {
-    if (bookedItems.some((item) => item.id === supplier.id)) {
+    if (bookedItems.some((item) => item._id === supplier.id)) {
       setModalMessage("Already booked!");
     } else {
       dispatch(addToCart({ cartItem: supplier, accountId: "yourAccountId" }));
@@ -120,17 +122,23 @@ const SupplierDetails = ({ navigation, route }) => {
     setTimeout(() => setBookingModalVisible(false), 1500);
   };
 
-  const handleFavoritePress = () => {
-    if (isFavorite) {
-      dispatch(removeFromFavorites(supplier.id));
-    } else {
-      dispatch(
-        addToFavorites({ favouriteItem: supplier, accountId: "yourAccountId" })
-      );
-      setModalVisible(true);
-      setTimeout(() => setModalVisible(false), 1500);
+  const handleFavoritePress = async () => {
+    try {
+      const accountId = await storage.load({ key: "accountId" });
+      if (isFavorite) {
+        dispatch(removeFromFavorites(supplier._id));
+        setIsFavorite(false);
+      } else {
+        dispatch(
+          addToFavorites({ favouriteItem: supplier, accountId: accountId })
+        );
+        setIsFavorite(true);
+        setModalVisible(true);
+        setTimeout(() => setModalVisible(false), 1500);
+      }
+    } catch (error) {
+      console.error("Error loading account ID or updating favorites:", error);
     }
-    setIsFavorite(!isFavorite);
   };
 
   const renderReviewCard = ({ item }) => (
@@ -177,8 +185,7 @@ const SupplierDetails = ({ navigation, route }) => {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[styles.button, styles.bookButton]}
-              onPress={handleBookPress}
-            >
+              onPress={handleBookPress}>
               <Text style={styles.buttonText}>Book Now</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -188,14 +195,12 @@ const SupplierDetails = ({ navigation, route }) => {
                   ? styles.removeFavoriteButton
                   : styles.favoriteButton,
               ]}
-              onPress={handleFavoritePress}
-            >
+              onPress={handleFavoritePress}>
               <Text
                 style={[
                   styles.buttonText,
                   isFavorite ? { color: "white" } : { color: "black" },
-                ]}
-              >
+                ]}>
                 {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
               </Text>
             </TouchableOpacity>
@@ -221,14 +226,12 @@ const SupplierDetails = ({ navigation, route }) => {
                 justifyContent: "space-between",
                 marginTop: 20,
               },
-            ]}
-          >
+            ]}>
             <Text>Reviews</Text>
             <View style={{ flexDirection: "row", marginLeft: 140 }}>
               <TouchableOpacity
                 style={styles.iconButton}
-                onPress={() => setReviewModalVisible(true)}
-              >
+                onPress={() => setReviewModalVisible(true)}>
                 <MaterialIcons name="rate-review" size={24} color="black" />
               </TouchableOpacity>
             </View>
@@ -247,8 +250,7 @@ const SupplierDetails = ({ navigation, route }) => {
         visible={modalVisible}
         transparent={true}
         animationType="slide"
-        onRequestClose={() => setModalVisible(false)}
-      >
+        onRequestClose={() => setModalVisible(false)}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>Added to favorites</Text>
@@ -259,8 +261,7 @@ const SupplierDetails = ({ navigation, route }) => {
         visible={bookingModalVisible}
         transparent={true}
         animationType="fade"
-        onRequestClose={() => setBookingModalVisible(false)}
-      >
+        onRequestClose={() => setBookingModalVisible(false)}>
         <View style={styles.modalContainer}>
           <View style={styles.bookingModalContent}>
             <Text style={styles.bookingModalText}>{modalMessage}</Text>

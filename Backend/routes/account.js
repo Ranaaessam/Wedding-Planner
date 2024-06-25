@@ -11,5 +11,6 @@ router.delete("/Cart", AccountsController.RemoveFromCart);
 
 router.post("/Favourites", AccountsController.AddToFavourites);
 router.delete("/Favourites", AccountsController.RemoveFromfavourites);
+router.get("/Favourites", AccountsController.getAllFavouritesByAccountID);
 
 module.exports = router;

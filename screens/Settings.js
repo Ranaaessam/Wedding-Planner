@@ -145,22 +145,19 @@ const SettingsScreen = ({ navigation }) => {
         visible={isDropdownVisible}
         transparent={true}
         animationType="slide"
-        onRequestClose={() => setDropdownVisible(false)}
-      >
+        onRequestClose={() => setDropdownVisible(false)}>
         <TouchableWithoutFeedback onPress={() => setDropdownVisible(false)}>
           <View style={styles.modalOverlay} />
         </TouchableWithoutFeedback>
         <View style={styles.dropdown}>
           <TouchableOpacity
             style={styles.dropdownItem}
-            onPress={() => selectLanguage("en")}
-          >
+            onPress={() => selectLanguage("en")}>
             <Text style={styles.dropdownItemText}>▫ {t("english")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.dropdownItem}
-            onPress={() => selectLanguage("ar")}
-          >
+            onPress={() => selectLanguage("ar")}>
             <Text style={styles.dropdownItemText}>▫ {t("arabic")}</Text>
           </TouchableOpacity>
         </View>
