@@ -21,8 +21,7 @@ const profilePicture = ({ imgUrl }) => {
         <Image source={{ uri: imgUrl }} style={styles.avatar} />
         <TouchableOpacity
           style={styles.editIconContainer}
-          onPress={selectImage}
-        >
+          onPress={selectImage}>
           <Icon name="edit" size={22} color="white" />
         </TouchableOpacity>
       </View>
@@ -33,11 +32,14 @@ const profilePicture = ({ imgUrl }) => {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    top: "7%",
+    top: "12%",
     left: "5%",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 50,
+    marginTop: 70,
+    borderColor: "grey",
+    borderWidth: 1,
+    borderRadius: 100,
   },
   avatarContainer: {
     position: "relative",

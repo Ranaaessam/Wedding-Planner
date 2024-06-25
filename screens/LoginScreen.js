@@ -65,13 +65,13 @@ const LoginScreen = () => {
       } else {
         console.log("Login Failed", response.data.message);
         Alert.alert("Invalid email or password");
-        setIsInvalid(true);
+
         setVisible(true);
       }
     } catch (error) {
       console.log("Error", "An error occurred during login");
       console.log(error);
-      setIsInvalid(true);
+
       setVisible(true);
     }
   };
@@ -145,6 +145,10 @@ const LoginScreen = () => {
       </Formik>
 
       <Snackbar
+        style={{
+          backgroundColor: "red",
+          bottom: "10%",
+        }}
         visible={visible}
         onDismiss={() => setVisible(false)}
         duration={Snackbar.DURATION_SHORT}
@@ -207,7 +211,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     marginTop: "15%",
-    width: "100%",
+    width: "90%",
   },
   buttonText: {
     color: "white",

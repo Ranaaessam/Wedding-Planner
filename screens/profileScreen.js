@@ -78,8 +78,7 @@ const ProfileScreen = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
-    >
+      style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView keyboardShouldPersistTaps="handled">
           <View style={styles.container}>
@@ -97,8 +96,7 @@ const ProfileScreen = () => {
                   fontWeight: "500",
                   color: "white",
                   fontSize: 18,
-                }}
-              >
+                }}>
                 {isEditing ? "Save Profile" : "Edit Profile"}
               </Text>
               <Icon
@@ -118,8 +116,7 @@ const ProfileScreen = () => {
                   />
                 ) : (
                   <Text
-                    style={{ fontWeight: "500", fontSize: 18, paddingTop: 10 }}
-                  >
+                    style={{ fontWeight: "500", fontSize: 18, paddingTop: 10 }}>
                     ${budget}
                   </Text>
                 )}
@@ -132,8 +129,7 @@ const ProfileScreen = () => {
                     fontSize: 18,
                     paddingTop: 5,
                     paddingBottom: 5,
-                  }}
-                >
+                  }}>
                   {plan ? `${plan}%` : "No Plan"}
                 </Text>
                 <ProgressBar progress={plan} height={5} />

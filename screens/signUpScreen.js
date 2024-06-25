@@ -263,7 +263,15 @@ const SignUp = ({ navigation }) => {
                 style={[styles.buttonContainer, styles.loginRedirectButton]}
                 onPress={() => navigation.navigate("Login")}>
                 <Text style={styles.loginRedirectText}>
-                  Already have an account?
+                  Already have an account?{" "}
+                  <Text
+                    style={{
+                      color: "#ff81ae",
+                      fontSize: 15,
+                      textDecorationLine: "underline",
+                    }}>
+                    Login now{" "}
+                  </Text>
                 </Text>
               </TouchableOpacity>
             </ScrollView>
@@ -308,6 +316,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#FFF",
     marginTop: 20,
+    fontFamily: "Poppins",
   },
   formContainer: {
     width: "100%",
@@ -335,6 +344,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   inputs: {
+    fontFamily: "Poppins",
     height: 45,
     flex: 1,
     marginLeft: 10,
@@ -351,6 +361,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20,
     borderRadius: 30,
+    fontFamily: "Poppins",
   },
   signUpButton: {
     backgroundColor: "#4C134E",
@@ -374,13 +385,14 @@ const styles = StyleSheet.create({
   },
   loginRedirectText: {
     color: "#4C134E",
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
     textShadowColor: "rgba(0, 0, 0)",
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,
     marginBottom: 30,
+    fontFamily: "Poppins",
   },
   errorText: {
     color: "red",
@@ -388,7 +400,7 @@ const styles = StyleSheet.create({
     marginTop: -6,
     textAlign: "left",
     marginLeft: 15,
-    fontWeight: "bold",
+    fontFamily: "Poppins",
   },
 });
 
