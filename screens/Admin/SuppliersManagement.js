@@ -24,9 +24,7 @@ const SuppliersManagement = () => {
   const [filteredSuppliers, setFilteredSuppliers] = useState(suppliers);
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(getAllSuppliers());
-    }
+    dispatch(getAllSuppliers());
   }, [status, dispatch]);
 
   useEffect(() => {
@@ -75,7 +73,7 @@ const SuppliersManagement = () => {
           <Text style={styles.rateText}>{item.rate}</Text>
         </View>
       </View>
-      <TouchableOpacity onPress={() => handleDeleteSupplier(item.id)}>
+      <TouchableOpacity onPress={() => handleDeleteSupplier(item._id)}>
         <Icon name="delete" size={24} color="#FF6347" />
       </TouchableOpacity>
     </View>
@@ -98,7 +96,7 @@ const SuppliersManagement = () => {
       ) : (
         <FlatList
           data={filteredSuppliers}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item._id}
           renderItem={renderItem}
           contentContainerStyle={styles.listContainer}
         />

@@ -7,10 +7,8 @@ import AdminNav from "./navigators/adminNav";
 import { Provider } from "react-redux";
 import store from "./StateManagement/store";
 import BottomNav from "./navigators/bottomNav";
-import DeepLinking from 'react-native-deep-linking';
+import DeepLinking from "react-native-deep-linking";
 import API_URL from "./constants";
-
-
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -52,15 +50,15 @@ export default function App() {
   //   },
   // };
 
-
   return (
     <Provider store={store}>
-    <NavigationContainer >
-      <View style={styles.container}>
-        <StackNav />
-      </View>
-    </NavigationContainer>
-  </Provider>
+      <NavigationContainer>
+        <View style={styles.container}>
+          {/* <StackNav /> */}
+          <AdminNav />
+        </View>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

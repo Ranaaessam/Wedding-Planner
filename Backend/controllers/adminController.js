@@ -46,6 +46,9 @@ const getAllUsers = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.body;
+    console.log("back");
+    console.log(req.body);
+    console.log(id);
     if (!isValidObjectId(id)) {
       return res.status(400).json({ message: "Invalid user id" });
     }

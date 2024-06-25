@@ -24,10 +24,8 @@ const UsersManagement = () => {
   const [filteredUsers, setFilteredUsers] = useState(users);
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(getAllUsers());
-    }
-  }, [status, dispatch]);
+    dispatch(getAllUsers());
+  }, [dispatch]);
 
   useEffect(() => {
     setFilteredUsers(users);
@@ -36,7 +34,7 @@ const UsersManagement = () => {
   const handleDeleteUser = (userId) => {
     Alert.alert(
       "Confirm Deletion",
-      "Are you sure you want to suspend this user?",
+      "Are you sure you want to delete this user?",
       [
         {
           text: "Cancel",
@@ -45,7 +43,15 @@ const UsersManagement = () => {
         {
           text: "Delete",
           onPress: () => {
-            dispatch(deleteUser(userId));
+            dispatch(deleteUser(userId))
+              .then(() => {
+                // Optional: Dispatch getAllUsers() to update the user list after deletion
+                dispatch(getAllUsers());
+              })
+              .catch((error) => {
+                console.error("Failed to delete user:", error);
+                // Handle error (e.g., show error message)
+              });
           },
           style: "destructive",
         },
@@ -63,7 +69,7 @@ const UsersManagement = () => {
 
   const renderItem = ({ item }) => (
     <View style={styles.userCard}>
-      <Image source={{ uri: item.profilePic }} style={styles.profilePic} />
+      <Image source={{ uri: item.image }} style={styles.profilePic} />
       <View style={styles.userInfo}>
         <Text style={styles.userName}>{item.name}</Text>
         <Text style={styles.weddingDate}>Wedding Date: {item.weddingDate}</Text>
@@ -77,7 +83,7 @@ const UsersManagement = () => {
           <Text style={styles.budgetText}>{item.budget}</Text>
         </View>
       </View>
-      <TouchableOpacity onPress={() => handleDeleteUser(item.id)}>
+      <TouchableOpacity onPress={() => handleDeleteUser(item._id)}>
         <Icon name="delete" size={24} color="#FF6347" />
       </TouchableOpacity>
     </View>
@@ -100,7 +106,7 @@ const UsersManagement = () => {
       ) : (
         <FlatList
           data={filteredUsers}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item._id}
           renderItem={renderItem}
           contentContainerStyle={styles.listContainer}
         />

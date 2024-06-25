@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import API_URL from "../../constants";
 
 // Async thunks for users
 export const getAllUsers = createAsyncThunk("admin/getAllUsers", async () => {
-  // Replace this with your API call
-  const response = await fetch("https://jsonplaceholder.typicode.com/users");
+  const response = await fetch(`${API_URL}/account`);
   const data = await response.json();
   return data;
 });
@@ -12,9 +12,18 @@ export const deleteUser = createAsyncThunk(
   "admin/deleteUser",
   async (userId) => {
     // Replace this with your API call
-    await fetch(`https://your-api.com/users/${userId}`, {
+    console.log(userId);
+    await fetch(`${API_URL}/users`, {
       method: "DELETE",
+      body: { id: userId },
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
+    console.log("deleted");
+    getAllUsers();
+    console.log("deleted555");
+
     return userId;
   }
 );
@@ -24,7 +33,7 @@ export const getAllSuppliers = createAsyncThunk(
   "admin/getAllSuppliers",
   async () => {
     // Replace this with your API call
-    const response = await fetch("https://jsonplaceholder.typicode.com/users");
+    const response = await fetch(`${API_URL}/suppliers`);
     const data = await response.json();
     return data;
   }
