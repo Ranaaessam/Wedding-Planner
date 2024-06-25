@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import SearchBar from "../../components/Search/searchBar";
 import SearchCard from "../../components/Search/searchCard";
+import { useTranslation } from "react-i18next";
 const VenueTypes = [
   {
     id: 1,
@@ -25,6 +26,7 @@ const VenueTypes = [
 
 const SearchScreen = ({ navigation }) => {
   const [search, setSearch] = useState("");
+  const{t}= useTranslation();
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
