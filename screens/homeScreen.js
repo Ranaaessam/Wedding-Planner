@@ -38,15 +38,17 @@ const HomeScreen = ({ navigation }) => {
   const renderItem = ({ item }) => {
     switch (item.key) {
       case "header":
-        return (
-          <Header
-            imageUri={userDetails?.image}
-            // imageUri={userDetails.image}
-            name={t("Mr & Mrs")}
-            userName={userDetails.name}
-            navigation={navigation}
-          />
-        );
+        if (userDetails) {
+          return (
+            <Header
+              imageUri={userDetails?.image}
+              // imageUri={userDetails.image}
+              name={t("Mr & Mrs")}
+              userName={userDetails.name}
+              navigation={navigation}
+            />
+          );
+        }
       case "venues":
         return (
           <View style={styles.section}>
