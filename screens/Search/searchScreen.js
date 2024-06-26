@@ -3,6 +3,7 @@ import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import SearchBar from "../../components/Search/searchBar";
 import SearchCard from "../../components/Search/searchCard";
 import { useTranslation } from "react-i18next";
+import { useTheme ,themes} from "../../ThemeContext";
 const VenueTypes = [
   {
     id: 1,
@@ -27,8 +28,12 @@ const VenueTypes = [
 const SearchScreen = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const{t}= useTranslation();
+  const { theme, toggleTheme } = useTheme();
   return (
-    <SafeAreaView style={styles.container}>
+    // <SafeAreaView style={styles.container}>
+            <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+
+      
       <ScrollView>
         <SearchBar></SearchBar>
         {/* <Text style={styles.headerStyle}> Explore Popular Suppliers </Text> */}
@@ -56,7 +61,9 @@ const SearchScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "rgba(255, 182, 193, 0.1)",
+    // backgroundColor: "rgba(255, 182, 193, 0.1)",
+    backgroundColor: themes.cart,
+
   },
   headerStyle: {
     fontFamily: "Poppins",

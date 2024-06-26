@@ -7,7 +7,7 @@ const planCards = [
   { id: 2, icon: "addusergroup", name: "Guest list", value: 0 },
   { id: 3, icon: "hearto", name: "Favorites", value: 0 },
   { id: 4, icon: "like2", name: "Booked", value: 0 },
-  { id: 5, icon: "profile", name: "Advice", value: 0 },
+  { id: 5, icon: "profile", name: "To-do List", value: 0 },
   { id: 6, icon: "book", name: "Scrapbook", value: 0 },
 ];
 

@@ -14,10 +14,12 @@ import { Button, Card } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import { addReview } from "../StateManagement/slices/ReviewSlice";
 import storage from "../Storage/storage";
+import { useTheme ,themes} from "../ThemeContext";
 
 const ReviewScreen = ({ visible, onClose, supplierId }) => {
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
+  const { theme, toggleTheme } = useTheme();
   const dispatch = useDispatch();
 
   const submitReview = async () => {
@@ -48,8 +50,11 @@ const ReviewScreen = ({ visible, onClose, supplierId }) => {
   };
 
   return (
-    <Modal visible={visible} animationType="slide" transparent={true}>
-      <SafeAreaView style={styles.container}>
+    <Modal visible={visible} animationType="slide" transparent={true} >
+      {/* <SafeAreaView style={styles.container}> */}
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+    
+
         <View style={styles.modalContent}>
           <Card style={styles.card}>
             <Card.Title title="Rate Wedding Planner" />
@@ -86,7 +91,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    // backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: themes.cart,
+
   },
   modalContent: {
     backgroundColor: "transparent",

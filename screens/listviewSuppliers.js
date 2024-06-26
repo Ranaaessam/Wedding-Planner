@@ -10,6 +10,7 @@ import SupplierCard from "../components/supplierListCard";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 import API_URL from "../constants";
+import { useTheme ,themes} from "../ThemeContext";
 
 // const suppliers = [
 //   {
@@ -41,6 +42,7 @@ import API_URL from "../constants";
 const ListviewSuppliers = ({ navigation, route }) => {
   const { type } = route.params;
   const [suppliers, setSuppliers] = useState([]);
+  const { theme, toggleTheme } = useTheme();
   console.log(type);
   useEffect(() => {
     const fetchSuppliers = async () => {
@@ -66,7 +68,8 @@ const ListviewSuppliers = ({ navigation, route }) => {
   }, [type]);
 
   return (
-    <View style={styles.container}>
+    // <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: theme.background }]}>
       <FlatList
         data={suppliers}
         renderItem={({ item }) => (
@@ -98,7 +101,9 @@ const ListviewSuppliers = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f0f0f0",
+    // backgroundColor: "#f0f0f0",
+    backgroundColor: themes.cart,
+
   },
 
   list: {

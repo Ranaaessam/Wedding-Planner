@@ -31,6 +31,7 @@ import storage from "../Storage/storage";
 import { getSupplierReview } from "../StateManagement/slices/ReviewSlice";
 import { getReviewsBySupplierID } from "../Backend/controllers/reviewsController";
 import { getReviews } from "../StateManagement/slices/ReviewSlice";
+import { useTheme ,themes} from "../ThemeContext";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -46,6 +47,8 @@ const SupplierDetails = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favourites.favourites);
   const bookedItems = useSelector((state) => state.cart.cartItems);
+  const { theme, toggleTheme } = useTheme();
+
 
   useEffect(() => {
     dispatch(getAllFavourites());
@@ -135,7 +138,9 @@ const SupplierDetails = ({ navigation, route }) => {
 
   return (
     <ScrollView>
-      <View style={styles.container}>
+      {/* <View style={styles.container}> */}
+      <View style={[styles.container, { backgroundColor: theme.background }]}>
+
         <View style={styles.carouselContainer}>
           <ImageCarousel
             images={supplier.images}
@@ -146,7 +151,9 @@ const SupplierDetails = ({ navigation, route }) => {
         </View>
         <View style={styles.infoContainer}>
           <View style={styles.nameContainer}>
-            <Text style={styles.name}>{supplier.name}</Text>
+            {/* <Text style={styles.name}>{supplier.name}</Text> */}
+            <Text style={[styles.name, {color: theme.text }]}>{supplier.name}</Text>
+
           </View>
           <View style={styles.locationContainer}>
             <FontAwesome name="map-marker" size={16} color="#666" />
@@ -260,7 +267,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     paddingHorizontal: 10,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: themes.cart,
+
+    // backgroundColor: "#f0f0f0",
   },
   loadingContainer: {
     flex: 1,
@@ -292,6 +301,8 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     color: "#333",
+    color: themes.cart,
+
   },
   locationContainer: {
     flexDirection: "row",
@@ -348,6 +359,8 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingVertical: 10,
     backgroundColor: "#f0f0f0",
+    backgroundColor: themes.cart,
+
   },
   modalContainer: {
     flex: 1,

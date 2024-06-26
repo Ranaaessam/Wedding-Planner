@@ -20,8 +20,8 @@ const PlanCard = ({ icon, name, value, navigation }) => {
     case "booked":
       valueText = `${value} ${t("Suppliers")}`;
       break;
-    case "advice":
-      valueText = `${value} ${t("Saved")}`;
+    case "to-do list":
+      valueText = "";
       break;
     case "scrapbook":
       valueText = `${value} ${t("Notes")}`;
@@ -44,19 +44,8 @@ const PlanCard = ({ icon, name, value, navigation }) => {
       case "booked":
         navigation.navigate("Cart");
         break;
-      case "advice":
-        Alert.alert(
-          t("Upcoming feature"),
-          t("Look out for new advice tips coming in our next update!"),
-          [
-            {
-              text: t("OK"), // Custom text for the OK button
-              onPress: () => console.log("OK Pressed"),
-            },
-          ],
-          { cancelable: false }
-        );
-
+      case "to-do list":
+        navigation.navigate("CheckList")
         break;
       case "scrapbook":
         Alert.alert(

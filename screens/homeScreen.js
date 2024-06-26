@@ -9,11 +9,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { getVenuesNearLocation } from "../StateManagement/slices/HomeSlice";
 import storage from "../Storage/storage";
 import { getUserProfile } from "../StateManagement/slices/ProfileSlice";
+import { useTheme ,themes} from "../ThemeContext";
+
 
 const HomeScreen = ({ navigation }) => {
   const { t } = useTranslation();
 
+
   const dispatch = useDispatch();
+  const { theme, toggleTheme } = useTheme();
+
 
   useEffect(() => {
     dispatch(getVenuesNearLocation());
@@ -40,10 +45,10 @@ const HomeScreen = ({ navigation }) => {
       case "header":
         return (
           <Header
-            imageUri={userDetails.image}
+            imageUri={userDetails?.image}
             // imageUri={userDetails.image}
             name={t("Mr & Mrs")}
-            userName={userDetails.name}
+            userName={userDetails?.name}
             navigation={navigation}
           />
         );
@@ -74,7 +79,8 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.background }]}>
+
       <FlatList
         data={data}
         renderItem={renderItem}
@@ -92,6 +98,8 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+  backgroundColor: themes.cart,
+
   },
   container: {
     margin: 10,
