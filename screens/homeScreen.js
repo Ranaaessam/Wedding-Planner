@@ -43,7 +43,7 @@ const HomeScreen = ({ navigation }) => {
             imageUri={userDetails?.image}
             // imageUri={userDetails.image}
             name={t("Mr & Mrs")}
-            userName={userDetails.name}
+            userName={userDetails?.name}
             navigation={navigation}
           />
         );
