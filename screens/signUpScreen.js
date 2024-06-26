@@ -17,7 +17,6 @@ import { useDispatch } from "react-redux";
 import { FontAwesome } from "@expo/vector-icons";
 import { registerUser } from "../StateManagement/slices/SignUpSlice";
 import { Snackbar } from "react-native-paper";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const SignUp = ({ navigation }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -26,7 +25,6 @@ const SignUp = ({ navigation }) => {
   const [passwordShape, setPasswordShape] = useState("eye");
   const [confirmPasswordShape, setConfirmPasswordShape] = useState("eye");
   const [snackbarVisible, setSnackbarVisible] = useState(false);
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
@@ -42,22 +40,9 @@ const SignUp = ({ navigation }) => {
     );
   };
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleConfirm = (date, setFieldValue) => {
-    const formattedDate = date.toISOString().split("T")[0];
-    setFieldValue("weddingDate", formattedDate);
-    hideDatePicker();
-  };
-
   const signUpValidationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
+
     email: Yup.string()
       .email("Please enter valid email")
       .required("Email is required"),
@@ -100,12 +85,12 @@ const SignUp = ({ navigation }) => {
       <StatusBar barStyle="dark-content" backgroundColor="#4C134E" />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.overlayContainer}
-      >
+        style={styles.overlayContainer}>
         <Text style={styles.title}>Sign Up</Text>
         <Formik
           initialValues={{
             name: "",
+
             email: "",
             password: "",
             repeatPassword: "",
@@ -114,13 +99,11 @@ const SignUp = ({ navigation }) => {
             location: "",
           }}
           validationSchema={signUpValidationSchema}
-          onSubmit={handleSignUp}
-        >
+          onSubmit={handleSignUp}>
           {({
             handleChange,
             handleBlur,
             handleSubmit,
-            setFieldValue,
             values,
             errors,
             touched,
@@ -182,33 +165,23 @@ const SignUp = ({ navigation }) => {
                 <Text style={styles.errorText}>{errors.budget}</Text>
               )}
               <View style={styles.inputContainer}>
-                <TouchableOpacity onPress={showDatePicker}>
-                  <FontAwesome
-                    name="calendar"
-                    size={24}
-                    color="gray"
-                    style={styles.inputIcon}
-                  />
-                </TouchableOpacity>
-
+                <FontAwesome
+                  name="calendar"
+                  size={24}
+                  color="gray"
+                  style={styles.inputIcon}
+                />
                 <TextInput
                   style={styles.inputs}
                   placeholder="Wedding Date"
-                  onFocus={showDatePicker}
-                  value={values.weddingDate}
                   onChangeText={handleChange("weddingDate")}
                   onBlur={handleBlur("weddingDate")}
+                  value={values.weddingDate}
                 />
               </View>
               {errors.weddingDate && touched.weddingDate && (
                 <Text style={styles.errorText}>{errors.weddingDate}</Text>
               )}
-              <DateTimePickerModal
-                isVisible={isDatePickerVisible}
-                mode="date"
-                onConfirm={(date) => handleConfirm(date, setFieldValue)}
-                onCancel={hideDatePicker}
-              />
               <View style={styles.inputContainer}>
                 <FontAwesome
                   name="map-marker"
@@ -283,14 +256,12 @@ const SignUp = ({ navigation }) => {
               )}
               <TouchableOpacity
                 style={[styles.buttonContainer, styles.signUpButton]}
-                onPress={handleSubmit}
-              >
+                onPress={handleSubmit}>
                 <Text style={styles.signUpText}>Sign Up</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.buttonContainer, styles.loginRedirectButton]}
-                onPress={() => navigation.navigate("Login")}
-              >
+                onPress={() => navigation.navigate("Login")}>
                 <Text style={styles.loginRedirectText}>
                   Already have an account?{" "}
                   <Text
@@ -298,8 +269,7 @@ const SignUp = ({ navigation }) => {
                       color: "#ff81ae",
                       fontSize: 15,
                       textDecorationLine: "underline",
-                    }}
-                  >
+                    }}>
                     Login now{" "}
                   </Text>
                 </Text>
@@ -319,8 +289,7 @@ const SignUp = ({ navigation }) => {
             fontFamily: "poppins",
             width: "80%",
             alignSelf: "center",
-          }}
-        >
+          }}>
           Registration successful
         </Snackbar>
       </KeyboardAvoidingView>
