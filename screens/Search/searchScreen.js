@@ -31,7 +31,8 @@ const SearchScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <SearchBar></SearchBar>
-        <Text style={styles.headerStyle}> Explore Popular Suppliers </Text>
+        {/* <Text style={styles.headerStyle}> Explore Popular Suppliers </Text> */}
+        <Text style={styles.headerStyle}>{t("Explore Popular Suppliers")}</Text>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -40,7 +41,8 @@ const SearchScreen = ({ navigation }) => {
           {VenueTypes.map((venue) => (
             <SearchCard
               key={venue.id}
-              title={venue.title}
+              // title={venue.title}
+              title={t(`${venue.title}`)}
               imageUrl={venue.imageUrl}
               navigation={navigation}
             ></SearchCard>
