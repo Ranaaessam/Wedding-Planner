@@ -8,8 +8,12 @@ export const getAllCartItems = createAsyncThunk(
   "cart/fetchAll",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("API_URL/cart");
-      return response.data;
+      const userId = await storage.load({ key: "userId" });
+      const response = await axios.get(
+        `${API_URL}/account/profile?userId=${userId}`
+      );
+
+      return response.data.cart;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -55,6 +59,42 @@ export const removeFromCart = createAsyncThunk(
       }
 
       return cartItemId;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+export const clearCart = createAsyncThunk(
+  "cart/clear",
+  async (_, { rejectWithValue }) => {
+    try {
+      const accountId = await storage.load({ key: "accountId" });
+      const response = await axios.post(
+        `${API_URL}/account/cart/clear?accountId=${accountId}`
+      );
+      if (response.status !== 200) {
+        throw new Error("Failed to clear cart");
+      } else {
+        return response.data;
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+//Create order
+export const createOrder = createAsyncThunk(
+  "order/create",
+  async (order, { rejectWithValue }) => {
+    try {
+      console.log(order);
+      const token = await storage.load({ key: "token" });
+      console.log(token);
+      const response = await axios.post(`${API_URL}/orders/create`, order, {
+        headers: { "x-auth-token": `${token}` },
+      });
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -106,6 +146,30 @@ const cartSlice = createSlice({
         );
       })
       .addCase(removeFromCart.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      // Handle clear cart
+      .addCase(clearCart.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(clearCart.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.cartItems = [];
+      })
+      .addCase(clearCart.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      // Handle create order
+      .addCase(createOrder.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(createOrder.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.cartItems = [];
+      })
+      .addCase(createOrder.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

@@ -10,6 +10,7 @@ import {
   refundItem,
 } from "../StateManagement/slices/BudgetSlice";
 import { getUserProfile } from "../StateManagement/slices/ProfileSlice";
+import storage from "../Storage/storage";
 
 const BudgetScreen = ({ navigation }) => {
   const { t } = useTranslation();
@@ -52,8 +53,7 @@ const BudgetScreen = ({ navigation }) => {
         <Text style={styles.progressBudget}>${totalBudget}</Text>
       </View>
       <View
-        style={{ flexDirection: "row", paddingTop: 20, alignItems: "center" }}
-      >
+        style={{ flexDirection: "row", paddingTop: 20, alignItems: "center" }}>
         <View
           style={{
             borderRadius: 60,
@@ -61,8 +61,7 @@ const BudgetScreen = ({ navigation }) => {
             width: 10,
             backgroundColor: "#FF81AE",
             marginRight: 10,
-          }}
-        ></View>
+          }}></View>
         <Text style={{ textAlign: "left" }}>{t("Amount spent till now:")}</Text>
         <Text style={styles.budgetSpent}>${amountSpent}</Text>
       </View>
@@ -77,8 +76,7 @@ const BudgetScreen = ({ navigation }) => {
             backgroundColor: "#FF81AE",
             marginBottom: 2,
             marginTop: 6,
-          }}
-        ></View>
+          }}></View>
       </View>
       <FlatList
         data={budgetHistory}

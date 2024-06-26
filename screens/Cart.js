@@ -14,14 +14,13 @@ import API_URL from "../constants";
 import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
 import storage from "../Storage/storage";
+import { clearCart, createOrder } from "../StateManagement/slices/CartSlice";
+import { useDispatch } from "react-redux";
 
 const Cart = ({ navigation, route }) => {
   const { t } = useTranslation();
-  const { userId, accountID } = route.params; // Access userId and accountID here
-
-  // console.log("paramss");
-  // console.log(route.params)
-
+  const { userId, accountID } = route.params;
+  const dispatch = useDispatch();
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, settotalPrice] = useState(0);
 
@@ -37,8 +36,6 @@ const Cart = ({ navigation, route }) => {
     }
   };
   const handleCheckOut = () => {
-    // console.log(typeof totalPrice, totalPrice);
-
     axios
       .post("https://accept.paymob.com/api/auth/tokens", {
         api_key:
@@ -58,7 +55,6 @@ const Cart = ({ navigation, route }) => {
             items: [],
           })
           .then((res) => {
-            // console.log(res.data);
             const orderId = res.data.id;
             axios
               .post("https://accept.paymob.com/api/acceptance/payment_keys", {
@@ -88,18 +84,18 @@ const Cart = ({ navigation, route }) => {
                 Linking.openURL(
                   `https://accept.paymob.com/api/acceptance/iframes/837986?payment_token=${res.data.token}`
                 );
+                const order = {
+                  from: accountID,
+                  price: totalPrice,
+                  items: cartItems,
+                  // date: formatDate(new Date()),
+                  weddingDate: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
+                };
+                dispatch(createOrder(order));
+                dispatch(clearCart());
                 // window.open(
                 //   `https://accept.paymob.com/api/acceptance/iframes/837986?payment_token=${res.data.token}`
                 // );
-                const order = {
-                  clientID: accountID,
-                  price: totalPrice,
-                  products: cartItems,
-                  // date: formatDate(new Date()),
-                  date: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
-                };
-                // axios.post("http://localhost:3001/orders", order).then();
-                // dispatch(clearCart());
               })
               .catch((err) => {
                 console.log(err);
@@ -196,8 +192,7 @@ const Cart = ({ navigation, route }) => {
           mode="contained"
           style={styles.paymentButton}
           onPress={handleCheckOut}
-          labelStyle={{ fontSize: 16 }}
-        >
+          labelStyle={{ fontSize: 16 }}>
           {t("Proceed to Payment")}
         </Button>
       </View>

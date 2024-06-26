@@ -12,7 +12,10 @@ import {
 } from "react-native";
 import { Button, Card } from "react-native-paper";
 import { useDispatch } from "react-redux";
-import { addReview } from "../StateManagement/slices/ReviewSlice";
+import {
+  addReview,
+  getSupplierReview,
+} from "../StateManagement/slices/ReviewSlice";
 import storage from "../Storage/storage";
 
 const ReviewScreen = ({ visible, onClose, supplierId }) => {
@@ -24,6 +27,7 @@ const ReviewScreen = ({ visible, onClose, supplierId }) => {
     const r = await dispatch(
       addReview({ review: comment, rate: rating, to: supplierId })
     );
+    dispatch(getSupplierReview({ supplierId }));
     setComment("");
     setRating(0);
     onClose();
@@ -37,8 +41,7 @@ const ReviewScreen = ({ visible, onClose, supplierId }) => {
             style={[
               styles.star,
               { color: i <= rating ? "#FF81AE" : "#e0e0df" },
-            ]}
-          >
+            ]}>
             ★
           </Text>
         </TouchableOpacity>
@@ -66,8 +69,7 @@ const ReviewScreen = ({ visible, onClose, supplierId }) => {
               <Button
                 mode="contained"
                 style={styles.submitButton}
-                onPress={submitReview}
-              >
+                onPress={submitReview}>
                 Submit Review
               </Button>
               <Button mode="text" onPress={onClose}>
