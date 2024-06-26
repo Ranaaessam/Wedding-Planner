@@ -40,7 +40,7 @@ const HomeScreen = ({ navigation }) => {
       case "header":
         return (
           <Header
-            imageUri={userDetails.image}
+            imageUri={userDetails?.image}
             // imageUri={userDetails.image}
             name={t("Mr & Mrs")}
             userName={userDetails.name}
