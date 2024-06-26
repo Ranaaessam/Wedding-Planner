@@ -18,7 +18,7 @@ const BudgetScreen = ({ navigation }) => {
   const userDetails = useSelector((state) => state.user.user);
 
   const budgetHistory = useSelector((state) => state.budget.budgetHistory);
-  const totalBudget = userDetails.budget;
+  const totalBudget = userDetails?.budget;
   const amountSpent = useSelector((state) => state.budget.amountSpent);
   const budgetLeft = totalBudget - amountSpent;
 
@@ -48,6 +48,7 @@ const BudgetScreen = ({ navigation }) => {
       </Text>
       <Text style={styles.budget}>${budgetLeft}</Text>
       <ProgressBar progress={(amountSpent / totalBudget) * 100} height={25} />
+
       <View style={styles.progressRow}>
         <Text style={styles.progressBudget}>$0</Text>
         <Text style={styles.progressBudget}>${totalBudget}</Text>
@@ -82,13 +83,13 @@ const BudgetScreen = ({ navigation }) => {
         data={budgetHistory}
         renderItem={({ item }) => (
           <BudgetHistoryCard
-            id={item.id}
-            image={item.image}
+            id={item._id}
+            image={item.images[0]}
             type={item.type}
             name={item.name}
             price={item.price}
             navigation={navigation}
-            onDelete={handleRefund}
+            onDelete={() => handleRefund(item._id)}
           />
         )}
         keyExtractor={(item) => item.id}

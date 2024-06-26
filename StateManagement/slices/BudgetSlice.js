@@ -1,42 +1,22 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import API_URL from "../../constants";
+import API_URL, { wallet } from "../../constants";
+import storage from "../../Storage/storage";
 
 export const fetchBudgetData = createAsyncThunk(
   "budget/fetchBudgetData",
   async () => {
     const accountId = await storage.load({ key: "accountId" });
-    // const accountId = "667a80f6e50f45e1fb219168";
 
     try {
       const ordersResponse = await fetch(
-        `${API_URL}/orders/getOrderedProductsForUser?userID=${accountId}`
+        `${API_URL}/orders/getOrdersForUser?userID=${accountId}`
       );
       if (!ordersResponse.ok) {
         throw new Error("Failed to fetch orders");
       }
       const orders = await ordersResponse.json();
-      console.log(orders);
-      const productsResponse = await fetch(
-        `${API_URL}/suppliers/retrieveSuppliersByIds`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ ids: orders }),
-        }
-      );
-      if (!productsResponse.ok) {
-        throw new Error("Failed to fetch products");
-      }
-      const products = await productsResponse.json();
-      return products.map((product) => ({
-        id: product._id,
-        price: product.price,
-        type: product.type,
-        name: product.name,
-        image: product.images[0],
-      }));
+
+      return orders[0].items;
     } catch (error) {
       console.error("Error fetching budget data:", error);
       throw error;
@@ -44,10 +24,18 @@ export const fetchBudgetData = createAsyncThunk(
   }
 );
 
-export const refundItem = createAsyncThunk("budget/refundItem", async (id) => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  return id;
-});
+export const refundItem = createAsyncThunk(
+  "budget/refundItem",
+  async (id, { getState }) => {
+    const state = getState();
+    const item = state.budget.budgetHistory.find((item) => item._id === id);
+    if (!item) {
+      throw new Error("Item not found");
+    }
+    wallet += item.price;
+    return id;
+  }
+);
 
 const budgetSlice = createSlice({
   name: "budget",
@@ -85,7 +73,7 @@ const budgetSlice = createSlice({
       .addCase(refundItem.fulfilled, (state, action) => {
         const id = action.payload;
         state.budgetHistory = state.budgetHistory.filter(
-          (item) => item.id !== id
+          (item) => item._id !== id
         );
         state.amountSpent = state.budgetHistory.reduce(
           (total, item) => total + item.price,

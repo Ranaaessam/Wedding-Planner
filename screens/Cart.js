@@ -85,11 +85,11 @@ const Cart = ({ navigation, route }) => {
                   `https://accept.paymob.com/api/acceptance/iframes/837986?payment_token=${res.data.token}`
                 );
                 const order = {
-                  from: accountID,
+                  client: accountID,
                   price: totalPrice,
                   items: cartItems,
                   // date: formatDate(new Date()),
-                  weddingDate: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
+                  date: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
                 };
                 dispatch(createOrder(order));
                 dispatch(clearCart());
@@ -130,7 +130,7 @@ const Cart = ({ navigation, route }) => {
   };
 
   const proceedToPayment = () => {
-    alert("Proceeding to payment...");
+    Alert.alert("Proceeding to payment...");
   };
 
   return (
