@@ -6,7 +6,9 @@ import StackNav from "./navigators/stackNav";
 import { Provider } from "react-redux";
 import store from "./StateManagement/store";
 import { ThemeProvider, useTheme } from "./ThemeContext";
+import { LogBox } from "react-native";
 
+LogBox.ignoreAllLogs();
 const App = () => {
   let [fontsLoaded] = useFonts({
     Poppins: require("./assets/fonts/Poppins-Medium.ttf"),
@@ -35,7 +37,7 @@ const ThemedApp = () => {
     <NavigationContainer>
       <View style={[styles.container, { backgroundColor: theme.background }]}>
         <StackNav />
-         {/* <AdminNav /> */}
+        {/* <AdminNav /> */}
       </View>
     </NavigationContainer>
   );

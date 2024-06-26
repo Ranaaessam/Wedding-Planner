@@ -34,11 +34,7 @@ const Stack = createStackNavigator();
 
 const StackNav = () => {
   return (
-<<<<<<< Updated upstream
-    <Stack.Navigator initialRouteName="Splash">
-=======
     <Stack.Navigator initialRouteName="Login">
->>>>>>> Stashed changes
       <Stack.Screen
         name="Splash"
         component={SplashScreen}
@@ -116,24 +112,20 @@ const StackNav = () => {
       <Stack.Screen
         name="FavouriteCategoryScreen"
         component={FavouriteCategoryScreen}
-        options={{ headerShown: false }}
-      ></Stack.Screen>
+        options={{ headerShown: false }}></Stack.Screen>
       <Stack.Screen
         name="ListViewSuppliers"
         component={ListviewSuppliers}
-        options={{ headerShown: false }}
-      ></Stack.Screen>
+        options={{ headerShown: false }}></Stack.Screen>
       <Stack.Screen
         name="SupplierDetails"
         component={SupplierDetails}
-        options={{ headerShown: false }}
-      ></Stack.Screen>
+        options={{ headerShown: false }}></Stack.Screen>
 
       <Stack.Screen
         name="Search"
         component={SearchScreen}
-        options={{ headerShown: false }}
-      ></Stack.Screen>
+        options={{ headerShown: false }}></Stack.Screen>
       <Stack.Screen
         name="Plan"
         component={PlanScreen}
@@ -172,13 +164,11 @@ const StackNav = () => {
       <Stack.Screen
         name="SearchResults"
         component={SearchResultsScreen}
-        options={{ headerTitle: "" }}
-      ></Stack.Screen>
+        options={{ headerTitle: "" }}></Stack.Screen>
       <Stack.Screen
         name="Review"
         component={ReviewScreen}
-        options={{ headerTitle: "" }}
-      ></Stack.Screen>
+        options={{ headerTitle: "" }}></Stack.Screen>
     </Stack.Navigator>
   );
 };

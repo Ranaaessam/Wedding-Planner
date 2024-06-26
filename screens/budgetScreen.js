@@ -10,6 +10,7 @@ import {
   refundItem,
 } from "../StateManagement/slices/BudgetSlice";
 import { getUserProfile } from "../StateManagement/slices/ProfileSlice";
+import storage from "../Storage/storage";
 
 const BudgetScreen = ({ navigation }) => {
   const { t } = useTranslation();
@@ -17,7 +18,7 @@ const BudgetScreen = ({ navigation }) => {
   const userDetails = useSelector((state) => state.user.user);
 
   const budgetHistory = useSelector((state) => state.budget.budgetHistory);
-  const totalBudget = userDetails.budget;
+  const totalBudget = userDetails?.budget;
   const amountSpent = useSelector((state) => state.budget.amountSpent);
   const budgetLeft = totalBudget - amountSpent;
 
@@ -47,13 +48,13 @@ const BudgetScreen = ({ navigation }) => {
       </Text>
       <Text style={styles.budget}>${budgetLeft}</Text>
       <ProgressBar progress={(amountSpent / totalBudget) * 100} height={25} />
+
       <View style={styles.progressRow}>
         <Text style={styles.progressBudget}>$0</Text>
         <Text style={styles.progressBudget}>${totalBudget}</Text>
       </View>
       <View
-        style={{ flexDirection: "row", paddingTop: 20, alignItems: "center" }}
-      >
+        style={{ flexDirection: "row", paddingTop: 20, alignItems: "center" }}>
         <View
           style={{
             borderRadius: 60,
@@ -61,8 +62,7 @@ const BudgetScreen = ({ navigation }) => {
             width: 10,
             backgroundColor: "#FF81AE",
             marginRight: 10,
-          }}
-        ></View>
+          }}></View>
         <Text style={{ textAlign: "left" }}>{t("Amount spent till now:")}</Text>
         <Text style={styles.budgetSpent}>${amountSpent}</Text>
       </View>
@@ -77,20 +77,19 @@ const BudgetScreen = ({ navigation }) => {
             backgroundColor: "#FF81AE",
             marginBottom: 2,
             marginTop: 6,
-          }}
-        ></View>
+          }}></View>
       </View>
       <FlatList
         data={budgetHistory}
         renderItem={({ item }) => (
           <BudgetHistoryCard
-            id={item.id}
-            image={item.image}
+            id={item._id}
+            image={item.images[0]}
             type={item.type}
             name={item.name}
             price={item.price}
             navigation={navigation}
-            onDelete={handleRefund}
+            onDelete={() => handleRefund(item._id)}
           />
         )}
         keyExtractor={(item) => item.id}

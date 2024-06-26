@@ -41,16 +41,14 @@ const SearchScreen = ({ navigation }) => {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={styles.venueTypes}
-        >
+          style={styles.venueTypes}>
           {VenueTypes.map((venue) => (
             <SearchCard
               key={venue.id}
               // title={venue.title}
               title={t(`${venue.title}`)}
               imageUrl={venue.imageUrl}
-              navigation={navigation}
-            ></SearchCard>
+              navigation={navigation}></SearchCard>
           ))}
         </ScrollView>
       </ScrollView>
@@ -71,7 +69,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     width: "88%",
     marginHorizontal: 25,
-    marginTop: "90%",
+    marginTop: "10%",
     color: "#4C134E",
   },
   venueTypes: {

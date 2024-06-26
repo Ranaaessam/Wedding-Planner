@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  FlatList,
   ScrollView,
   Image,
 } from "react-native";
@@ -18,9 +17,10 @@ import storage from "../Storage/storage";
 const ReservationScreen = ({ navigation, route }) => {
   const [accountID, setAccountID] = useState(null);
   const venueObj = route.params;
-  const [selectedCake, setSelectedCake] = useState([]);
-  const [selectedCar, setSelectedCar] = useState([]);
-  const [selectedCaterer, setSelectedCaterer] = useState([]);
+  const [selectedCake, setSelectedCake] = useState(null);
+  const [selectedCar, setSelectedCar] = useState(null);
+  const [selectedCaterer, setSelectedCaterer] = useState(null);
+
   const fetchAccountID = async () => {
     try {
       const accountID = await storage.load({ key: "accountId" });
@@ -30,7 +30,9 @@ const ReservationScreen = ({ navigation, route }) => {
       return null;
     }
   };
+
   useEffect(() => {
+    console.log(venueObj.occupiedDays);
     const loadAccountID = async () => {
       const id = await fetchAccountID();
       setAccountID(id);
@@ -65,80 +67,42 @@ const ReservationScreen = ({ navigation, route }) => {
     return stars;
   };
 
-  const availability = {
-    ...venueObj.occupiedDays.reduce((acc, day) => {
-      const formattedDate = new Date(day).toISOString().split("T")[0];
-      return {
-        ...acc,
-        [formattedDate]: {
-          customStyles: {
-            container: {
-              backgroundColor: "red",
-              borderRadius: 15,
-            },
-            text: {
-              color: "white",
-            },
+  const availability = venueObj.occupiedDays.reduce((acc, day) => {
+    const formattedDate = new Date(day).toISOString().split("T")[0];
+
+    return {
+      ...acc,
+      [formattedDate]: {
+        customStyles: {
+          container: {
+            backgroundColor: "red",
+            borderRadius: 15,
+          },
+          text: {
+            color: "white",
           },
         },
-      };
-    }, {}),
-  };
+      },
+    };
+  }, {});
 
   const handleTimeSelect = (day, time) => {
     console.log(`Selected time on ${day}: ${time}`);
   };
 
-  const cakes = venueObj.cakes;
-
-  const cars = venueObj.cars;
-
-  const caterers = venueObj.caterer;
-
-  const renderCakeItem = ({ item }) => (
-    <TouchableOpacity
-      style={[styles.item, selectedCake === item.name && styles.selectedItem]}
-      onPress={() => setSelectedCake(item)}
-    >
-      <Image source={{ uri: item.image }} style={styles.image} />
-      <Text style={styles.itemName}>{item.name}</Text>
-    </TouchableOpacity>
-  );
-
-  const renderCarItem = ({ item }) => (
-    <TouchableOpacity
-      style={[styles.item, selectedCar === item.id && styles.selectedItem]}
-      onPress={() => setSelectedCar(item)}
-    >
-      <Image source={{ uri: item.image }} style={styles.image} />
-      <Text style={styles.itemName}>{item.name}</Text>
-    </TouchableOpacity>
-  );
-
-  const renderCatererItem = ({ item }) => (
-    <TouchableOpacity
-      style={[styles.item, selectedCaterer === item.id && styles.selectedItem]}
-      onPress={() => setSelectedCaterer(item)}
-    >
-      <Image source={{ uri: item.image }} style={styles.image} />
-      <Text style={styles.itemName}>{item.name}</Text>
-      <Text style={styles.description}>{item.description}</Text>
-    </TouchableOpacity>
-  );
-
   const cartNavigate = async () => {
     try {
+      const userId = await storage.load({ key: "userId" });
       const response = await axios.post(
         `${API_URL}/account/Cart?accountId=${accountID}`,
         {
-          venueName: venueObj.name,
+          ...venueObj,
           selectedCake: selectedCake,
           selectedCar: selectedCar,
           selectedCaterer: selectedCaterer,
-          // weddingDate: selectedDay,
         }
       );
-      navigation.navigate("Cart");
+      navigation.navigate("Cart", { userId: userId, accountID: accountID });
     } catch (error) {
       console.error("Error fetching supplier details:", error);
     }
@@ -173,7 +137,6 @@ const ReservationScreen = ({ navigation, route }) => {
         <Text style={styles.stepText}>Step 1: Choose your Date</Text>
         <View style={styles.calendarContainer}>
           <AvailabilityCalendar
-            // availability={venueObject.availability}
             availability={availability}
             onTimeSelect={handleTimeSelect}
             occupiedDays={venueObj.occupiedDays}
@@ -183,8 +146,7 @@ const ReservationScreen = ({ navigation, route }) => {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.listContainer}
-        >
+          contentContainerStyle={styles.listContainer}>
           {venueObj.cakes?.map((cake, index) => (
             <TouchableOpacity
               key={index}
@@ -192,8 +154,7 @@ const ReservationScreen = ({ navigation, route }) => {
                 styles.item,
                 selectedCake === cake.name && styles.selectedItem,
               ]}
-              onPress={() => setSelectedCake(cake.name)}
-            >
+              onPress={() => setSelectedCake(cake.name)}>
               <Image source={{ uri: cake.image }} style={styles.image} />
               <Text style={styles.itemName}>{cake.name}</Text>
             </TouchableOpacity>
@@ -204,8 +165,7 @@ const ReservationScreen = ({ navigation, route }) => {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.listContainer}
-        >
+          contentContainerStyle={styles.listContainer}>
           {venueObj.cars?.map((car, index) => (
             <TouchableOpacity
               key={index}
@@ -213,8 +173,7 @@ const ReservationScreen = ({ navigation, route }) => {
                 styles.item,
                 selectedCar === car.name && styles.selectedItem,
               ]}
-              onPress={() => setSelectedCar(car.name)}
-            >
+              onPress={() => setSelectedCar(car.name)}>
               <Image source={{ uri: car.image }} style={styles.image} />
               <Text style={styles.itemName}>{car.name}</Text>
             </TouchableOpacity>
@@ -225,8 +184,7 @@ const ReservationScreen = ({ navigation, route }) => {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.listContainer}
-        >
+          contentContainerStyle={styles.listContainer}>
           {venueObj.caterer?.map((caterer, index) => (
             <TouchableOpacity
               key={index}
@@ -234,8 +192,7 @@ const ReservationScreen = ({ navigation, route }) => {
                 styles.item,
                 selectedCaterer === caterer.name && styles.selectedItem,
               ]}
-              onPress={() => setSelectedCaterer(caterer.name)}
-            >
+              onPress={() => setSelectedCaterer(caterer.name)}>
               <Image source={{ uri: caterer.image }} style={styles.image} />
               <Text style={styles.itemName}>{caterer.name}</Text>
               <Text style={styles.description}>{caterer.description}</Text>
@@ -247,8 +204,7 @@ const ReservationScreen = ({ navigation, route }) => {
           <Button
             mode="contained"
             style={styles.button}
-            labelStyle={{ fontSize: 16, fontWeight: "bold" }}
-          >
+            labelStyle={{ fontSize: 16, fontWeight: "bold" }}>
             Next ${venueObj.price}
           </Button>
         </TouchableOpacity>

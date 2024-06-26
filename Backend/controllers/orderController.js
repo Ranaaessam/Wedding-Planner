@@ -140,7 +140,7 @@ const createOrder = async (req, res) => {
       from: client._id,
       price: price,
     });
-
+    console.log(newOrder);
     await newOrder.save();
 
     // Update occupiedDays for each supplier

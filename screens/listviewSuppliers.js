@@ -80,18 +80,17 @@ const ListviewSuppliers = ({ navigation, route }) => {
                 supplierId: item._id,
                 imagess: item.images,
               })
-            }
-          >
+            }>
             <SupplierCard
               image={item.images[0]}
               name={item.name}
               location={item.location}
-              rate={item.rate}
+              rate={Math.round(item.rate)}
               navigation={navigation}
             />
           </TouchableOpacity>
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         contentContainerStyle={styles.list}
       />
     </View>
