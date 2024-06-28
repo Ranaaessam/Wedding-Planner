@@ -9,7 +9,7 @@ const PlanIcon = ({ iconName, name, navigation }) => {
     if (name === "Budget") {
       navigation.navigate("Budget");
     } else if (name === "Checklist") {
-      navigation.navigate("Checklists");
+      navigation.navigate("CheckList");
     } else if (name === "Guest") {
       navigation.navigate("Guestlist");
     } else if (name === "Advice") {

@@ -32,6 +32,8 @@ const ProfileScreen = () => {
   const [budget, setBudget] = useState("");
 
   const userDetails = useSelector((state) => state.user.user);
+  const names = useSelector((state) => state.home.names);
+
   const plan = useSelector((state) => state.user.plan);
   const { t } = useTranslation();
 
@@ -50,9 +52,10 @@ const ProfileScreen = () => {
   useEffect(() => {
     if (userDetails) {
       setProfile({
+        groomName: names["user1Name"] || "",
+        brideName: names["user2Name"] || "",
         location: userDetails.location,
         weddingdate: userDetails.weddingdate,
-        orders: userDetails.orders,
       });
       setImage(userDetails.image);
       setBudget(userDetails.budget);
@@ -118,7 +121,7 @@ const ProfileScreen = () => {
             </TouchableOpacity>
             <View style={styles.infoContainer}>
               <View style={styles.balanceContainer}>
-                <Text style={{ fontSize: 16 }}>{t("budget")}</Text>
+                <Text style={{ fontSize: 16 }}>{t("Budget")}</Text>
                 {isEditing ? (
                   <TextInput
                     style={styles.data}
@@ -135,7 +138,6 @@ const ProfileScreen = () => {
               </View>
               <View style={styles.planContainer}>
                 <Text style={{ fontSize: 16 }}>{t("plan")}</Text>
-                {/* <Text style={{ fontSize: 16 }}>Plan</Text> */}
                 <Text
                   style={{
                     fontWeight: "500",
@@ -145,29 +147,63 @@ const ProfileScreen = () => {
                   }}
                 >
                   {plan ? `${plan}%` : t("No Plan")}
-                  {/* {plan ? `${plan}%` : "No Plan"} */}
                 </Text>
                 <ProgressBar progress={plan} height={5} />
               </View>
             </View>
             <View style={styles.detailsContainer}>
-              {Object.entries(profile).map(([key, value]) => (
-                <View key={key} style={styles.detailRow}>
-                  <Text style={styles.head}>
-                    {t(`${key.charAt(0).toUpperCase() + key.slice(1)}`)}
-                  </Text>
-                  {isEditing ? (
-                    <TextInput
-                      style={styles.data}
-                      value={value}
-                      onChangeText={(text) => handleChange(key, text)}
-                    />
-                  ) : (
-                    <Text style={styles.data}>{value}</Text>
-                  )}
-                  <View style={styles.divider}></View>
-                </View>
-              ))}
+              <View style={styles.detailRow}>
+                <Text style={styles.head}>{t("Groom Name")}</Text>
+                {isEditing ? (
+                  <TextInput
+                    style={styles.data}
+                    value={profile.groomName}
+                    onChangeText={(text) => handleChange("groomName", text)}
+                  />
+                ) : (
+                  <Text style={styles.data}>{profile.groomName}</Text>
+                )}
+                <View style={styles.divider}></View>
+              </View>
+              <View style={styles.detailRow}>
+                <Text style={styles.head}>{t("Bride Name")}</Text>
+                {isEditing ? (
+                  <TextInput
+                    style={styles.data}
+                    value={profile.brideName}
+                    onChangeText={(text) => handleChange("brideName", text)}
+                  />
+                ) : (
+                  <Text style={styles.data}>{profile.brideName}</Text>
+                )}
+                <View style={styles.divider}></View>
+              </View>
+              <View style={styles.detailRow}>
+                <Text style={styles.head}>{t("Location")}</Text>
+                {isEditing ? (
+                  <TextInput
+                    style={styles.data}
+                    value={profile.location}
+                    onChangeText={(text) => handleChange("location", text)}
+                  />
+                ) : (
+                  <Text style={styles.data}>{profile.location}</Text>
+                )}
+                <View style={styles.divider}></View>
+              </View>
+              <View style={styles.detailRow}>
+                <Text style={styles.head}>{t("Wedding Date")}</Text>
+                {isEditing ? (
+                  <TextInput
+                    style={styles.data}
+                    value={profile.weddingdate}
+                    onChangeText={(text) => handleChange("weddingdate", text)}
+                  />
+                ) : (
+                  <Text style={styles.data}>{profile.weddingdate}</Text>
+                )}
+                <View style={styles.divider}></View>
+              </View>
             </View>
           </View>
         </ScrollView>

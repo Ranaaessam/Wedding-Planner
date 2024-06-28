@@ -7,12 +7,14 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 const PlanChecklist = ({ navigation }) => {
-  const plan = useSelector((state) => state.user.plan);
+  const planCompletion = useSelector(
+    (state) => state.checklist.completionPercentage
+  );
   const { t } = useTranslation();
   return (
     <TouchableOpacity
       style={styles.checklist}
-      onPress={() => navigation.navigate("Checklists")}
+      onPress={() => navigation.navigate("CheckList")}
     >
       <View style={styles.content}>
         <View style={styles.iconText}>
@@ -20,15 +22,16 @@ const PlanChecklist = ({ navigation }) => {
           <Text style={styles.text}>{t("Checklist")}</Text>
         </View>
         <View style={styles.progressContainer}>
-          <ProgressBar progress={plan} />
+          <ProgressBar progress={planCompletion} />
           <Text style={styles.progressText}>
-            {plan ? `${plan}%` : "0%"} {t("Completed")}
+            {planCompletion ? `${planCompletion}%` : "0%"} {t("Completed")}
           </Text>
         </View>
       </View>
       <View style={styles.content}>
         <CheckBox
-          checked={false}
+          checkedColor="#FF81AE"
+          checked={planCompletion === 100}
           onPress={() => {}}
           containerStyle={styles.checkBox}
         />

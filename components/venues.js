@@ -10,8 +10,9 @@ const Venues = ({ navigation }) => {
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      style={styles.scrollView}>
-      {venueData.map((venue) => (
+      style={styles.scrollView}
+    >
+      {venueData?.map((venue) => (
         <VenueCard
           key={venue._id}
           name={venue.name}

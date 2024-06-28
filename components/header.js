@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { View, Text, Image, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/Octicons";
 
-const Header = ({ imageUri, name, userName }) => {
+const Header = ({ imageUri, name1, name2 }) => {
   return (
     <View style={styles.headerContainer}>
       <View style={styles.avatarContainer}>
@@ -15,11 +15,9 @@ const Header = ({ imageUri, name, userName }) => {
           style={styles.avatar}
         />
       </View>
-      <Text style={styles.name}>{name}</Text>
-      <Text style={styles.name}>{userName}</Text>
-      {/* <TouchableOpacity onPress={()=>{navigation.navigate('Settings')}}>
-      <Icon name="gear" size={25} color="grey" style={styles.settingsIcon} />
-      </TouchableOpacity> */}
+      <Text style={styles.name}>
+        {name1} & {name2}
+      </Text>
     </View>
   );
 };
@@ -27,6 +25,7 @@ const Header = ({ imageUri, name, userName }) => {
 const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
+    justifyContent: "flex-start",
     alignItems: "center",
     padding: 10,
     backgroundColor: "#FFDFEB",
@@ -51,7 +50,6 @@ const styles = StyleSheet.create({
     borderRadius: 28,
   },
   name: {
-    flex: 1,
     fontSize: 20,
     fontWeight: "bold",
     marginLeft: 10,

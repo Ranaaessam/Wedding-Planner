@@ -12,6 +12,7 @@ const PlanCards = ({ navigation }) => {
   const FavItems = useSelector((state) => state.favourites.favourites);
   const guests = useSelector((state) => state.guestList.guests);
   const userDetails = useSelector((state) => state.user.user);
+  const tasks = useSelector((state) => state.checklist.tasks);
 
   const totalBudget = userDetails?.budget;
   const amountSpent = useSelector((state) => state.budget.amountSpent);
@@ -19,6 +20,7 @@ const PlanCards = ({ navigation }) => {
   const [cartLength, setCartLength] = useState(0);
   const [FavLength, setFavLength] = useState(0);
   const [GuestLength, setGuestLength] = useState(0);
+  const [tasksLength, setTasksLength] = useState(0);
 
   useEffect(() => {
     dispatch(getAllCartItems());
@@ -30,6 +32,7 @@ const PlanCards = ({ navigation }) => {
     setCartLength(cartItems.length);
     setFavLength(FavItems.length);
     setGuestLength(guests.length);
+    setTasksLength(tasks.length);
   }, [cartItems, FavItems, guests]);
 
   const planCards = [
@@ -42,7 +45,7 @@ const PlanCards = ({ navigation }) => {
     { id: 2, icon: "addusergroup", name: "Guest list", value: GuestLength },
     { id: 3, icon: "hearto", name: "Favorites", value: FavLength },
     { id: 4, icon: "like2", name: "Booked", value: cartLength },
-    { id: 5, icon: "profile", name: "To-Do List", value: 0 },
+    { id: 5, icon: "profile", name: "To-Do List", value: tasksLength },
     { id: 6, icon: "book", name: "Scrapbook", value: 0 },
   ];
 

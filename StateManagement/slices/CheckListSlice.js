@@ -1,37 +1,61 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import API_URL from "../../constants";
+import * as Notifications from "expo-notifications";
 
-export const fetchTypes = createAsyncThunk("checkList/fetchTypes", async () => {
-  const accountId = await storage.load({ key: "accountId" });
-  const response = await axios.get(
-    `${API_URL}/orders/getSupplierTypesByID?userID=${accountId}`
-  );
-  return response.data;
-});
+export const scheduleNotification = createAsyncThunk(
+  "checklist/scheduleNotification",
+  async (task) => {
+    const notificationId = await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Task Reminder",
+        body: `You have a pending task: ${task.title}`,
+        data: { task },
+      },
+      trigger: { seconds: 60 },
+    });
+    return { task, notificationId };
+  }
+);
 
-const checkListSlice = createSlice({
+const calculateCompletionPercentage = (tasks) => {
+  const totalTasks = tasks.length;
+  const completedTasks = tasks.filter((task) => task.completed).length;
+  return totalTasks === 0 ? 0 : (completedTasks / totalTasks) * 100;
+};
+
+export const checklistSlice = createSlice({
   name: "checklist",
   initialState: {
-    types: [],
-    status: "idle",
-    error: null,
+    tasks: [],
+    completionPercentage: 0,
   },
-  reducers: {},
+  reducers: {
+    addTask: (state, action) => {
+      state.tasks.push(action.payload);
+      state.completionPercentage = calculateCompletionPercentage(state.tasks);
+    },
+    toggleTaskCompletion: (state, action) => {
+      const task = state.tasks.find((task) => task.key === action.payload);
+      if (task) {
+        task.completed = !task.completed;
+        state.completionPercentage = calculateCompletionPercentage(state.tasks);
+      }
+    },
+    removeTask: (state, action) => {
+      state.tasks = state.tasks.filter((task) => task.key !== action.payload);
+      state.completionPercentage = calculateCompletionPercentage(state.tasks);
+    },
+  },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchTypes.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchTypes.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.types = action.payload;
-      })
-      .addCase(fetchTypes.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      });
+    builder.addCase(scheduleNotification.fulfilled, (state, action) => {
+      const { task, notificationId } = action.payload;
+      const taskToUpdate = state.tasks.find((t) => t.key === task.key);
+      if (taskToUpdate) {
+        taskToUpdate.notificationId = notificationId;
+      }
+    });
   },
 });
 
-export default checkListSlice.reducer;
+export const { addTask, toggleTaskCompletion, removeTask } =
+  checklistSlice.actions;
+export default checklistSlice.reducer;

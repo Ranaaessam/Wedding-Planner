@@ -1,7 +1,9 @@
 const Account = require("../models/accountsModel");
+
 const { google } = require("googleapis");
 const credentials = require("../credentials.json");
 
+const User = require("../models/userModel");
 const { isValidObjectId } = require("mongoose");
 const getAllAccounts = async (req, res) => {
   try {
@@ -13,10 +15,6 @@ const getAllAccounts = async (req, res) => {
 };
 
 const getAccountByUserID = async (req, res) => {
-  // const token = req.header('x-auth-token');
-  // if (!token) return res.status(401).send('Access denied. No token provided.');
-  // const userId = jwt.verify(token, "WeddingPlannerSecretKey");
-
   const { userId } = req.query;
   try {
     const account = await Account.findOne({
@@ -33,11 +31,31 @@ const getAccountByUserID = async (req, res) => {
   }
 };
 
+const getUserNamesByUserID = async (req, res) => {
+  const { userId } = req.query;
+  try {
+    const account = await Account.findOne({
+      $or: [{ user1Id: userId }, { user2Id: userId }],
+    });
+    const user1 = await User.findById(account.user1Id);
+    const user2 = await User.findById(account.user2Id);
+    if (account) {
+      res.status(200).json({
+        user1Name: user1.name,
+        user2Name: user2.name,
+      });
+    } else {
+      res.status(404).json({ message: "No account found for this user" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 //cart
 const AddToCart = async (req, res) => {
   const { accountId } = req.query;
   const newCartItem = req.body;
-  console.log("dddddddddddddddddddddd");
   try {
     const account = await Account.findByIdAndUpdate(
       accountId,
@@ -245,4 +263,5 @@ module.exports = {
   updateAccount,
   getGuestList,
   getAllFavouritesByAccountID,
+  getUserNamesByUserID,
 };

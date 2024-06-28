@@ -12,9 +12,23 @@ export const getVenuesNearLocation = createAsyncThunk(
         `${API_URL}/account/profile?userId=${userID}`
       );
       const location = locationResponse.data.location;
-      console.log(location);
       const response = await axios.get(
         `${API_URL}/suppliers/filter?type=Venue&location=${location}`
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getNames = createAsyncThunk(
+  "home/getNames",
+  async (_, { rejectWithValue }) => {
+    try {
+      const userID = await storage.load({ key: "userId" });
+      const response = await axios.get(
+        `${API_URL}/account/usernames?userId=${userID}`
       );
       return response.data;
     } catch (error) {
@@ -29,6 +43,10 @@ const homeSlice = createSlice({
     venues: [],
     status: "idle",
     error: null,
+    names: {
+      user1Name: "",
+      user2Name: "",
+    },
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -41,6 +59,17 @@ const homeSlice = createSlice({
         state.venues = action.payload;
       })
       .addCase(getVenuesNearLocation.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(getNames.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getNames.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.names = action.payload;
+      })
+      .addCase(getNames.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

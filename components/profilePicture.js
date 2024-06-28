@@ -33,7 +33,6 @@ const ProfilePicture = ({ imgUrl }) => {
         })
         .catch(() => {
           setLoading(false);
-          // Handle error appropriately
         });
     }
   };

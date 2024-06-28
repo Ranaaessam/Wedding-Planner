@@ -4,6 +4,9 @@ import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
 const PlanCard = ({ icon, name, value, navigation }) => {
+  const getTasksCount = (length) => {
+    return length;
+  };
   const { t } = useTranslation();
   let valueText = "";
 
@@ -21,7 +24,7 @@ const PlanCard = ({ icon, name, value, navigation }) => {
       valueText = `${value} ${t("Suppliers")}`;
       break;
     case "to-do list":
-      valueText = "";
+      valueText = `${value} ${t("Tasks")}`;
       break;
     case "scrapbook":
       valueText = `${value} ${t("Notes")}`;
@@ -45,7 +48,7 @@ const PlanCard = ({ icon, name, value, navigation }) => {
         navigation.navigate("Cart");
         break;
       case "to-do list":
-        navigation.navigate("CheckList")
+        navigation.navigate("CheckList", {});
         break;
       case "scrapbook":
         Alert.alert(

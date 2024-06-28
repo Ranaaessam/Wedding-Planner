@@ -6,22 +6,24 @@ import Header from "../components/header";
 import PlanList from "../components/planList";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { getVenuesNearLocation } from "../StateManagement/slices/HomeSlice";
+import {
+  getNames,
+  getVenuesNearLocation,
+} from "../StateManagement/slices/HomeSlice";
 import storage from "../Storage/storage";
 import { getUserProfile } from "../StateManagement/slices/ProfileSlice";
-import { useTheme ,themes} from "../ThemeContext";
-
+import { useTheme, themes } from "../ThemeContext";
 
 const HomeScreen = ({ navigation }) => {
   const { t } = useTranslation();
 
-
   const dispatch = useDispatch();
   const { theme, toggleTheme } = useTheme();
 
-
+  const names = useSelector((state) => state.home.names);
   useEffect(() => {
     dispatch(getVenuesNearLocation());
+    dispatch(getNames());
   }, [dispatch]);
 
   const data = [
@@ -46,9 +48,8 @@ const HomeScreen = ({ navigation }) => {
         return (
           <Header
             imageUri={userDetails?.image}
-            // imageUri={userDetails.image}
-            name={t("Mr & Mrs")}
-            userName={userDetails?.name}
+            name1={names["user1Name"]}
+            name2={names["user2Name"]}
             navigation={navigation}
           />
         );
@@ -79,8 +80,9 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.background }]}>
-
+    <SafeAreaView
+      style={[styles.safeArea, { backgroundColor: theme.background }]}
+    >
       <FlatList
         data={data}
         renderItem={renderItem}
@@ -98,8 +100,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-  backgroundColor: themes.cart,
-
+    backgroundColor: themes.cart,
   },
   container: {
     margin: 10,

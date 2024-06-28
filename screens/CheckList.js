@@ -13,6 +13,13 @@ import {
 import { CheckBox, Button, Icon } from "react-native-elements";
 import LottieView from "lottie-react-native";
 import * as Notifications from "expo-notifications";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addTask,
+  toggleTaskCompletion,
+  removeTask,
+  scheduleNotification,
+} from "../StateManagement/slices/CheckListSlice"; // Adjust the path as needed
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -23,7 +30,9 @@ Notifications.setNotificationHandler({
 });
 
 const Checklist = () => {
-  const [tasks, setTasks] = useState([]);
+  const tasks = useSelector((state) => state.checklist.tasks);
+  const dispatch = useDispatch();
+
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
@@ -57,7 +66,7 @@ const Checklist = () => {
     }
   };
 
-  const addTask = async () => {
+  const handleAddTask = async () => {
     if (taskTitle.length > 0 && taskDescription.length > 0) {
       const newTask = {
         key: Date.now().toString(),
@@ -66,69 +75,28 @@ const Checklist = () => {
         completed: false,
       };
 
-      const notificationId = await scheduleNotification(newTask);
+      dispatch(addTask(newTask));
+      dispatch(scheduleNotification(newTask));
 
-      newTask.notificationId = notificationId;
-      setTasks([...tasks, newTask]);
       setTaskTitle("");
       setTaskDescription("");
       setModalVisible(false);
     }
   };
 
-  const scheduleNotification = async (task) => {
-    const notificationId = await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "Task Reminder",
-        body: `You have a pending task: ${task.title}`,
-        data: { task },
-      },
-      trigger: { seconds: 60 },
-    });
-    return notificationId;
+  const handleToggleTaskCompletion = (taskKey) => {
+    dispatch(toggleTaskCompletion(taskKey));
   };
 
-  const cancelNotification = async (notificationId) => {
-    if (notificationId) {
-      await Notifications.cancelScheduledNotificationAsync(notificationId);
-    }
-  };
-
-  const completeTask = async (taskKey) => {
-    const updatedTasks = tasks.map((task) => {
-      if (task.key === taskKey) {
-        const updatedTask = { ...task, completed: !task.completed };
-
-        if (updatedTask.completed) {
-          cancelNotification(updatedTask.notificationId);
-        } else {
-          scheduleNotification(updatedTask).then((notificationId) => {
-            updatedTask.notificationId = notificationId;
-            setTasks((prevTasks) =>
-              prevTasks.map((t) => (t.key === taskKey ? updatedTask : t))
-            );
-          });
-        }
-        return updatedTask;
-      }
-      return task;
-    });
-
-    setTasks(updatedTasks);
-  };
-
-  const removeTask = (taskKey) => {
-    const taskToRemove = tasks.find((task) => task.key === taskKey);
-    if (taskToRemove && taskToRemove.notificationId) {
-      cancelNotification(taskToRemove.notificationId);
-    }
-    setTasks(tasks.filter((task) => task.key !== taskKey));
+  const handleRemoveTask = (taskKey) => {
+    dispatch(removeTask(taskKey));
   };
 
   return (
     <ImageBackground
       source={require("../assets/Images/bc.jpg")}
-      style={styles.background}>
+      style={styles.background}
+    >
       <View style={styles.container}>
         <Text style={styles.title}> Your Checklist </Text>
 
@@ -148,8 +116,9 @@ const Checklist = () => {
             renderItem={({ item }) => (
               <View style={styles.taskItem}>
                 <CheckBox
+                  checkedColor="#FF81AE"
                   checked={item.completed}
-                  onPress={() => completeTask(item.key)}
+                  onPress={() => handleToggleTaskCompletion(item.key)}
                   containerStyle={styles.checkbox}
                 />
                 <View style={styles.taskDetails}>
@@ -157,21 +126,23 @@ const Checklist = () => {
                     style={[
                       styles.taskTitle,
                       item.completed ? styles.completedTask : null,
-                    ]}>
+                    ]}
+                  >
                     {item.title}
                   </Text>
                   <Text
                     style={[
                       styles.taskDescription,
                       item.completed ? styles.completedTask : null,
-                    ]}>
+                    ]}
+                  >
                     {item.description}
                   </Text>
                 </View>
                 <Button
                   icon={<Icon name="delete" size={20} color="white" />}
                   buttonStyle={styles.deleteButton}
-                  onPress={() => removeTask(item.key)}
+                  onPress={() => handleRemoveTask(item.key)}
                 />
               </View>
             )}
@@ -192,7 +163,8 @@ const Checklist = () => {
           animationType="slide"
           transparent={true}
           visible={modalVisible}
-          onRequestClose={() => setModalVisible(false)}>
+          onRequestClose={() => setModalVisible(false)}
+        >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>Add New Task</Text>
@@ -213,12 +185,14 @@ const Checklist = () => {
               <View style={styles.modalButtons}>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(false)}>
+                  onPress={() => setModalVisible(false)}
+                >
                   <Text style={styles.textStyle}>Cancel</Text>
                 </Pressable>
                 <Pressable
                   style={[styles.button, styles.buttonAdd]}
-                  onPress={addTask}>
+                  onPress={handleAddTask}
+                >
                   <Text style={styles.textStyle}>Add</Text>
                 </Pressable>
               </View>

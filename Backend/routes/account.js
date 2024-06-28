@@ -6,6 +6,7 @@ router.get("/", AccountsController.getAllAccounts);
 router.patch("/", AccountsController.updateAccount);
 router.get("/profile", AccountsController.getAccountByUserID);
 router.get("/guestList", AccountsController.getGuestList);
+router.get("/usernames", AccountsController.getUserNamesByUserID);
 
 router.post("/Cart", AccountsController.AddToCart);
 router.delete("/Cart", AccountsController.RemoveFromCart);
