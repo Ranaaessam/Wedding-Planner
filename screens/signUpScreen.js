@@ -64,7 +64,7 @@ const SignUp = ({ navigation }) => {
   });
 
   const dispatch = useDispatch();
-  const handleSignUp = (values) => {
+  const handleSignUp = async (values) => {
     const userInfo = {
       name: values.name,
       email: values.email,
@@ -73,10 +73,12 @@ const SignUp = ({ navigation }) => {
       weddingDate: values.weddingDate,
       location: values.location,
     };
-    dispatch(registerUser(userInfo));
+    const result = await dispatch(registerUser(userInfo));
+    const user = result.payload;
+    console.log(user);
     setSnackbarVisible(true);
     setTimeout(() => {
-      navigation.navigate("Login", { isRegistrationSuccess: true });
+      navigation.navigate("OTP", { userId: user.userId, navigation });
     }, 2000);
   };
 

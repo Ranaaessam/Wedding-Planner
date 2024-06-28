@@ -60,14 +60,14 @@ const profileSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(getPlanPercentage.pending, (state) => {
-        state.status = "Loading";
+        state.status = "loading";
       })
       .addCase(getPlanPercentage.fulfilled, (state, action) => {
-        state.status = "Successed";
+        state.status = "succeeded";
         state.plan = action.payload;
       })
       .addCase(getPlanPercentage.rejected, (state, action) => {
-        state.status = "Failed";
+        state.status = "failed";
         state.error = action.error.message;
       });
   },

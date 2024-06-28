@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 import { useDispatch } from "react-redux";
@@ -7,6 +13,7 @@ import { updateProfile } from "../StateManagement/slices/ProfileSlice";
 
 const ProfilePicture = ({ imgUrl }) => {
   const [imageUri, setImageUri] = useState(imgUrl);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const selectImage = async () => {
@@ -18,15 +25,27 @@ const ProfilePicture = ({ imgUrl }) => {
     });
 
     if (!result.cancelled) {
+      setLoading(true);
       setImageUri(result.assets[0].uri);
-      dispatch(updateProfile({ image: result.assets[0].uri }));
+      dispatch(updateProfile({ image: result.assets[0].uri }))
+        .then(() => {
+          setLoading(false);
+        })
+        .catch(() => {
+          setLoading(false);
+          // Handle error appropriately
+        });
     }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.avatarContainer}>
-        <Image source={{ uri: imageUri }} style={styles.avatar} />
+        {loading ? (
+          <ActivityIndicator size="large" color="#FF81AE" />
+        ) : (
+          <Image source={{ uri: imageUri }} style={styles.avatar} />
+        )}
         <TouchableOpacity
           style={styles.editIconContainer}
           onPress={selectImage}

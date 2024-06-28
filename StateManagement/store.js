@@ -11,6 +11,8 @@ import favouritesReducer from "./slices/FavouritesSlice";
 import homeReducer from "./slices/HomeSlice";
 import checklistReducer from "./slices/CheckListSlice";
 import reviewReducer from "./slices/ReviewSlice";
+import OTPReducer from "./slices/OTPSlice";
+
 export const store = configureStore({
   reducer: {
     admin: adminReducer,
@@ -25,6 +27,7 @@ export const store = configureStore({
     home: homeReducer,
     checklist: checklistReducer,
     review: reviewReducer,
+    otp: OTPReducer,
   },
 });
 

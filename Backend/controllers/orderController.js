@@ -120,6 +120,7 @@ const getOrderedProductsForUser = async (req, res) => {
     const boughtProducts = await Orders.distinct("to", {
       from: userID,
     });
+    console.log(boughtProducts);
 
     return res.status(200).json(boughtProducts);
   } catch (error) {

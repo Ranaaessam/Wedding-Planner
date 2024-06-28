@@ -15,15 +15,18 @@ const Registration = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
+    // Generate OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
     user = new User({
       email: req.body.email.toLowerCase(),
       name: req.body.name,
       password: hashedPassword,
+      otp: otp,
     });
 
     await user.save();
 
-    // Set default values if not provided in req.body
     const weddingdate = req.body.weddingdate || null;
     const location = req.body.location || "";
     const budget = req.body.budget || 0;
@@ -37,11 +40,37 @@ const Registration = async (req, res) => {
 
     await account.save();
 
+    await user.save();
+    console.log(otp);
+    // Send OTP via email
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: "hire.hustle1@gmail.com",
+        pass: "ipozfcndqykqpslz",
+      },
+    });
+
+    const mailOptions = {
+      from: '"Wedding Planner" <hire.hustle1@gmail.com>',
+      to: user.email,
+      subject: "Your OTP Code",
+      text: `Your OTP code is ${otp}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending OTP email:", error);
+      } else {
+        console.log("OTP email sent:", info.response);
+      }
+    });
+
     const token = jwt.sign({ userId: user._id }, "WeddingPlannerSecretKey");
 
     res.header("x-auth-token", token);
     res.status(200).json({
-      message: "Registered Successfully!",
+      message: "Registered Successfully! Please check your email for the OTP.",
       accountId: account._id,
       userId: user._id,
     });
@@ -49,6 +78,27 @@ const Registration = async (req, res) => {
     console.error("Error during user registration:", err);
     res.status(500).send({
       message: "An error occurred during registration",
+      error: err.message,
+    });
+  }
+};
+const verifyOTP = async (req, res) => {
+  try {
+    const { userId, otp } = req.body;
+    const user = await User.findById(userId);
+    console.log(user.otp);
+    console.log(otp);
+    if (user && user.otp == otp) {
+      user.otp = 0;
+      await user.save();
+      res.status(200).send({ success: true });
+    } else {
+      res.status(400).send({ success: false, message: "Invalid OTP" });
+    }
+  } catch (err) {
+    console.error("Error verifying OTP:", err);
+    res.status(500).send({
+      message: "An error occurred while verifying OTP",
       error: err.message,
     });
   }
@@ -126,11 +176,9 @@ const invite = async (req, res) => {
       }
     } else {
       // Handle case where user1Id doesn't exist (though it should ideally exist)
-      return res
-        .status(400)
-        .json({
-          error: `Account with ID ${accountId} does not have user1Id populated`,
-        });
+      return res.status(400).json({
+        error: `Account with ID ${accountId} does not have user1Id populated`,
+      });
     }
 
     // Check if the user already exists by email
@@ -160,11 +208,9 @@ const invite = async (req, res) => {
     );
 
     // Send success response
-    return res
-      .status(200)
-      .json({
-        message: `User ${req.body.name} (${req.body.email}) added to account ${accountId} successfully`,
-      });
+    return res.status(200).json({
+      message: `User ${req.body.name} (${req.body.email}) added to account ${accountId} successfully`,
+    });
   } catch (error) {
     console.error("Error inviting user:", error);
     // Send error response
@@ -203,6 +249,7 @@ const invite = async (req, res) => {
 module.exports = {
   getAllUsers,
   Registration,
+  verifyOTP,
   Login,
   invite,
 };
