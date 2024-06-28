@@ -16,6 +16,8 @@ import { useTranslation } from "react-i18next";
 import storage from "../Storage/storage";
 import { clearCart, createOrder } from "../StateManagement/slices/CartSlice";
 import { useDispatch } from "react-redux";
+import { useTheme ,themes} from "../ThemeContext"
+
 
 const Cart = ({ navigation, route }) => {
   const { t } = useTranslation();
@@ -23,6 +25,7 @@ const Cart = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, settotalPrice] = useState(0);
+  const { theme, toggleTheme } = useTheme();
 
   const deleteFromcart = async (itemID) => {
     try {
@@ -134,15 +137,17 @@ const Cart = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.mainTitle}>{t("Your Wedding Plan!")}</Text>
-      <Text style={styles.subtitle}>
+    <View style={[styles.container, { backgroundColor: theme.background}]}>
+
+
+      <Text style={[styles.mainTitle, { color: theme.text}]}>{t("Your Wedding Plan!")}</Text>
+      <Text style={[styles.subtitle, { color: theme.text}]}>
         {t("Review your cart and proceed to payment")}
       </Text>
       <FlatList
         data={cartItems}
         renderItem={({ item }) => (
-          <Card style={styles.card}>
+          <Card  style={[styles.card, {backgroundColor:theme.card}]}>
             <View style={styles.cardContent}>
               <Card.Cover
                 source={{
@@ -153,7 +158,8 @@ const Cart = ({ navigation, route }) => {
               />
 
               <View style={styles.detailsContainer}>
-                <Text style={styles.itemTitle}>{item.name}</Text>
+                <Text             style={[styles.itemTitle, { color: theme.text}]}
+>{item.name}</Text>
                 <Text style={styles.description}>
                   {(item.cakes && item.cakes[0] && item.cakes[0].name) || ""}
                 </Text>
@@ -185,12 +191,12 @@ const Cart = ({ navigation, route }) => {
       />
       <View style={styles.footer}>
         <View style={styles.totalContainer}>
-          <Text style={styles.totalText}>{t("Total Package:")}</Text>
-          <Text style={styles.totalAmount}>${totalPrice}</Text>
+          <Text style={[styles.totalAmount, { color: theme.extra}]}>{t("Total Package:")}</Text>
+          <Text style={[styles.totalAmount, { color: theme.text}]}>${totalPrice}</Text>
         </View>
         <Button
           mode="contained"
-          style={styles.paymentButton}
+          style={[styles.paymentButton, { backgroundColor: theme.extra}]}
           onPress={handleCheckOut}
           labelStyle={{ fontSize: 16 }}>
           {t("Proceed to Payment")}

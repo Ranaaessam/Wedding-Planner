@@ -15,10 +15,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Linking } from "react-native";
 import { fetchGuests } from "../StateManagement/slices/GuestListSlice";
 import storage from "../Storage/storage";
+import { useTheme ,themes} from "../ThemeContext"
+
+
 
 const GuestListScreen = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+const { theme, toggleTheme } = useTheme();
+
   const { guests, status, error } = useSelector((state) => state.guestList);
   const userDetails = useSelector((state) => state.user.user);
 
@@ -94,7 +99,8 @@ const GuestListScreen = () => {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView       style={[styles.safeArea, { backgroundColor: theme.background}]}
+>
       <SectionList
         sections={sections}
         renderSectionHeader={({ section }) => (
@@ -102,9 +108,9 @@ const GuestListScreen = () => {
         )}
         renderItem={({ item }) => (
           <View style={styles.container}>
-            <FontAwesome name="user-circle-o" size={30} />
+            <FontAwesome name="user-circle-o" size={30} style={{color:theme.text}} />
             <View style={styles.guestInfo}>
-              <Text style={styles.item}>{item.enteredName}</Text>
+      <Text style={[styles.item, { color: theme.text}]} >{item.enteredName}</Text>
             </View>
           </View>
         )}

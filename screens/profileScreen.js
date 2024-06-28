@@ -23,6 +23,8 @@ import {
 } from "../StateManagement/slices/ProfileSlice";
 import storage from "../Storage/storage";
 import { useTranslation } from "react-i18next";
+import { useTheme ,themes} from "../ThemeContext";
+
 
 const ProfileScreen = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -34,6 +36,8 @@ const ProfileScreen = () => {
   const userDetails = useSelector((state) => state.user.user);
   const plan = useSelector((state) => state.user.plan);
   const { t } = useTranslation();
+  const { theme, toggleTheme } = useTheme();
+
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -91,7 +95,8 @@ const ProfileScreen = () => {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView keyboardShouldPersistTaps="handled">
-          <View style={styles.container}>
+          {/* <View style={styles.container}> */}
+          <View style={[styles.container, { backgroundColor: theme.background }]}>
             <Image
               source={{
                 uri: "https://img.freepik.com/premium-vector/avatar-wedding-couple_24911-14448.jpg",
@@ -99,7 +104,10 @@ const ProfileScreen = () => {
               style={styles.avatar}
             />
             <ProfilePicture imgUrl={image} />
-            <TouchableOpacity style={styles.editBtn} onPress={handleEditToggle}>
+            <TouchableOpacity
+        style={[styles.editBtn, { backgroundColor: theme.extra }]}
+        onPress={handleEditToggle}
+      >
               <Text
                 style={{
                   paddingRight: 10,
@@ -114,18 +122,22 @@ const ProfileScreen = () => {
                 name={isEditing ? "check" : "pencil"}
                 size={18}
                 style={{ color: "white" }}
+
               />
             </TouchableOpacity>
             <View style={styles.infoContainer}>
               <View style={styles.balanceContainer}>
+
                 <Text style={{ fontSize: 16 }}>{t("budget")}</Text>
                 {isEditing ? (
                   <TextInput
-                    style={styles.data}
+         style={[styles.data, { backgroundColor: theme.text }]}
+
                     value={budget}
                     onChangeText={(text) => setBudget(text)}
                   />
                 ) : (
+                  
                   <Text
                     style={{ fontWeight: "500", fontSize: 18, paddingTop: 10 }}
                   >
@@ -153,18 +165,21 @@ const ProfileScreen = () => {
             <View style={styles.detailsContainer}>
               {Object.entries(profile).map(([key, value]) => (
                 <View key={key} style={styles.detailRow}>
-                  <Text style={styles.head}>
+                  {/* <Text style={styles.head}> */}
+              <Text style={[styles.head, { color: theme.text }]}>
+
                     {t(`${key.charAt(0).toUpperCase() + key.slice(1)}`)}
                   </Text>
                   {isEditing ? (
                     <TextInput
-                      style={styles.data}
+                      style={[styles.data, { color: theme.text, backgroundColor: theme.card }]}
                       value={value}
                       onChangeText={(text) => handleChange(key, text)}
                     />
                   ) : (
-                    <Text style={styles.data}>{value}</Text>
+                    <Text style={[styles.data, { color: theme.text }]}>{value}</Text>
                   )}
+                  
                   <View style={styles.divider}></View>
                 </View>
               ))}
@@ -239,6 +254,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     height: 20,
     alignItems: "center",
+    color:themes.text
   },
   divider: {
     backgroundColor: "#e0e0df",

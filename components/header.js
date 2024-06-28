@@ -3,10 +3,15 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { View, Text, Image, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/Octicons";
+import { useTheme ,themes} from "../ThemeContext";
+
 
 const Header = ({ imageUri, name, userName }) => {
+  const { theme, toggleTheme } = useTheme();
+
   return (
-    <View style={styles.headerContainer}>
+    // <View style={styles.headerContainer}>
+       <View style={[styles.headerContainer, { backgroundColor: theme.extra }]}>
       <View style={styles.avatarContainer}>
         <Image
           source={{
@@ -15,8 +20,11 @@ const Header = ({ imageUri, name, userName }) => {
           style={styles.avatar}
         />
       </View>
-      <Text style={styles.name}>{name}</Text>
-      <Text style={styles.name}>{userName}</Text>
+      <Text style={[styles.name, { color: theme.text }]}>{name}</Text>
+      <Text style={[styles.name, { color: theme.text }]}>{userName}</Text>
+
+      {/* <Text style={styles.name}>{name}</Text>
+      <Text style={styles.name}>{userName}</Text> */}
       {/* <TouchableOpacity onPress={()=>{navigation.navigate('Settings')}}>
       <Icon name="gear" size={25} color="grey" style={styles.settingsIcon} />
       </TouchableOpacity> */}
@@ -29,7 +37,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 10,
-    backgroundColor: "#FFDFEB",
+    // backgroundColor: "#FFDFEB",
+  backgroundColor: themes.extra,
+
   },
   avatarContainer: {
     borderWidth: 2,
@@ -55,6 +65,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginLeft: 10,
+    color:themes.cart
   },
   settingsIcon: {
     marginLeft: "auto",

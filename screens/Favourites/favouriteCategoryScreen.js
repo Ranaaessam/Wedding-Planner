@@ -4,6 +4,8 @@ import FavouriteItem from "../../components/Favourites/favouriteItem";
 import { useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllFavourites } from "../../StateManagement/slices/FavouritesSlice";
+import { useTheme ,themes} from "../../ThemeContext"
+
 
 const FavouriteCategoryScreen = ({ route }) => {
   const filteredFavourites = useSelector(
@@ -12,9 +14,13 @@ const FavouriteCategoryScreen = ({ route }) => {
   const category = route.params.categoryName;
 
   const renderItem = ({ item }) => <FavouriteItem item={item} />;
+  const { theme, toggleTheme } = useTheme();
+
 
   return (
-    <View style={styles.container}>
+    // <View style={styles.container}>
+                    <View style={[styles.container, { backgroundColor: theme.background }]}>
+
       <Text style={styles.categoryText}>{category}s</Text>
       {filteredFavourites.length === 0 ? (
         <View style={styles.noFavouritesContainer}>
