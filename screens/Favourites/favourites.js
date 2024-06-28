@@ -3,8 +3,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import FavouriteCategory from "../../components/Favourites/favouriteCategory";
 import { useDispatch } from "react-redux";
 import { getAllFavourites } from "../../StateManagement/slices/FavouritesSlice";
-import { useTheme ,themes} from "../../ThemeContext"
-
+import { useTheme, themes } from "../../ThemeContext";
 
 const categories = [
   "Venue",
@@ -24,8 +23,8 @@ const Favourites = () => {
   }, [dispatch]);
   return (
     // <ScrollView style={styles.listStyle}>
-              <ScrollView style={[styles.listStyle, { backgroundColor: theme.background }]}>
-
+    <ScrollView
+      style={[styles.listStyle, { backgroundColor: theme.background }]}>
       {categories.map((category, index) => (
         <FavouriteCategory key={index} category={category} />
       ))}
@@ -37,7 +36,8 @@ const styles = StyleSheet.create({
   listStyle: {
     paddingVertical: 20,
     paddingHorizontal: 10,
-    backgroundColor:themes.cart
+    backgroundColor: themes.cart,
+    marginTop: 40,
   },
 });
 

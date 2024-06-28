@@ -75,7 +75,7 @@ const SignUp = ({ navigation }) => {
     };
     const result = await dispatch(registerUser(userInfo));
     const user = result.payload;
-    console.log(user);
+
     setSnackbarVisible(true);
     setTimeout(() => {
       navigation.navigate("OTP", { userId: user.userId, navigation });

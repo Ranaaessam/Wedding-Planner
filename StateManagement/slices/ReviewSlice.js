@@ -23,10 +23,7 @@ export const addReview = createAsyncThunk(
 export const getSupplierReview = createAsyncThunk(
   "review/getSupplierReview",
   async ({ supplierId }) => {
-    console.log("---------------");
-    console.log(supplierId);
     const response = await axios.get(`${API_URL}/reviews/${supplierId}`);
-    console.log(response.data);
     return response.data;
   }
 );

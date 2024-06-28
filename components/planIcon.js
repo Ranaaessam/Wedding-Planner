@@ -13,10 +13,7 @@ const PlanIcon = ({ iconName, name, navigation }) => {
     } else if (name === "Guest") {
       navigation.navigate("Guestlist");
     } else if (name === "Advice") {
-      Alert.alert(
-        "Upcoming feature",
-        "Look out for new advice tips coming in our next update!"
-      );
+      navigation.navigate("ChatBot");
     } else if (name === "Gift") {
       Alert.alert(
         "Upcoming feature",

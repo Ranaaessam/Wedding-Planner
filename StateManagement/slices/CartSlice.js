@@ -88,9 +88,8 @@ export const createOrder = createAsyncThunk(
   "order/create",
   async (order, { rejectWithValue }) => {
     try {
-      console.log(order);
       const token = await storage.load({ key: "token" });
-      console.log(token);
+
       const response = await axios.post(`${API_URL}/orders/create`, order, {
         headers: { "x-auth-token": `${token}` },
       });

@@ -10,13 +10,11 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 import { useDispatch } from "react-redux";
 import { updateProfile } from "../StateManagement/slices/ProfileSlice";
-import { useTheme ,themes} from "../ThemeContext";
-
-
+import { useTheme, themes } from "../ThemeContext";
 
 const ProfilePicture = ({ imgUrl }) => {
   const [imageUri, setImageUri] = useState(imgUrl);
-const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
 
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -29,7 +27,7 @@ const { theme, toggleTheme } = useTheme();
       quality: 1,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setLoading(true);
       setImageUri(result.assets[0].uri);
       dispatch(updateProfile({ image: result.assets[0].uri }))
@@ -51,9 +49,8 @@ const { theme, toggleTheme } = useTheme();
           <Image source={{ uri: imageUri }} style={styles.avatar} />
         )}
         <TouchableOpacity
-         style={[styles.editIconContainer, { backgroundColor: theme.extra }]}
-          onPress={selectImage}
-        >
+          style={[styles.editIconContainer, { backgroundColor: theme.extra }]}
+          onPress={selectImage}>
           <Icon name="edit" size={22} color="white" />
         </TouchableOpacity>
       </View>
@@ -86,7 +83,7 @@ const styles = StyleSheet.create({
     bottom: 10,
     right: 10,
     // backgroundColor: "#FF81AE",
-    color:themes.cart,
+    color: themes.cart,
     borderRadius: 20,
     padding: 4,
     width: 30,

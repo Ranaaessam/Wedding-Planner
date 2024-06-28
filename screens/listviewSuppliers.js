@@ -10,7 +10,7 @@ import SupplierCard from "../components/supplierListCard";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 import API_URL from "../constants";
-import { useTheme ,themes} from "../ThemeContext";
+import { useTheme, themes } from "../ThemeContext";
 
 // const suppliers = [
 //   {
@@ -43,7 +43,7 @@ const ListviewSuppliers = ({ navigation, route }) => {
   const { type } = route.params;
   const [suppliers, setSuppliers] = useState([]);
   const { theme, toggleTheme } = useTheme();
-  console.log(type);
+
   useEffect(() => {
     const fetchSuppliers = async () => {
       try {
@@ -52,12 +52,8 @@ const ListviewSuppliers = ({ navigation, route }) => {
         );
 
         setSuppliers(response.data);
-        console.log("suppliers array");
-        // console.log(suppliers.images[0])
-        console.log(response.data.location);
-        response.data.forEach((supplier) => {
-          console.log("Location:", supplier.images[0]);
-        });
+
+        response.data.forEach((supplier) => {});
       } catch (error) {
         console.error("Error fetching suppliers:", error);
         console.error("Error response:", error.response);
@@ -69,7 +65,7 @@ const ListviewSuppliers = ({ navigation, route }) => {
 
   return (
     // <View style={styles.container}>
-      <View style={[styles.container, { backgroundColor: theme.background }]}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
       <FlatList
         data={suppliers}
         renderItem={({ item }) => (
@@ -102,7 +98,6 @@ const styles = StyleSheet.create({
     flex: 1,
     // backgroundColor: "#f0f0f0",
     backgroundColor: themes.cart,
-
   },
 
   list: {

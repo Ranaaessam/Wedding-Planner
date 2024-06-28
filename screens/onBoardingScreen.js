@@ -18,7 +18,7 @@ const Dots = ({ selected }) => {
   );
 };
 
-const Skip = ({ ...props }) => {
+const Skip = ({ navigation, ...props }) => {
   const { t } = useTranslation();
   return (
     <TouchableOpacity style={{ marginHorizontal: 20 }} {...props}>
@@ -27,7 +27,7 @@ const Skip = ({ ...props }) => {
   );
 };
 
-const Next = ({ ...props }) => {
+const Next = ({ navigation, ...props }) => {
   const { t } = useTranslation();
   return (
     <TouchableOpacity style={{ marginHorizontal: 18 }} {...props}>
@@ -36,7 +36,7 @@ const Next = ({ ...props }) => {
   );
 };
 
-const Done = ({ ...props }) => {
+const Done = ({ navigation, ...props }) => {
   const { t } = useTranslation();
   return (
     <TouchableOpacity style={{ marginHorizontal: 20 }} {...props}>

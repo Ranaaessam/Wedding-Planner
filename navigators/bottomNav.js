@@ -7,11 +7,9 @@ import PlanScreen from "../screens/planScreen";
 import Icon from "react-native-vector-icons/Ionicons";
 import SearchScreen from "../screens/Search/searchScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import StackNav from "./stackNav";
 import { useTranslation } from "react-i18next";
 import storage from "../Storage/storage";
-import { useTheme ,themes} from "../ThemeContext";
-
+import { useTheme, themes } from "../ThemeContext";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +17,6 @@ const BottomNav = () => {
   const [userId, setUserId] = useState(null);
   const [accountID, setAccountID] = useState(null);
   const { theme, toggleTheme } = useTheme();
-
 
   useEffect(() => {
     const fetchIDs = async () => {
@@ -38,14 +35,14 @@ const BottomNav = () => {
   const { t } = useTranslation();
 
   if (userId === null || accountID === null) {
-    // Optionally, you can return a loading screen here until the IDs are loaded.
     return (
-      // <View style={styles.loadingContainer}>
-      //   <Text>Loading...</Text>
-      // </View>
-      <View style={[styles.loadingContainer, { backgroundColor: theme.background }]}>
-      <Text style={{ color: theme.text }}>Loading...</Text>
-    </View>
+      <View
+        style={[
+          styles.loadingContainer,
+          { backgroundColor: theme.background },
+        ]}>
+        <Text style={{ color: theme.text }}>Loading...</Text>
+      </View>
     );
   }
 
@@ -70,7 +67,7 @@ const BottomNav = () => {
             <View style={{ alignItems: "center" }}>
               <Icon name={iconName} color={color} size={size} />
               {focused && (
-              <Text style={{ color: theme.extra, fontFamily: "Poppins" }}>
+                <Text style={{ color: theme.extra, fontFamily: "Poppins" }}>
                   {t(route.name)}
                 </Text>
               )}
@@ -79,7 +76,7 @@ const BottomNav = () => {
         },
         tabBarLabel: () => null,
         tabBarActiveTintColor: theme.text,
-        tabBarInactiveT9iintColor: theme.cart,
+        tabBarInactiveTintColor: theme.cart,
         tabBarStyle: {
           backgroundColor: theme.extra,
           borderTopWidth: 0,
@@ -87,8 +84,7 @@ const BottomNav = () => {
           paddingBottom: 15,
         },
         headerShown: false,
-      })}
-    >
+      })}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen name="Plan" component={PlanScreen} />

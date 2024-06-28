@@ -24,7 +24,7 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     dispatch(getVenuesNearLocation());
     dispatch(getNames());
-  }, [dispatch]);
+  });
 
   const data = [
     { key: "header" },
@@ -56,7 +56,7 @@ const HomeScreen = ({ navigation }) => {
       case "venues":
         return (
           <View style={styles.section}>
-             <Text style={[styles.header, { color: theme.text }]}>
+            <Text style={[styles.header, { color: theme.text }]}>
               {t("Explore Venues near you")}
             </Text>
 
@@ -66,16 +66,18 @@ const HomeScreen = ({ navigation }) => {
       case "suppliers":
         return (
           <View style={styles.section}>
-                         <Text style={[styles.header, { color: theme.text }]}>
-                         {t("Suppliers")}</Text>
+            <Text style={[styles.header, { color: theme.text }]}>
+              {t("Suppliers")}
+            </Text>
             <Suppliers navigation={navigation} />
           </View>
         );
       case "plan":
         return (
           <View style={styles.section}>
-                   <Text style={[styles.header, { color: theme.text }]}>
-                   {t("Plan")}</Text>
+            <Text style={[styles.header, { color: theme.text }]}>
+              {t("Plan")}
+            </Text>
             <PlanList navigation={navigation} />
           </View>
         );
@@ -86,8 +88,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView
-      style={[styles.safeArea, { backgroundColor: theme.background }]}
-    >
+      style={[styles.safeArea, { backgroundColor: theme.background }]}>
       <FlatList
         data={data}
         renderItem={renderItem}

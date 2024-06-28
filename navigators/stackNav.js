@@ -1,5 +1,4 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import CheckList from "../screens/CheckList";
 import SplashScreen from "../screens/splashScreen";
@@ -22,20 +21,20 @@ import ReservationScreen from "../screens/reservationScreen";
 import SearchScreen from "../screens/Search/searchScreen";
 import SearchResultsScreen from "../screens/Search/searchResultsScreen";
 import GuestListScreen from "../screens/guestListScreen";
-import ReviewPage from "../screens/reviewScreen";
-import LoginScreen from "../screens/LoginScreen";
-import HomeScreen from "../screens/homeScreen";
 import ReviewScreen from "../screens/reviewScreen";
+import LoginScreen from "../screens/LoginScreen";
 import BottomNav from "./bottomNav";
 import VenueCard from "../components/venueCard";
 import WalletScreen from "../screens/Wallet";
 import OTPScreen from "../screens/OTP";
+import { StyleSheet } from "react-native";
+import ChatBot from "../screens/chatbot";
 
 const Stack = createStackNavigator();
 
 const StackNav = () => {
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="Splash">
       <Stack.Screen
         name="Splash"
         component={SplashScreen}
@@ -57,30 +56,30 @@ const StackNav = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Home"
-        component={BottomNav}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
         name="SignUp"
         component={SignUp}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="CheckList"
-        component={CheckList}
+        name="HomeBottomNav"
+        component={BottomNav}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Complaint"
         component={ComplaintForm}
         options={{
-          headerShown: true,
+          headerShown: false,
           headerTitle: "",
           headerBackTitleVisible: false,
           headerTintColor: "#FF69B4", // Light pink back arrow
           headerStyle: { backgroundColor: "#FFDFEB" },
         }}
+      />
+      <Stack.Screen
+        name="CheckList"
+        component={CheckList}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Cart"
@@ -113,29 +112,29 @@ const StackNav = () => {
           headerTintColor: "white",
           headerTitleStyle: styles.headerTitleStyle,
           headerStyle: styles.headerStyle,
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="FavouriteCategoryScreen"
         component={FavouriteCategoryScreen}
         options={{ headerShown: false }}
-      ></Stack.Screen>
+      />
       <Stack.Screen
         name="ListViewSuppliers"
         component={ListviewSuppliers}
         options={{ headerShown: false }}
-      ></Stack.Screen>
+      />
       <Stack.Screen
         name="SupplierDetails"
         component={SupplierDetails}
         options={{ headerShown: false }}
-      ></Stack.Screen>
-
+      />
       <Stack.Screen
         name="Search"
         component={SearchScreen}
         options={{ headerShown: false }}
-      ></Stack.Screen>
+      />
       <Stack.Screen
         name="Plan"
         component={PlanScreen}
@@ -175,16 +174,28 @@ const StackNav = () => {
         name="SearchResults"
         component={SearchResultsScreen}
         options={{ headerTitle: "" }}
-      ></Stack.Screen>
+      />
       <Stack.Screen
         name="Review"
         component={ReviewScreen}
         options={{ headerTitle: "" }}
-      ></Stack.Screen>
+      />
+      <Stack.Screen
+        name="ChatBot"
+        component={ChatBot}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  headerTitleStyle: {
+    fontWeight: "bold",
+  },
+  headerStyle: {
+    backgroundColor: "#f4511e",
+  },
+});
 
 export default StackNav;

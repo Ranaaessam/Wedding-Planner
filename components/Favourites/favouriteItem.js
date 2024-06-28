@@ -5,9 +5,7 @@ import { Icon } from "react-native-elements";
 const FavouriteItem = ({ item }) => {
   const [liked, setLiked] = useState(false);
 
-  useEffect(() => {
-    console.log(item);
-  }, [item]);
+  useEffect(() => {}, [item]);
 
   const toggleLike = () => {
     setLiked(!liked);

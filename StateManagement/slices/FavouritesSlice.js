@@ -13,7 +13,7 @@ export const getAllFavourites = createAsyncThunk(
       const response = await axios.get(
         `${API_URL}/account/favourites?accountId=${accountId}`
       );
-      console.log(response.data.favourites);
+
       return response.data.favourites;
     } catch (error) {
       return Promise.reject(error.message);
@@ -51,7 +51,6 @@ export const removeFromFavorites = createAsyncThunk(
   "favourites/remove",
   async (favouriteId) => {
     const accountId = await storage.load({ key: "accountId" });
-    console.log("favouriteId", favouriteId, "accountId", accountId);
     try {
       const response = await axios.delete(
         `${API_URL}/account/favourites?itemId=${favouriteId}&accountId=${accountId}`

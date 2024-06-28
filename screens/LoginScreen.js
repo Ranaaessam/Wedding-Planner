@@ -18,6 +18,7 @@ import { Snackbar } from "react-native-paper";
 
 import storage from "../Storage/storage";
 import API_URL from "../constants";
+import { CommonActions } from "@react-navigation/native";
 
 const LoginScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -60,7 +61,12 @@ const LoginScreen = () => {
         });
 
         // Navigate to home
-        navigation.navigate("Home");
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: "HomeBottomNav" }],
+          })
+        );
       } else {
         console.log("Login Failed", response.data.message);
         Alert.alert("Invalid email or password");
@@ -84,8 +90,7 @@ const LoginScreen = () => {
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={validationSchema}
-        onSubmit={(values) => handleLogin(values)}
-      >
+        onSubmit={(values) => handleLogin(values)}>
         {({
           handleChange,
           handleBlur,
@@ -118,8 +123,7 @@ const LoginScreen = () => {
               />
               <TouchableOpacity
                 style={styles.eyeIcon}
-                onPress={togglePasswordVisibility}
-              >
+                onPress={togglePasswordVisibility}>
                 <Icon
                   name={passwordVisible ? "eye-off" : "eye"}
                   size={20}
@@ -136,8 +140,7 @@ const LoginScreen = () => {
 
             <TouchableOpacity
               style={styles.signUpLink}
-              onPress={() => navigation.navigate("SignUp")}
-            >
+              onPress={() => navigation.navigate("SignUp")}>
               <Text style={styles.signUpText}>
                 Not a user? Click here to sign up
               </Text>
@@ -157,8 +160,7 @@ const LoginScreen = () => {
         action={{
           label: "Close",
           onPress: () => setVisible(false),
-        }}
-      >
+        }}>
         Invalid email or password. Please try again.
       </Snackbar>
     </View>
