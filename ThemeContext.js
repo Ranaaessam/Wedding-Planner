@@ -7,11 +7,14 @@ const themes = {
     background: "#f0f0f0",
     text: "#333",
     card: "#fff",
+    extra:"#FFDFEB"
   },
   dark: {
     background: "#121212",
     text: "#ffffff",
     card: "#1e1e1e",
+    extra:"#4C134E"
+
   },
 };
 

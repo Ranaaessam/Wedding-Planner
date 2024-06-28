@@ -14,10 +14,14 @@ import {
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { submitComplaint } from "../StateManagement/slices/SettingsSlice";
+import { useTheme ,themes} from "../ThemeContext"
+
 
 const ComplaintForm = ({ navigation }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { theme, toggleTheme } = useTheme();
+
 
   const [vendorId, setVendorId] = useState("");
   const [userName, setUserName] = useState("");
@@ -81,13 +85,14 @@ const ComplaintForm = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.pageTitle}>{t("Complaint Form")}</Text>
-        <Text style={styles.subtitle}>
+      <ScrollView contentContainerStyle={[styles.container, { backgroundColor: theme.background}]}>
+        <Text style={[styles.pageTitle, { color: theme.extra}]}>{t("Complaint Form")}</Text>
+        <Text style={[styles.subtitle, { color: theme.text}]}>
           {t("We'll reach out to you as soon as possible")}
         </Text>
 
         <View style={styles.formContainer}>
+          
           <TextInput
             style={[styles.input, styles.shadowInput]}
             placeholder={t("Full Name")}

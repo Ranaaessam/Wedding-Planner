@@ -13,6 +13,7 @@ import AvailabilityCalendar from "../components/availabilityCalendar";
 import axios from "axios";
 import API_URL from "../constants";
 import storage from "../Storage/storage";
+import { useTheme ,themes} from "../ThemeContext"
 
 const ReservationScreen = ({ navigation, route }) => {
   const [accountID, setAccountID] = useState(null);
@@ -20,6 +21,8 @@ const ReservationScreen = ({ navigation, route }) => {
   const [selectedCake, setSelectedCake] = useState(null);
   const [selectedCar, setSelectedCar] = useState(null);
   const [selectedCaterer, setSelectedCaterer] = useState(null);
+  const { theme, toggleTheme } = useTheme();
+
 
   const fetchAccountID = async () => {
     try {
@@ -110,15 +113,18 @@ const ReservationScreen = ({ navigation, route }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-      <View style={styles.container}>
+      {/* <View style={styles.container}> */}
+      <View style={[styles.container, { backgroundColor: theme.background}]}>
+
         <View style={styles.headerContainer}>
-          <Text style={styles.header}>{venueObj.name}</Text>
+          <Text style={[styles.header, { color: theme.text}]}>
+{venueObj.name}</Text>
           <View style={styles.ratingContainer}>{renderStars()}</View>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <View style={styles.locationContainer}>
             <FontAwesome name="building" size={25} color="#FF81AE" />
-            <Text style={styles.locationText}>{venueObj.location}</Text>
+            <Text style={[styles.locationText, { color: theme.text}]}>{venueObj.location}</Text>
           </View>
           <View style={styles.priceContainer}>
             <Text style={styles.price}>{venueObj.price}$</Text>
@@ -134,7 +140,7 @@ const ReservationScreen = ({ navigation, route }) => {
             borderRadius: 20,
           }}
         />
-        <Text style={styles.stepText}>Step 1: Choose your Date</Text>
+        <Text style={[styles.stepText, { color: theme.text}]}>Step 1: Choose your Date</Text>
         <View style={styles.calendarContainer}>
           <AvailabilityCalendar
             availability={availability}
@@ -142,7 +148,8 @@ const ReservationScreen = ({ navigation, route }) => {
             occupiedDays={venueObj.occupiedDays}
           />
         </View>
-        <Text style={styles.stepText}>Step 2: Choose your Favourite Cake</Text>
+        <Text style={[styles.stepText, { color: theme.text}]}>
+Step 2: Choose your Favourite Cake</Text>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -156,12 +163,12 @@ const ReservationScreen = ({ navigation, route }) => {
               ]}
               onPress={() => setSelectedCake(cake.name)}>
               <Image source={{ uri: cake.image }} style={styles.image} />
-              <Text style={styles.itemName}>{cake.name}</Text>
+              <Text style={[styles.itemName, { color: theme.text}]}>{cake.name}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
 
-        <Text style={styles.stepText}>Step 3: Choose your Wedding Car</Text>
+        <Text style={[styles.stepText, { color: theme.text}]}>Step 3: Choose your Wedding Car</Text>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -175,12 +182,12 @@ const ReservationScreen = ({ navigation, route }) => {
               ]}
               onPress={() => setSelectedCar(car.name)}>
               <Image source={{ uri: car.image }} style={styles.image} />
-              <Text style={styles.itemName}>{car.name}</Text>
+              <Text style={[styles.itemName, { color: theme.text}]}>{car.name}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
 
-        <Text style={styles.stepText}>Step 4: Choose your Caterer</Text>
+        <Text style={[styles.stepText, { color: theme.text}]}>Step 4: Choose your Caterer</Text>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -194,8 +201,8 @@ const ReservationScreen = ({ navigation, route }) => {
               ]}
               onPress={() => setSelectedCaterer(caterer.name)}>
               <Image source={{ uri: caterer.image }} style={styles.image} />
-              <Text style={styles.itemName}>{caterer.name}</Text>
-              <Text style={styles.description}>{caterer.description}</Text>
+              <Text style={[styles.itemName, { color: theme.text}]}>{caterer.name}</Text>
+              <Text style={[styles.description, { color: theme.text}]}>{caterer.description}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>

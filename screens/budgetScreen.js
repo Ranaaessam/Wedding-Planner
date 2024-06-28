@@ -11,6 +11,7 @@ import {
 } from "../StateManagement/slices/BudgetSlice";
 import { getUserProfile } from "../StateManagement/slices/ProfileSlice";
 import storage from "../Storage/storage";
+import { useTheme ,themes} from "../ThemeContext"
 
 const BudgetScreen = ({ navigation }) => {
   const { t } = useTranslation();
@@ -21,6 +22,8 @@ const BudgetScreen = ({ navigation }) => {
   const totalBudget = userDetails?.budget;
   const amountSpent = useSelector((state) => state.budget.amountSpent);
   const budgetLeft = totalBudget - amountSpent;
+  const { theme, toggleTheme } = useTheme();
+
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -42,16 +45,19 @@ const BudgetScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={{ fontSize: 20, textAlign: "left" }}>
+    // <View style={styles.container}>
+          <View style={[styles.container, { backgroundColor: theme.background}]}>
+
+      <Text style={{ fontSize: 20, textAlign: "left",color:theme.text }}>
         {t("Left to spend")}
       </Text>
-      <Text style={styles.budget}>${budgetLeft}</Text>
+      <Text style={[styles.budget, { color: theme.text}]}>
+      ${budgetLeft}</Text>
       <ProgressBar progress={(amountSpent / totalBudget) * 100} height={25} />
 
       <View style={styles.progressRow}>
-        <Text style={styles.progressBudget}>$0</Text>
-        <Text style={styles.progressBudget}>${totalBudget}</Text>
+        <Text style={[styles.progressBudget,{color:theme.text}]}>$0</Text>
+        <Text style={[styles.progressBudget,{color:theme.text}]}>${totalBudget}</Text>
       </View>
       <View
         style={{ flexDirection: "row", paddingTop: 20, alignItems: "center" }}>
@@ -62,19 +68,20 @@ const BudgetScreen = ({ navigation }) => {
             width: 10,
             backgroundColor: "#FF81AE",
             marginRight: 10,
+            color:theme.text
           }}></View>
-        <Text style={{ textAlign: "left" }}>{t("Amount spent till now:")}</Text>
-        <Text style={styles.budgetSpent}>${amountSpent}</Text>
+        <Text style={{ textAlign: "left",color:theme.text }}>{t("Amount spent till now:")}</Text>
+        <Text style={[styles.budgetSpent,{color:theme.text}]}>${amountSpent}</Text>
       </View>
       <View style={{ paddingTop: 30 }}>
-        <Text style={{ fontSize: 22, fontWeight: "bold", textAlign: "left" }}>
+        <Text style={{ fontSize: 22, fontWeight: "bold", textAlign: "left",color:theme.text }}>
           {t("History")}
         </Text>
         <View
           style={{
             height: 2,
             width: 70,
-            backgroundColor: "#FF81AE",
+            backgroundColor: theme.extra,
             marginBottom: 2,
             marginTop: 6,
           }}></View>
@@ -104,24 +111,31 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 50,
     marginBottom: 20,
+    height:800
   },
   budget: {
     paddingVertical: 12,
     fontSize: 28,
     fontWeight: "700",
+    color:themes.text
   },
   progressRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingTop: 10,
+
   },
   progressBudget: {
     fontSize: 15,
     fontWeight: "500",
+    color:themes.text
+
   },
   budgetSpent: {
     fontSize: 15,
     fontWeight: "500",
+    color:themes.text
+
   },
 });
 

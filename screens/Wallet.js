@@ -8,15 +8,22 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
+import { useTheme ,themes} from "../ThemeContext";
+
 
 const { width: screenWidth } = Dimensions.get("window");
 
+
 const WalletScreen = () => {
   const { t } = useTranslation();
+const { theme, toggleTheme } = useTheme();
+  
   const [balance, setBalance] = useState(1234.56);
 
   return (
-    <View style={styles.container}>
+    // <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: theme.background }]}>
+
       <View style={styles.header}>
         <Text style={styles.headerTitle}>{t("Wallet")}</Text>
       </View>
@@ -31,7 +38,8 @@ const WalletScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f0f0f0",
+    // backgroundColor: "#f0f0f0",
+    backgroundColor:themes.cart,
     alignItems: "center",
     paddingTop: 50,
   },

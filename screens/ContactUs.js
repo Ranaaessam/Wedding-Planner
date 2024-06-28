@@ -2,9 +2,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View, Text, TouchableOpacity, Linking } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { useTheme } from '../ThemeContext'; // Adjust the import path as needed
 
 const ContactUs = () => {
   const { t, i18n } = useTranslation();
+  const { theme } = useTheme(); // Use the custom theme
 
   const handleInstagramPress = () => {
     Linking.openURL('https://www.instagram.com/yourcompany/');
@@ -31,55 +33,55 @@ const ContactUs = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{t('Contact Us')}</Text>
-      <Text style={styles.introText}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <Text style={[styles.title, { color: theme.text }]}>{t('Contact Us')}</Text>
+      <Text style={[styles.introText, { color: theme.text }]}>
         {t('If you have any questions or require assistance, feel free to reach out to us. We\'re here to help!')}
       </Text>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>{t('Contact Information')}</Text>
+        <Text style={[styles.sectionTitle, { color: theme.text }]}>{t('Contact Information')}</Text>
 
         <View style={styles.row}>
-          <Icon name="phone" type="font-awesome" color="#4C134E" />
+          <Icon name="phone" type="font-awesome" color={theme.icon} />
           <TouchableOpacity onPress={handlePhoneCall}>
-            <Text style={styles.contactText}>+1-800-123-4567</Text>
+            <Text style={[styles.contactText, { color: theme.extra }]}>+1-800-123-4567</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.row}>
-          <Icon name="envelope" type="font-awesome" color="#4C134E" />
+          <Icon name="envelope" type="font-awesome" color={theme.icon} />
           <TouchableOpacity onPress={handleGmail}>
-            <Text style={styles.contactText}>support@yourcompany.com</Text>
+            <Text style={[styles.contactText, { color: theme.extra }]}>support@yourcompany.com</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.row}>
-          <Icon name="map-marker" type="font-awesome" color="#4C134E" />
+          <Icon name="map-marker" type="font-awesome" color={theme.icon} />
           <TouchableOpacity onPress={handleLocation}>
-            <Text style={styles.contactText}>123 Main St, City, Country</Text>
+            <Text style={[styles.contactText, { color: theme.extra }]}>123 Main St, City, Country</Text>
           </TouchableOpacity>
         </View>
       </View>
 
       <View style={styles.separator}></View>
 
-      <Text style={styles.sectionTitle}>{t('Follow Us On Social Media')}</Text>
+      <Text style={[styles.sectionTitle, { color: theme.text }]}>{t('Follow Us On Social Media')}</Text>
 
       <View style={styles.socialMediaContainer}>
         <TouchableOpacity style={styles.socialMediaIcon} onPress={handleInstagramPress}>
           <Icon name="instagram" type="font-awesome" color="#E1306C" size={40} />
-          <Text style={styles.socialMediaText}>Instagram</Text>
+          <Text style={[styles.socialMediaText, { color: theme.text }]}>Instagram</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.socialMediaIcon} onPress={handleFacebookPress}>
           <Icon name="facebook-square" type="font-awesome" color="#3b5998" size={40} />
-          <Text style={styles.socialMediaText}>Facebook</Text>
+          <Text style={[styles.socialMediaText, { color: theme.text }]}>Facebook</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.socialMediaIcon} onPress={handleTwitterPress}>
           <Icon name="twitter-square" type="font-awesome" color="#1DA1F2" size={40} />
-          <Text style={styles.socialMediaText}>Twitter</Text>
+          <Text style={[styles.socialMediaText, { color: theme.text }]}>Twitter</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -91,7 +93,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 30,
     marginTop: 15,
-    backgroundColor: '#f0f0f0',
   },
   title: {
     fontSize: 30,
@@ -112,7 +113,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#4C134E',
     marginBottom: 10,
     marginTop: 20,
     textAlign: 'center',

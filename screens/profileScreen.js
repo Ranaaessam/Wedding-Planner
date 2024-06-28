@@ -23,6 +23,7 @@ import {
 } from "../StateManagement/slices/ProfileSlice";
 import storage from "../Storage/storage";
 import { useTranslation } from "react-i18next";
+import { useTheme, themes } from "../ThemeContext";
 
 const ProfileScreen = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -36,6 +37,7 @@ const ProfileScreen = () => {
 
   const plan = useSelector((state) => state.user.plan);
   const { t } = useTranslation();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -94,7 +96,10 @@ const ProfileScreen = () => {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView keyboardShouldPersistTaps="handled">
-          <View style={styles.container}>
+          {/* <View style={styles.container}> */}
+          <View
+            style={[styles.container, { backgroundColor: theme.background }]}
+          >
             <Image
               source={{
                 uri: "https://img.freepik.com/premium-vector/avatar-wedding-couple_24911-14448.jpg",
@@ -102,7 +107,10 @@ const ProfileScreen = () => {
               style={styles.avatar}
             />
             <ProfilePicture imgUrl={image} />
-            <TouchableOpacity style={styles.editBtn} onPress={handleEditToggle}>
+            <TouchableOpacity
+              style={[styles.editBtn, { backgroundColor: theme.extra }]}
+              onPress={handleEditToggle}
+            >
               <Text
                 style={{
                   paddingRight: 10,
@@ -124,7 +132,7 @@ const ProfileScreen = () => {
                 <Text style={{ fontSize: 16 }}>{t("Budget")}</Text>
                 {isEditing ? (
                   <TextInput
-                    style={styles.data}
+                    style={[styles.data, { backgroundColor: theme.text }]}
                     value={budget}
                     onChangeText={(text) => setBudget(text)}
                   />
@@ -275,6 +283,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     height: 20,
     alignItems: "center",
+    color: themes.text,
   },
   divider: {
     backgroundColor: "#e0e0df",

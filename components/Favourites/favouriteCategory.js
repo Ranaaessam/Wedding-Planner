@@ -5,11 +5,15 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { filterFavouritesByType } from "../../StateManagement/slices/FavouritesSlice";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { useTheme ,themes} from "../../ThemeContext"
+
 
 const FavouriteCategory = ({ category }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigation();
+  const { theme, toggleTheme } = useTheme();
+
   const onArrowPress = () => {
     dispatch(filterFavouritesByType({ category }));
     navigate.navigate("FavouriteCategoryScreen", {
@@ -18,9 +22,13 @@ const FavouriteCategory = ({ category }) => {
   };
   return (
     <TouchableOpacity onPress={onArrowPress}>
-      <View style={styles.categoryItem}>
-        <Text style={styles.categoryText}>{t(category)}</Text>
-        <Icon name="arrow-forward" size={20} color="#000" />
+      {/* <View style={styles.categoryItem}> */}
+      <View style={[styles.categoryItem, { backgroundColor: theme.extra }]}>
+      <Text style={[styles.categoryText, { color: theme.text }]}>{t(category)}</Text>
+
+
+        {/* <Text style={styles.categoryText}>{t(category)}</Text> */}
+        <Icon name="arrow-forward" size={20} style={{color:theme.text}} />
       </View>
     </TouchableOpacity>
   );

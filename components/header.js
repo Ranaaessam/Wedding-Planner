@@ -3,10 +3,12 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { View, Text, Image, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/Octicons";
+import { useTheme, themes } from "../ThemeContext";
 
 const Header = ({ imageUri, name1, name2 }) => {
   return (
-    <View style={styles.headerContainer}>
+    // <View style={styles.headerContainer}>
+    <View style={[styles.headerContainer, { backgroundColor: theme.extra }]}>
       <View style={styles.avatarContainer}>
         <Image
           source={{
@@ -28,7 +30,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     padding: 10,
-    backgroundColor: "#FFDFEB",
+    // backgroundColor: "#FFDFEB",
+    backgroundColor: themes.extra,
   },
   avatarContainer: {
     borderWidth: 2,
@@ -53,6 +56,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginLeft: 10,
+    color: themes.cart,
   },
   settingsIcon: {
     marginLeft: "auto",
