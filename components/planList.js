@@ -16,6 +16,7 @@ const PlanList = ({ navigation }) => {
   const { t } = useTranslation();
   return (
     <FlatList
+      style={{ marginLeft: 20 }}
       horizontal
       showsHorizontalScrollIndicator={false}
       data={planIcons}

@@ -65,8 +65,7 @@ const CheckListScreen = () => {
           marginBottom: 20,
           width: "86%",
           justifyContent: "space-between",
-        }}
-      >
+        }}>
         <Text style={{ fontSize: 18, fontWeight: "bold", paddingRight: 10 }}>
           {plan ? `${plan}%` : "0%"}
         </Text>
@@ -79,8 +78,7 @@ const CheckListScreen = () => {
           marginBottom: 10,
           width: "100%",
           height: 1,
-        }}
-      ></View>
+        }}></View>
       <FlatList
         data={tasks}
         keyExtractor={(item) => item.id}
@@ -90,8 +88,7 @@ const CheckListScreen = () => {
               style={[
                 styles.taskText,
                 item.completed && styles.completedTaskText,
-              ]}
-            >
+              ]}>
               {t(item.text)}
             </Text>
 
@@ -111,13 +108,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    paddingTop: 50,
+    paddingTop: 100,
     backgroundColor: "#f5f5f5",
+    marginHorizontal: 20,
   },
   header: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
+    marginTop: 20,
   },
   subText: {
     color: "grey",

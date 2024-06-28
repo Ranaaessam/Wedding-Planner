@@ -105,13 +105,15 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   header: {
+    fontFamily: "Poppins",
     padding: 5,
     fontWeight: "600",
     fontSize: 18,
     textAlign: "left",
   },
   section: {
-    paddingVertical: 10,
+    paddingVertical: 8,
+    paddingLeft: 10,
   },
 });
 

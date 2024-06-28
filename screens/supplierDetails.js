@@ -162,8 +162,7 @@ const SupplierDetails = ({ navigation, route }) => {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[styles.button, styles.bookButton]}
-              onPress={handleBookPress}
-            >
+              onPress={handleBookPress}>
               <Text style={styles.buttonText}>Book Now</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -173,14 +172,12 @@ const SupplierDetails = ({ navigation, route }) => {
                   ? styles.removeFavoriteButton
                   : styles.favoriteButton,
               ]}
-              onPress={handleFavoritePress}
-            >
+              onPress={handleFavoritePress}>
               <Text
                 style={[
                   styles.buttonText,
                   isFavorite ? { color: "white" } : { color: "black" },
-                ]}
-              >
+                ]}>
                 {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
               </Text>
             </TouchableOpacity>
@@ -206,14 +203,12 @@ const SupplierDetails = ({ navigation, route }) => {
                 justifyContent: "space-between",
                 marginTop: 20,
               },
-            ]}
-          >
-            <Text>Reviews</Text>
-            <View style={{ flexDirection: "row", marginLeft: 140 }}>
+            ]}>
+            <Text style={{ marginLeft: 14 }}>Reviews</Text>
+            <View style={{ flexDirection: "row", marginLeft: 200 }}>
               <TouchableOpacity
                 style={styles.iconButton}
-                onPress={handleReview}
-              >
+                onPress={handleReview}>
                 <MaterialIcons name="rate-review" size={24} color="black" />
               </TouchableOpacity>
             </View>
@@ -232,8 +227,7 @@ const SupplierDetails = ({ navigation, route }) => {
         visible={modalVisible}
         transparent={true}
         animationType="slide"
-        onRequestClose={() => setModalVisible(false)}
-      >
+        onRequestClose={() => setModalVisible(false)}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>Added to favorites</Text>
@@ -244,8 +238,7 @@ const SupplierDetails = ({ navigation, route }) => {
         visible={bookingModalVisible}
         transparent={true}
         animationType="fade"
-        onRequestClose={() => setBookingModalVisible(false)}
-      >
+        onRequestClose={() => setBookingModalVisible(false)}>
         <View style={styles.modalContainer}>
           <View style={styles.bookingModalContent}>
             <Text style={styles.bookingModalText}>{modalMessage}</Text>

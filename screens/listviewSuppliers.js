@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
   },
 
   list: {
+    paddingVertical: 60,
     paddingHorizontal: 20,
   },
 });

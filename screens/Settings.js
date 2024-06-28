@@ -17,7 +17,7 @@ import i18n from "../i18n";
 import ContactUs from "./ContactUs";
 import ProfileScreen from "./profileScreen.js";
 import storage from "../Storage/storage.js";
-import { useTheme,themes } from "../ThemeContext";
+import { useTheme, themes } from "../ThemeContext";
 
 const SettingsScreen = ({ navigation }) => {
   const { t } = useTranslation();
@@ -121,12 +121,24 @@ const SettingsScreen = ({ navigation }) => {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={[styles.optionContainer, { backgroundColor: theme.card }]}
-      onPress={item.onPress}
-    >
-      <Icon name={item.icon} type="font-awesome" color={theme.text} style={styles.icon} />
-      <Text style={[styles.optionText, { color: theme.text }]}>{item.text}</Text>
-      {item.balance && <Text style={[styles.balanceText, { color: theme.text }]}>{item.balance}</Text>}
-      {item.id === "language" && <Icon name="caret-down" type="font-awesome" color={theme.text} />}
+      onPress={item.onPress}>
+      <Icon
+        name={item.icon}
+        type="font-awesome"
+        color={theme.text}
+        style={styles.icon}
+      />
+      <Text style={[styles.optionText, { color: theme.text }]}>
+        {item.text}
+      </Text>
+      {item.balance && (
+        <Text style={[styles.balanceText, { color: theme.text }]}>
+          {item.balance}
+        </Text>
+      )}
+      {item.id === "language" && (
+        <Icon name="caret-down" type="font-awesome" color={theme.text} />
+      )}
       {item.id === "darkMode" && (
         <Switch
           value={theme === themes.dark}
@@ -141,7 +153,9 @@ const SettingsScreen = ({ navigation }) => {
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={styles.header}>
         <Icon name="gear" type="font-awesome" size={24} color={theme.text} />
-        <Text style={[styles.title, { color: theme.text }]}>{t("settings")}</Text>
+        <Text style={[styles.title, { color: theme.text }]}>
+          {t("settings")}
+        </Text>
       </View>
       <FlatList
         data={data}
@@ -154,23 +168,24 @@ const SettingsScreen = ({ navigation }) => {
         visible={isDropdownVisible}
         transparent={true}
         animationType="slide"
-        onRequestClose={() => setDropdownVisible(false)}
-      >
+        onRequestClose={() => setDropdownVisible(false)}>
         <TouchableWithoutFeedback onPress={() => setDropdownVisible(false)}>
           <View style={styles.modalOverlay} />
         </TouchableWithoutFeedback>
         <View style={[styles.dropdown, { backgroundColor: theme.card }]}>
           <TouchableOpacity
             style={styles.dropdownItem}
-            onPress={() => selectLanguage("en")}
-          >
-            <Text style={[styles.dropdownItemText, { color: theme.text }]}>▫ {t("english")}</Text>
+            onPress={() => selectLanguage("en")}>
+            <Text style={[styles.dropdownItemText, { color: theme.text }]}>
+              ▫ {t("english")}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.dropdownItem}
-            onPress={() => selectLanguage("ar")}
-          >
-            <Text style={[styles.dropdownItemText, { color: theme.text }]}>▫ {t("arabic")}</Text>
+            onPress={() => selectLanguage("ar")}>
+            <Text style={[styles.dropdownItemText, { color: theme.text }]}>
+              ▫ {t("arabic")}
+            </Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -188,6 +203,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 20,
+    marginTop: 20,
   },
   title: {
     fontSize: 28,
