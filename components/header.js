@@ -6,6 +6,7 @@ import Icon from "react-native-vector-icons/Octicons";
 import { useTheme, themes } from "../ThemeContext";
 
 const Header = ({ imageUri, name1, name2 }) => {
+  const { theme, toggleTheme } = useTheme();
   return (
     // <View style={styles.headerContainer}>
     <View style={[styles.headerContainer, { backgroundColor: theme.extra }]}>
@@ -17,7 +18,7 @@ const Header = ({ imageUri, name1, name2 }) => {
           style={styles.avatar}
         />
       </View>
-      <Text style={styles.name}>
+      <Text style={[styles.name, { color: theme.text }]}>
         {name1} & {name2}
       </Text>
     </View>

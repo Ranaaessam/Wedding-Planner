@@ -11,9 +11,9 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 const PlanScreen = ({ navigation }) => {
+  const names = useSelector((state) => state.home.names);
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
-
   return (
     // <View style={styles.container}>
     <View style={[styles.container, { backgroundColor: theme.background }]}>
