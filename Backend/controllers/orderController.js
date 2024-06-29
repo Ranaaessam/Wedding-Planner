@@ -1,5 +1,6 @@
 const Orders = require("../models/orderModel");
 const Supplier = require("../models/supplierModel");
+const Account = require("../models/accountsModel");
 const { isValidObjectId } = require("mongoose");
 
 const getOrders = async (req, res) => {
@@ -184,6 +185,44 @@ const deleteOrder = async (req, res) => {
   }
 };
 
+const deleteItemFromOrder = async (req, res) => {
+  try {
+    const { accountID, itemId } = req.query;
+
+    if (!accountID || !itemId) {
+      return res.status(400).json({ message: "accountID and itemId required" });
+    }
+
+    const account = await Account.findById(accountID);
+    const order = await Orders.findOne({ from: accountID });
+
+    if (!order) {
+      return res.status(404).json({ message: "No order found for this user" });
+    }
+
+    const itemIndex = order.items.findIndex(
+      (item) => item._id.toString() === itemId
+    );
+
+    if (itemIndex === -1) {
+      return res.status(404).json({ message: "Item not found in the order" });
+    }
+
+    account.wallet += order.items[itemIndex].price;
+    await account.save();
+
+    order.items.splice(itemIndex, 1);
+
+    await order.save();
+
+    res.status(200).json({ message: "Item deleted successfully", order });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
+};
+
 const getPlanPercentage = async (req, res) => {
   try {
     const client = req.body.client;
@@ -214,4 +253,5 @@ module.exports = {
   getOrderTypesForUser,
   getOrderForUser,
   getOrderedProductsForUser,
+  deleteItemFromOrder,
 };

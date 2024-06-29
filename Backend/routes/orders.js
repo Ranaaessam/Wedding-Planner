@@ -22,6 +22,8 @@ router.delete(
   orderController.deleteOrder
 );
 
+router.delete("/refund", orderController.deleteItemFromOrder);
+
 router.get(
   "/PlanPercentage",
   orderMiddleware.getUserData,

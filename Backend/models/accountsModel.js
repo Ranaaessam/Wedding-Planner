@@ -19,6 +19,11 @@ const accountSchema = new mongoose.Schema({
     default: 0,
   },
 
+  wallet: {
+    type: Number,
+    default: 0,
+  },
+
   favourites: {
     type: [Object],
     default: [],

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API_URL, { wallet } from "../../constants";
 import storage from "../../Storage/storage";
+import axios from "axios";
 
 export const fetchBudgetData = createAsyncThunk(
   "budget/fetchBudgetData",
@@ -26,14 +27,16 @@ export const fetchBudgetData = createAsyncThunk(
 
 export const refundItem = createAsyncThunk(
   "budget/refundItem",
-  async (id, { getState }) => {
-    const state = getState();
-    const item = state.budget.budgetHistory.find((item) => item._id === id);
-    if (!item) {
-      throw new Error("Item not found");
+  async (itemId, { rejectWithValue }) => {
+    try {
+      const accountId = await storage.load({ key: "accountId" });
+      const response = await axios.delete(
+        `${API_URL}/orders/refund?accountID=${accountId}&itemId=${itemId}`
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
-    wallet += item.price;
-    return id;
   }
 );
 

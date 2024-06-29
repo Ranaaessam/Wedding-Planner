@@ -1,4 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import storage from "../../Storage/storage";
+import axios from "axios";
+import API_URL from "../../constants";
 
 export const submitComplaint = createAsyncThunk(
   "settings/submitComplaint",
@@ -20,12 +23,32 @@ export const submitComplaint = createAsyncThunk(
   }
 );
 
+export const getWalletVal = createAsyncThunk(
+  "settings/wallet",
+  async (_, { rejectWithValue }) => {
+    try {
+      const userId = await storage.load({ key: "userId" });
+
+      const response = await axios.get(`${API_URL}/account/profile`, {
+        params: { userId },
+      });
+
+      return response.data.wallet;
+    } catch (error) {
+      return rejectWithValue(
+        error.response ? error.response.data : error.message
+      );
+    }
+  }
+);
+
 const settingsSlice = createSlice({
   name: "settings",
   initialState: {
     complaints: [],
     status: "idle",
     error: null,
+    wallet: 0,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -38,6 +61,18 @@ const settingsSlice = createSlice({
         state.complaints.push(action.payload);
       })
       .addCase(submitComplaint.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+
+      .addCase(getWalletVal.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getWalletVal.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.wallet = action.payload;
+      })
+      .addCase(getWalletVal.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });

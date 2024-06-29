@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -8,22 +8,25 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
-import { useTheme ,themes} from "../ThemeContext";
-
+import { useTheme, themes } from "../ThemeContext";
+import { useDispatch, useSelector } from "react-redux";
+import { getWalletVal } from "../StateManagement/slices/SettingsSlice";
 
 const { width: screenWidth } = Dimensions.get("window");
 
-
 const WalletScreen = () => {
   const { t } = useTranslation();
-const { theme, toggleTheme } = useTheme();
-  
-  const [balance, setBalance] = useState(1234.56);
+  const { theme, toggleTheme } = useTheme();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getWalletVal());
+  });
+
+  const balance = useSelector((state) => state.settings.wallet);
 
   return (
     // <View style={styles.container}>
-      <View style={[styles.container, { backgroundColor: theme.background }]}>
-
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>{t("Wallet")}</Text>
       </View>
@@ -39,7 +42,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // backgroundColor: "#f0f0f0",
-    backgroundColor:themes.cart,
+    backgroundColor: themes.cart,
     alignItems: "center",
     paddingTop: 50,
   },

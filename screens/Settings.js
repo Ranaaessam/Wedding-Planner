@@ -1,5 +1,5 @@
 // SettingsScreen.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -18,13 +18,22 @@ import ContactUs from "./ContactUs";
 import ProfileScreen from "./profileScreen.js";
 import storage from "../Storage/storage.js";
 import { useTheme, themes } from "../ThemeContext";
+import { useDispatch, useSelector } from "react-redux";
+import { getWalletVal } from "../StateManagement/slices/SettingsSlice.js";
 
 const SettingsScreen = ({ navigation }) => {
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const [selectedLanguage, setSelectedLanguage] = useState("en");
   const [isDropdownVisible, setDropdownVisible] = useState(false);
-  const [balance, setBalance] = useState(1234.56); // Mock balance
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getWalletVal());
+  });
+
+  const balance = useSelector((state) => state.settings.wallet);
 
   const selectLanguage = (language) => {
     setSelectedLanguage(language);
@@ -121,7 +130,8 @@ const SettingsScreen = ({ navigation }) => {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={[styles.optionContainer, { backgroundColor: theme.card }]}
-      onPress={item.onPress}>
+      onPress={item.onPress}
+    >
       <Icon
         name={item.icon}
         type="font-awesome"
@@ -168,21 +178,24 @@ const SettingsScreen = ({ navigation }) => {
         visible={isDropdownVisible}
         transparent={true}
         animationType="slide"
-        onRequestClose={() => setDropdownVisible(false)}>
+        onRequestClose={() => setDropdownVisible(false)}
+      >
         <TouchableWithoutFeedback onPress={() => setDropdownVisible(false)}>
           <View style={styles.modalOverlay} />
         </TouchableWithoutFeedback>
         <View style={[styles.dropdown, { backgroundColor: theme.card }]}>
           <TouchableOpacity
             style={styles.dropdownItem}
-            onPress={() => selectLanguage("en")}>
+            onPress={() => selectLanguage("en")}
+          >
             <Text style={[styles.dropdownItemText, { color: theme.text }]}>
               ▫ {t("english")}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.dropdownItem}
-            onPress={() => selectLanguage("ar")}>
+            onPress={() => selectLanguage("ar")}
+          >
             <Text style={[styles.dropdownItemText, { color: theme.text }]}>
               ▫ {t("arabic")}
             </Text>

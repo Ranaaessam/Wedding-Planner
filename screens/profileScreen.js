@@ -24,6 +24,7 @@ import {
 import storage from "../Storage/storage";
 import { useTranslation } from "react-i18next";
 import { useTheme, themes } from "../ThemeContext";
+import RNPickerSelect from "react-native-picker-select";
 
 const ProfileScreen = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -80,6 +81,13 @@ const ProfileScreen = () => {
       [key]: value,
     }));
   };
+
+  const locationOptions = [
+    { label: "Cairo", value: "Cairo" },
+    { label: "Giza", value: "Giza" },
+    { label: "Alexandria", value: "Alexandria" },
+    { label: "Mansoura", value: "Mansoura" },
+  ];
 
   if (profile === null) {
     return (
@@ -189,10 +197,11 @@ const ProfileScreen = () => {
               <View style={styles.detailRow}>
                 <Text style={styles.head}>{t("Location")}</Text>
                 {isEditing ? (
-                  <TextInput
-                    style={styles.data}
+                  <RNPickerSelect
+                    onValueChange={(value) => handleChange("location", value)}
+                    items={locationOptions}
                     value={profile.location}
-                    onChangeText={(text) => handleChange("location", text)}
+                    style={pickerSelectStyles}
                   />
                 ) : (
                   <Text style={styles.data}>{profile.location}</Text>
@@ -219,6 +228,29 @@ const ProfileScreen = () => {
     </KeyboardAvoidingView>
   );
 };
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 4,
+    color: "black",
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: "purple",
+    borderRadius: 8,
+    color: "black",
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+});
 
 const styles = StyleSheet.create({
   container: {

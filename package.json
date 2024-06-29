@@ -57,6 +57,7 @@
     "react-native-linear-gradient": "^2.8.3",
     "react-native-onboarding-swiper": "^1.2.0",
     "react-native-paper": "^5.12.3",
+    "react-native-picker-select": "^9.1.3",
     "react-native-progress": "^5.0.1",
     "react-native-push-notification": "^8.1.1",
     "react-native-reanimated": "^3.10.1",
