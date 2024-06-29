@@ -37,7 +37,6 @@ export const refundItem = createAsyncThunk(
   "budget/refundItem",
   async (itemId, { rejectWithValue }) => {
     try {
-      console.log(itemId);
       const accountId = await storage.load({ key: "accountId" });
       const response = await axios.delete(
         `${API_URL}/orders/refund?accountID=${accountId}&itemId=${itemId}`

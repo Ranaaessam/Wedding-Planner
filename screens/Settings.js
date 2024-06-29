@@ -149,7 +149,12 @@ const SettingsScreen = ({ navigation }) => {
         </Text>
       )}
       {item.id === "language" && (
-        <Icon name="caret-down" type="font-awesome" color={theme.text} />
+        <Icon
+          name="caret-down"
+          type="font-awesome"
+          color={theme.text}
+          style={{ marginLeft: 10 }}
+        />
       )}
       {item.id === "darkMode" && (
         <Switch

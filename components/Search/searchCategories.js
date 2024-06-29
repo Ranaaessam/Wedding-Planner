@@ -11,9 +11,6 @@ const SearchCategories = () => {
 
   const handleCategoryPress = (category) => {
     setSelectedCategory(category);
-    console.log(
-      `Dispatching filterResultsByCategory with category: ${category}`
-    );
     dispatch(filterResultsByCategory({ category }));
   };
 

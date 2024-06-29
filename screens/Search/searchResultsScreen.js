@@ -11,7 +11,6 @@ const SearchResultsScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("Initial dispatch for category: venue");
     dispatch(filterResultsByCategory({ category: "venue" }));
   }, [dispatch]);
 
