@@ -109,6 +109,7 @@ const Login = async (req, res) => {
     let user = await User.findOne({
       email: req.body.email.toLowerCase(),
     }).exec();
+    console.log(user);
 
     if (!user) {
       return res.status(400).send("Invalid email or password.");
@@ -151,10 +152,80 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const generatePassword = (length = 8) => {
+  const charset =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let password = "";
+
+  // Ensure the password has at least one uppercase letter, one lowercase letter, and one number
+  const getRandomUppercase = () =>
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[Math.floor(Math.random() * 26)];
+  const getRandomLowercase = () =>
+    "abcdefghijklmnopqrstuvwxyz"[Math.floor(Math.random() * 26)];
+  const getRandomNumber = () => "0123456789"[Math.floor(Math.random() * 10)];
+
+  // Add at least one uppercase letter, one lowercase letter, and one number
+  password += getRandomUppercase();
+  password += getRandomLowercase();
+  password += getRandomNumber();
+
+  // Fill the rest of the password with random characters
+  for (let i = 3; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * charset.length);
+    password += charset[randomIndex];
+  }
+
+  // Shuffle the password to ensure the required characters are not always at the start
+  password = password
+    .split("")
+    .sort(() => 0.5 - Math.random())
+    .join("");
+
+  return password;
+};
+
+const sendEmail = async (email, name, senderName, password) => {
+  try {
+    // Create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: "weddingplanner746542@gmail.com", // Replace with your email
+        pass: "dkrg umvk tqez ubhm", // Replace with your App Password
+      },
+    });
+
+    // Determine the email subject and text based on whether a password is provided
+    let subject, text;
+    if (password) {
+      subject = "You have been added to a wedding planner account";
+      text = `Dear ${name},\n\nYou have been added to a wedding planner account by ${senderName}. Your temporary password is: ${password}\n\nPlease log in and change your password as soon as possible.\n\nBest regards,\nWedding Planner Team`;
+    } else {
+      subject = "You have been added to a wedding planner account";
+      text = `Dear ${name},\n\nYou have been added to a wedding planner account by ${senderName}.\n\nBest regards,\nWedding Planner Team`;
+    }
+
+    // Send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: '"weddingplanner" <Ranaessam371@gmail.com>', // Sender address
+      to: email, // List of receivers
+      subject: subject, // Subject line
+      text: text, // Plain text body
+    });
+
+    console.log("Email sent:", info.response);
+    return true;
+  } catch (error) {
+    console.error("Error sending email:", error);
+    return false;
+  }
+};
+
 const invite = async (req, res) => {
   try {
     const accountId = req.body.accountId;
     const account = await Account.findById(accountId);
+    console.log(account);
     if (!account) {
       return res
         .status(404)
@@ -167,6 +238,7 @@ const invite = async (req, res) => {
     if (account.user1Id) {
       // If user1Id exists, fetch the sender user from the User model
       senderUser = await User.findById(account.user1Id);
+      console.log(senderUser);
       if (senderUser) {
         senderName = senderUser.name;
       } else {
@@ -184,27 +256,35 @@ const invite = async (req, res) => {
     // Check if the user already exists by email
     let existingUser = await User.findOne({ email: req.body.email });
 
-    // If user does not exist, create a new user
+    let password = null;
     if (!existingUser) {
+      // Generate a new password for the new user
+      password = generatePassword();
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Create a new user with the generated password
       existingUser = await User.create({
         name: req.body.name,
-        email: req.body.email,
-        password: senderUser.password, // Use the sender user's password
+        email: req.body.email.toLowerCase(),
+        password: hashedPassword, // Use the hashed password
       });
     }
-
+    await existingUser.save();
     // Determine which user ID field to populate based on whether user2Id is already set
-    const userFieldToUpdate = account.user1Id ? "user2Id" : "user1Id";
-    account[userFieldToUpdate] = existingUser._id;
+    account["user2Id"] = existingUser._id;
 
     // Save the updated account
     await account.save();
 
     // Send an email to the user with the generated password (if needed)
-    //await sendEmail(req.body.email, req.body.name, senderName, senderUser.password);
+    await sendEmail(req.body.email, req.body.name, senderName, password);
 
     console.log(
-      `User ${req.body.name} (${req.body.email}) added to account ${accountId} with the same password as the sender user`
+      `User ${req.body.name} (${
+        req.body.email
+      }) added to account ${accountId} with ${
+        password ? "a new password" : "an existing account"
+      }`
     );
 
     // Send success response
@@ -219,33 +299,7 @@ const invite = async (req, res) => {
       .json({ error: "Error inviting user", details: error.message });
   }
 };
-
-// const sendEmail = async (email, name, senderName, password) => {
-//   try {
-//     // Create reusable transporter object using the default SMTP transport
-//     let transporter = nodemailer.createTransport({
-//       service: 'gmail',
-//       auth: {
-//         user: 'weddingplanner746542@gmail.com', // Replace with your email
-//         pass: 'weddingPlannerPassword', // Replace with your password
-//       },
-//     });
-
-//     // Send mail with defined transport object
-//     let info = await transporter.sendMail({
-//       from: 'weddingplanner746542@gmail.com', // Sender address (must be the same as auth.user)
-//       to: email, // List of receivers
-//       subject: 'You have been added to a wedding planner account', // Subject line
-//       text: `Dear ${name},\n\nYou have been added to a wedding planner account by ${senderName}. Your temporary password is: ${password}\n\nPlease log in and change your password as soon as possible.\n\nBest regards,\nWedding Planner Team`, // Plain text body
-//     });
-
-//     console.log("Email sent:", info.response);
-//     return true;
-//   } catch (error) {
-//     console.error("Error sending email:", error);
-//     return false;
-//   }
-// };
+//dkrg umvk tqez ubhm
 module.exports = {
   getAllUsers,
   Registration,
