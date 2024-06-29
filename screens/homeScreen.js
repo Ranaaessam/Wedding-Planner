@@ -88,7 +88,8 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView
-      style={[styles.safeArea, { backgroundColor: theme.background }]}>
+      style={[styles.safeArea, { backgroundColor: theme.background }]}
+    >
       <FlatList
         data={data}
         renderItem={renderItem}

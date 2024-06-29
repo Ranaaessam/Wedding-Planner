@@ -11,11 +11,12 @@ import * as ImagePicker from "expo-image-picker";
 import { useDispatch } from "react-redux";
 import { updateProfile } from "../StateManagement/slices/ProfileSlice";
 import { useTheme, themes } from "../ThemeContext";
+import axios from "axios";
+import { cloudName, cloudUploadPreset } from "../constants";
 
 const ProfilePicture = ({ imgUrl }) => {
   const [imageUri, setImageUri] = useState(imgUrl);
   const { theme, toggleTheme } = useTheme();
-
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -29,14 +30,38 @@ const ProfilePicture = ({ imgUrl }) => {
 
     if (!result.canceled) {
       setLoading(true);
-      setImageUri(result.assets[0].uri);
-      dispatch(updateProfile({ image: result.assets[0].uri }))
-        .then(() => {
-          setLoading(false);
-        })
-        .catch(() => {
-          setLoading(false);
-        });
+      const uri = result.assets[0].uri;
+      const formData = new FormData();
+      formData.append("file", {
+        uri,
+        type: "image/jpeg",
+        name: "profile-picture.jpg",
+      });
+      formData.append("upload_preset", `${cloudUploadPreset}`);
+      try {
+        const response = await axios.post(
+          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        const imageUrl = response.data.secure_url;
+        setImageUri(imageUrl);
+        dispatch(updateProfile({ image: imageUrl }))
+          .then(() => {
+            setLoading(false);
+          })
+          .catch(() => {
+            setLoading(false);
+          });
+      } catch (error) {
+        console.error("Upload failed", error);
+        setLoading(false);
+      }
     }
   };
 
@@ -83,8 +108,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 10,
     right: 10,
-    // backgroundColor: "#FF81AE",
-    color: themes.cart,
     borderRadius: 20,
     padding: 4,
     width: 30,

@@ -100,11 +100,13 @@ const ProfileScreen = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}>
+      style={styles.container}
+    >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView keyboardShouldPersistTaps="handled">
           <View
-            style={[styles.container, { backgroundColor: theme.background }]}>
+            style={[styles.container, { backgroundColor: theme.background }]}
+          >
             <Image
               source={{
                 uri: "https://img.freepik.com/premium-vector/avatar-wedding-couple_24911-14448.jpg",
@@ -114,7 +116,8 @@ const ProfileScreen = () => {
             <ProfilePicture imgUrl={image} />
             <TouchableOpacity
               style={[styles.editBtn, { backgroundColor: theme.extra }]}
-              onPress={handleEditToggle}>
+              onPress={handleEditToggle}
+            >
               <Text style={styles.editText}>
                 {isEditing ? t("saveProfile") : t("editProfile")}
               </Text>
