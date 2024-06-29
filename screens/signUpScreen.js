@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { FontAwesome } from "@expo/vector-icons";
 import { registerUser } from "../StateManagement/slices/SignUpSlice";
 import { Snackbar } from "react-native-paper";
+import RNPickerSelect from "react-native-picker-select";
 
 const SignUp = ({ navigation }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -82,6 +83,39 @@ const SignUp = ({ navigation }) => {
     }, 2000);
   };
 
+  const locationOptions = [
+    { label: "Cairo", value: "Cairo" },
+    { label: "Giza", value: "Giza" },
+    { label: "Alexandria", value: "Alexandria" },
+    { label: "Mansoura", value: "Mansoura" },
+  ];
+
+  const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+      fontSize: 16,
+      paddingVertical: 12,
+      paddingHorizontal: 10,
+      borderWidth: 1,
+      borderColor: "transparent",
+      borderRadius: 8,
+      color: "black",
+      paddingRight: 30,
+      backgroundColor: "white",
+      width: 260,
+    },
+    inputAndroid: {
+      fontSize: 16,
+      paddingHorizontal: 10,
+      paddingVertical: 8,
+      borderWidth: 1,
+      borderColor: "gray",
+      borderRadius: 8,
+      color: "black",
+      paddingRight: 30, // to ensure the text is never behind the icon
+      backgroundColor: "white",
+    },
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#4C134E" />
@@ -92,7 +126,6 @@ const SignUp = ({ navigation }) => {
         <Formik
           initialValues={{
             name: "",
-
             email: "",
             password: "",
             repeatPassword: "",
@@ -191,12 +224,18 @@ const SignUp = ({ navigation }) => {
                   color="gray"
                   style={styles.inputIcon}
                 />
-                <TextInput
-                  style={styles.inputs}
-                  placeholder="Location"
-                  onChangeText={handleChange("location")}
-                  onBlur={handleBlur("location")}
+                <RNPickerSelect
+                  onValueChange={handleChange("location")}
+                  items={locationOptions}
                   value={values.location}
+                  placeholder={{ label: "Select Location", value: null }}
+                  style={pickerSelectStyles}
+                />
+                <FontAwesome
+                  name="arrow-down"
+                  size={15}
+                  color="gray"
+                  style={styles.inputIcon2}
                 />
               </View>
               {errors.location && touched.location && (
@@ -268,7 +307,7 @@ const SignUp = ({ navigation }) => {
                   Already have an account?{" "}
                   <Text
                     style={{
-                      color: "#ff81ae",
+                      color: "#4C134E",
                       fontSize: 15,
                       textDecorationLine: "underline",
                     }}>
@@ -353,6 +392,9 @@ const styles = StyleSheet.create({
   },
   inputIcon: {
     marginRight: 10,
+  },
+  inputIcon2: {
+    marginLeft: -25,
   },
   eyeIcon: {
     right: 10,
