@@ -9,15 +9,23 @@ export const fetchBudgetData = createAsyncThunk(
     const accountId = await storage.load({ key: "accountId" });
 
     try {
-      const ordersResponse = await fetch(
+      const response = await fetch(
         `${API_URL}/orders/getOrdersForUser?userID=${accountId}`
       );
-      if (!ordersResponse.ok) {
-        throw new Error("Failed to fetch orders");
-      }
-      const orders = await ordersResponse.json();
 
-      return orders[0].items;
+      if (!response.ok) {
+        throw new Error(`Failed to fetch orders: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error("Invalid response format: expected an array");
+      }
+
+      const arrItems = data.flatMap((order) => order.items || []);
+
+      return arrItems;
     } catch (error) {
       console.error("Error fetching budget data:", error);
       throw error;
@@ -29,6 +37,7 @@ export const refundItem = createAsyncThunk(
   "budget/refundItem",
   async (itemId, { rejectWithValue }) => {
     try {
+      console.log(itemId);
       const accountId = await storage.load({ key: "accountId" });
       const response = await axios.delete(
         `${API_URL}/orders/refund?accountID=${accountId}&itemId=${itemId}`

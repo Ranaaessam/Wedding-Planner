@@ -11,7 +11,7 @@ import {
 } from "../StateManagement/slices/BudgetSlice";
 import { getUserProfile } from "../StateManagement/slices/ProfileSlice";
 import storage from "../Storage/storage";
-import { useTheme ,themes} from "../ThemeContext"
+import { useTheme, themes } from "../ThemeContext";
 
 const BudgetScreen = ({ navigation }) => {
   const { t } = useTranslation();
@@ -23,7 +23,6 @@ const BudgetScreen = ({ navigation }) => {
   const amountSpent = useSelector((state) => state.budget.amountSpent);
   const budgetLeft = totalBudget - amountSpent;
   const { theme, toggleTheme } = useTheme();
-
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -39,28 +38,47 @@ const BudgetScreen = ({ navigation }) => {
   }, [dispatch]);
 
   const handleRefund = (id) => {
-    dispatch(refundItem(id)).then(() => {
-      dispatch(calculateTotalSpent());
+    // Optimistic update: remove item from local state first
+    const updatedBudgetHistory = budgetHistory.filter(
+      (item) => item._id !== id
+    );
+    dispatch({
+      type: "budget/setBudgetHistory",
+      payload: updatedBudgetHistory,
     });
+
+    // Then make API call to perform refund
+    dispatch(refundItem(id))
+      .then(() => {
+        // If API call succeeds, fetch updated data
+        dispatch(fetchBudgetData());
+        dispatch(calculateTotalSpent());
+      })
+      .catch((error) => {
+        console.error("Error refunding item:", error);
+        // Revert local state on error (optional)
+        dispatch(fetchBudgetData()); // Fetch updated data to revert to server state
+        dispatch(calculateTotalSpent());
+      });
   };
 
   return (
-    // <View style={styles.container}>
-          <View style={[styles.container, { backgroundColor: theme.background}]}>
-
-      <Text style={{ fontSize: 20, textAlign: "left",color:theme.text }}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <Text style={{ fontSize: 20, textAlign: "left", color: theme.text }}>
         {t("Left to spend")}
       </Text>
-      <Text style={[styles.budget, { color: theme.text}]}>
-      ${budgetLeft}</Text>
+      <Text style={[styles.budget, { color: theme.text }]}>${budgetLeft}</Text>
       <ProgressBar progress={(amountSpent / totalBudget) * 100} height={25} />
 
       <View style={styles.progressRow}>
-        <Text style={[styles.progressBudget,{color:theme.text}]}>$0</Text>
-        <Text style={[styles.progressBudget,{color:theme.text}]}>${totalBudget}</Text>
+        <Text style={[styles.progressBudget, { color: theme.text }]}>$0</Text>
+        <Text style={[styles.progressBudget, { color: theme.text }]}>
+          ${totalBudget}
+        </Text>
       </View>
       <View
-        style={{ flexDirection: "row", paddingTop: 20, alignItems: "center" }}>
+        style={{ flexDirection: "row", paddingTop: 20, alignItems: "center" }}
+      >
         <View
           style={{
             borderRadius: 60,
@@ -68,13 +86,25 @@ const BudgetScreen = ({ navigation }) => {
             width: 10,
             backgroundColor: "#FF81AE",
             marginRight: 10,
-            color:theme.text
-          }}></View>
-        <Text style={{ textAlign: "left",color:theme.text }}>{t("Amount spent till now:")}</Text>
-        <Text style={[styles.budgetSpent,{color:theme.text}]}>${amountSpent}</Text>
+            color: theme.text,
+          }}
+        ></View>
+        <Text style={{ textAlign: "left", color: theme.text }}>
+          {t("Amount spent till now:")}
+        </Text>
+        <Text style={[styles.budgetSpent, { color: theme.text }]}>
+          ${amountSpent}
+        </Text>
       </View>
       <View style={{ paddingTop: 30 }}>
-        <Text style={{ fontSize: 22, fontWeight: "bold", textAlign: "left",color:theme.text }}>
+        <Text
+          style={{
+            fontSize: 22,
+            fontWeight: "bold",
+            textAlign: "left",
+            color: theme.text,
+          }}
+        >
           {t("History")}
         </Text>
         <View
@@ -84,7 +114,8 @@ const BudgetScreen = ({ navigation }) => {
             backgroundColor: theme.extra,
             marginBottom: 2,
             marginTop: 6,
-          }}></View>
+          }}
+        ></View>
       </View>
       <FlatList
         data={budgetHistory}
@@ -99,7 +130,7 @@ const BudgetScreen = ({ navigation }) => {
             onDelete={() => handleRefund(item._id)}
           />
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
       />
     </View>
@@ -111,31 +142,28 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 50,
     marginBottom: 20,
-    height:800
+    height: 800,
   },
   budget: {
     paddingVertical: 12,
     fontSize: 28,
     fontWeight: "700",
-    color:themes.text
+    color: themes.text,
   },
   progressRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingTop: 10,
-
   },
   progressBudget: {
     fontSize: 15,
     fontWeight: "500",
-    color:themes.text
-
+    color: themes.text,
   },
   budgetSpent: {
     fontSize: 15,
     fontWeight: "500",
-    color:themes.text
-
+    color: themes.text,
   },
 });
 

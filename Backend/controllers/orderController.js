@@ -194,25 +194,35 @@ const deleteItemFromOrder = async (req, res) => {
     }
 
     const account = await Account.findById(accountID);
-    const order = await Orders.findOne({ from: accountID });
-
-    if (!order) {
-      return res.status(404).json({ message: "No order found for this user" });
+    if (!account) {
+      return res.status(404).json({ message: "Account not found" });
     }
 
+    // Find the order containing the item
+    const order = await Orders.findOne({
+      from: accountID,
+      "items._id": itemId,
+    });
+    if (!order) {
+      return res.status(404).json({ message: "Item not found in any orders" });
+    }
+
+    // Find the index of the item within the order's items array
     const itemIndex = order.items.findIndex(
       (item) => item._id.toString() === itemId
     );
-
     if (itemIndex === -1) {
-      return res.status(404).json({ message: "Item not found in the order" });
+      return res.status(404).json({ message: "Item not found" });
     }
 
-    account.wallet += order.items[itemIndex].price;
+    const item = order.items[itemIndex];
+
+    // Refund the price of the item being deleted
+    account.wallet += item.price;
     await account.save();
 
+    // Remove the item from the order's items array
     order.items.splice(itemIndex, 1);
-
     await order.save();
 
     res.status(200).json({ message: "Item deleted successfully", order });
