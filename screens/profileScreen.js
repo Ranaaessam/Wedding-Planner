@@ -53,12 +53,16 @@ const ProfileScreen = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    const weddingDate = new Date(userDetails.weddingdate);
+    const year = weddingDate.getFullYear();
+    const month = String(weddingDate.getMonth() + 1).padStart(2, "0");
+    const date = String(weddingDate.getDate()).padStart(2, "0");
     if (userDetails) {
       setProfile({
         groomName: names["user1Name"] || "",
         brideName: names["user2Name"] || "",
         location: userDetails.location,
-        weddingdate: userDetails.weddingdate,
+        weddingdate: `${year}-${month}-${date}`,
       });
       setImage(userDetails.image);
       setBudget(userDetails.budget);
@@ -100,11 +104,13 @@ const ProfileScreen = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}>
+      style={styles.container}
+    >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView keyboardShouldPersistTaps="handled">
           <View
-            style={[styles.container, { backgroundColor: theme.background }]}>
+            style={[styles.container, { backgroundColor: theme.background }]}
+          >
             <Image
               source={{
                 uri: "https://img.freepik.com/premium-vector/avatar-wedding-couple_24911-14448.jpg",
@@ -114,7 +120,8 @@ const ProfileScreen = () => {
             <ProfilePicture imgUrl={image} />
             <TouchableOpacity
               style={[styles.editBtn, { backgroundColor: theme.extra }]}
-              onPress={handleEditToggle}>
+              onPress={handleEditToggle}
+            >
               <Text style={styles.editText}>
                 {isEditing ? t("saveProfile") : t("editProfile")}
               </Text>
