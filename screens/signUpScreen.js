@@ -18,8 +18,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { registerUser } from "../StateManagement/slices/SignUpSlice";
 import { Snackbar } from "react-native-paper";
 import RNPickerSelect from "react-native-picker-select";
-import DateTimePicker from "@react-native-community/datetimepicker"; // Import datetime picker
-
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const SignUp = ({ navigation }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -29,6 +28,7 @@ const SignUp = ({ navigation }) => {
   const [confirmPasswordShape, setConfirmPasswordShape] = useState("eye");
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [weddingDate, setWeddingDate] = useState(null);
+  const [showPicker, setShowPicker] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
@@ -46,7 +46,6 @@ const SignUp = ({ navigation }) => {
 
   const signUpValidationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
-
     email: Yup.string()
       .email("Please enter valid email")
       .required("Email is required"),
@@ -63,7 +62,7 @@ const SignUp = ({ navigation }) => {
     budget: Yup.number()
       .min(15000, "Budget must be greater than 15000 Egyptian pounds")
       .required("Budget is required"),
-    weddingDate: Yup.string().required("Wedding date is required"),
+    weddingDate: Yup.date().required("Wedding date is required"),
     location: Yup.string().required("Location is required"),
   });
 
@@ -74,8 +73,7 @@ const SignUp = ({ navigation }) => {
       email: values.email,
       password: values.password,
       budget: values.budget,
-      // weddingDate: values.weddingDate,
-      weddingDate:weddingDate? weddingDate.toISOString():null,
+      weddingdate: weddingDate ? weddingDate.toISOString() : null,
       location: values.location,
     };
     const result = await dispatch(registerUser(userInfo));
@@ -143,6 +141,7 @@ const SignUp = ({ navigation }) => {
             handleChange,
             handleBlur,
             handleSubmit,
+            setFieldValue,
             values,
             errors,
             touched,
@@ -210,26 +209,27 @@ const SignUp = ({ navigation }) => {
                   color="gray"
                   style={styles.inputIcon}
                 />
-        <TouchableOpacity onPress={() => setWeddingDate(new Date())}>
-          {weddingDate ? (
-            <Text>{weddingDate.toDateString()}</Text>
-          ) : (
-            <Text style={{color:'#AAAA'}}>Select Wedding Date</Text>
-          )}
-        </TouchableOpacity>
-        {weddingDate && (
-          <DateTimePicker
-            value={weddingDate}
-            mode="date"
-            display="default"
-            onChange={(event, selectedDate) => {
-              const currentDate = selectedDate || weddingDate;
-              setWeddingDate(currentDate);
-            }}
-            />
-          )}
-  
-
+                <TouchableOpacity
+                  style={{ height: 45, justifyContent: "center" }}
+                  onPress={() => setShowPicker(true)}>
+                  {weddingDate ? (
+                    <Text>{weddingDate.toDateString()}</Text>
+                  ) : (
+                    <Text style={{ color: "#AAAA" }}>Select Wedding Date</Text>
+                  )}
+                </TouchableOpacity>
+                {showPicker && (
+                  <DateTimePicker
+                    value={weddingDate || new Date()}
+                    mode="date"
+                    display="default"
+                    onChange={(event, selectedDate) => {
+                      setShowPicker(false);
+                      setFieldValue("weddingDate", selectedDate);
+                      setWeddingDate(selectedDate);
+                    }}
+                  />
+                )}
               </View>
               {errors.weddingDate && touched.weddingDate && (
                 <Text style={styles.errorText}>{errors.weddingDate}</Text>
