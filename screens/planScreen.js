@@ -21,7 +21,12 @@ const PlanScreen = ({ navigation }) => {
         image={
           "https://img.freepik.com/premium-vector/avatar-wedding-couple_24911-14448.jpg"
         }
-        name={names["user1Name"] + " & " + names["user2Name"] + " " + t("plan")}
+        name={
+          names["user1Name"] +
+          (names["user2Name"] ? " & " + names["user2Name"] : "") +
+          " " +
+          t("plan")
+        }
       />
       <PlanChecklist navigation={navigation} />
       <PlanInvitePartner navigation={navigation} />

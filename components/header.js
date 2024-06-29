@@ -19,7 +19,7 @@ const Header = ({ imageUri, name1, name2 }) => {
         />
       </View>
       <Text style={[styles.name, { color: theme.text }]}>
-        {name1} & {name2}
+        {name1 + (name2 ? " & " + name2 : "")}
       </Text>
     </View>
   );

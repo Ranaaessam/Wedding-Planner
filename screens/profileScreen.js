@@ -235,7 +235,7 @@ const ProfileScreen = () => {
                         onChange={(event, selectedDate) => {
                           setShowPicker(false);
                           setWeddingDate(selectedDate);
-                          handleChange("weddingdate", selectedDate); // Update profile state
+                          handleChange("weddingdate", selectedDate);
                         }}
                       />
                     )}
