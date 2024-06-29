@@ -18,6 +18,8 @@ import { FontAwesome } from "@expo/vector-icons";
 import { registerUser } from "../StateManagement/slices/SignUpSlice";
 import { Snackbar } from "react-native-paper";
 import RNPickerSelect from "react-native-picker-select";
+import DateTimePicker from "@react-native-community/datetimepicker"; // Import datetime picker
+
 
 const SignUp = ({ navigation }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -26,6 +28,7 @@ const SignUp = ({ navigation }) => {
   const [passwordShape, setPasswordShape] = useState("eye");
   const [confirmPasswordShape, setConfirmPasswordShape] = useState("eye");
   const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [weddingDate, setWeddingDate] = useState(null);
 
   const togglePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
@@ -71,7 +74,8 @@ const SignUp = ({ navigation }) => {
       email: values.email,
       password: values.password,
       budget: values.budget,
-      weddingDate: values.weddingDate,
+      // weddingDate: values.weddingDate,
+      weddingDate:weddingDate? weddingDate.toISOString():null,
       location: values.location,
     };
     const result = await dispatch(registerUser(userInfo));
@@ -206,13 +210,26 @@ const SignUp = ({ navigation }) => {
                   color="gray"
                   style={styles.inputIcon}
                 />
-                <TextInput
-                  style={styles.inputs}
-                  placeholder="Wedding Date"
-                  onChangeText={handleChange("weddingDate")}
-                  onBlur={handleBlur("weddingDate")}
-                  value={values.weddingDate}
-                />
+        <TouchableOpacity onPress={() => setWeddingDate(new Date())}>
+          {weddingDate ? (
+            <Text>{weddingDate.toDateString()}</Text>
+          ) : (
+            <Text style={{color:'#AAAA'}}>Select Wedding Date</Text>
+          )}
+        </TouchableOpacity>
+        {weddingDate && (
+          <DateTimePicker
+            value={weddingDate}
+            mode="date"
+            display="default"
+            onChange={(event, selectedDate) => {
+              const currentDate = selectedDate || weddingDate;
+              setWeddingDate(currentDate);
+            }}
+            />
+          )}
+  
+
               </View>
               {errors.weddingDate && touched.weddingDate && (
                 <Text style={styles.errorText}>{errors.weddingDate}</Text>
