@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-const SupplierCard = ({ image, name, location, rate }) => {
+const SupplierCard = ({ image, name, location, rate, price }) => {
   return (
     <View style={styles.card}>
       <Image source={{ uri: image }} style={styles.image} />
@@ -19,9 +19,12 @@ const SupplierCard = ({ image, name, location, rate }) => {
             <Text style={styles.location}>{location}</Text>
           </View>
         </View>
-        <View style={styles.rateContainer}>
-          <Ionicons name="star" size={16} color="grey" />
-          <Text style={styles.rate}>{rate}</Text>
+        <View style={{ flexDirection: "column", alignItems: "center" }}>
+          <Text style={styles.price}>${price}</Text>
+          <View style={styles.rateContainer}>
+            <Ionicons name="star" size={16} color="grey" />
+            <Text style={styles.rate}>{rate}</Text>
+          </View>
         </View>
       </View>
     </View>
@@ -44,6 +47,12 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: 300,
+  },
+  price: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#ffffff",
+    marginBottom: 8,
   },
   overlay: {
     position: "absolute",

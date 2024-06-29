@@ -65,6 +65,7 @@ const ListviewSuppliers = ({ navigation, route }) => {
               name={item.name}
               location={item.location}
               rate={Math.round(item.rate)}
+              price={item.price}
               navigation={navigation}
               style={styles.supplierCard}
             />

@@ -56,7 +56,6 @@ const SupplierDetails = ({ navigation, route }) => {
     dispatch(getAllFavourites());
   }, []);
 
-  const reviews = useSelector((state) => state.review.review);
   useEffect(() => {
     const fetchSupplierDetails = async () => {
       try {
@@ -71,7 +70,6 @@ const SupplierDetails = ({ navigation, route }) => {
     fetchSupplierDetails();
     dispatch(getSupplierReview({ supplierId: supplierId }));
   }, [supplierId, favorites]);
-  //-------------------------------------------
 
   const handleBookPress = async () => {
     try {
@@ -93,6 +91,7 @@ const SupplierDetails = ({ navigation, route }) => {
       console.error("Error booking supplier:", error);
     }
   };
+
   const handleFavoritePress = async () => {
     try {
       const accountId = await storage.load({ key: "accountId" });
@@ -130,13 +129,13 @@ const SupplierDetails = ({ navigation, route }) => {
   if (!supplier) {
     return <LoaderComponent></LoaderComponent>;
   }
+
   const handleReview = () => {
     setReviewModalVisible(true);
   };
 
   return (
     <ScrollView>
-      {/* <View style={styles.container}> */}
       <View style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.carouselContainer}>
           <ImageCarousel
@@ -148,14 +147,29 @@ const SupplierDetails = ({ navigation, route }) => {
         </View>
         <View style={styles.infoContainer}>
           <View style={styles.nameContainer}>
-            {/* <Text style={styles.name}>{supplier.name}</Text> */}
             <Text style={[styles.name, { color: theme.text }]}>
               {supplier.name}
             </Text>
           </View>
-          <View style={styles.locationContainer}>
-            <FontAwesome name="map-marker" size={16} color="#666" />
-            <Text style={styles.location}>{supplier.location}</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              paddingRight: 5,
+            }}
+          >
+            <View style={styles.locationContainer}>
+              <FontAwesome name="map-marker" size={16} color="#666" />
+              <Text style={[styles.location, { color: theme.text }]}>
+                {supplier.location}
+              </Text>
+            </View>
+            <View style={styles.priceContainer}>
+              <Text style={[styles.priceText, { color: theme.text }]}>
+                ${supplier.price}
+              </Text>
+            </View>
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
@@ -266,8 +280,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 10,
     backgroundColor: themes.cart,
-
-    // backgroundColor: "#f0f0f0",
   },
   loadingContainer: {
     flex: 1,
@@ -310,6 +322,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#666",
     marginLeft: 8,
+  },
+  priceContainer: {
+    marginBottom: 16,
+  },
+  priceText: {
+    fontSize: 18,
+    fontWeight: "bold",
   },
   buttonContainer: {
     flexDirection: "row",
@@ -355,7 +374,6 @@ const styles = StyleSheet.create({
   reviews: {
     flexGrow: 1,
     paddingVertical: 10,
-    backgroundColor: "#f0f0f0",
     backgroundColor: themes.cart,
   },
   modalContainer: {
