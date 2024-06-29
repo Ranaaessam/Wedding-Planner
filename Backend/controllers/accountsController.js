@@ -37,12 +37,13 @@ const getUserNamesByUserID = async (req, res) => {
     const account = await Account.findOne({
       $or: [{ user1Id: userId }, { user2Id: userId }],
     });
+
     const user1 = await User.findById(account.user1Id);
     const user2 = await User.findById(account.user2Id);
     if (account) {
       res.status(200).json({
-        user1Name: user1.name,
-        user2Name: user2.name,
+        user1Name: user1?.name,
+        user2Name: user2?.name,
       });
     } else {
       res.status(404).json({ message: "No account found for this user" });

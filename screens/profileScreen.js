@@ -53,12 +53,16 @@ const ProfileScreen = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    const weddingDate = new Date(userDetails.weddingdate);
+    const year = weddingDate.getFullYear();
+    const month = String(weddingDate.getMonth() + 1).padStart(2, "0");
+    const date = String(weddingDate.getDate()).padStart(2, "0");
     if (userDetails) {
       setProfile({
         groomName: names["user1Name"] || "",
         brideName: names["user2Name"] || "",
         location: userDetails.location,
-        weddingdate: userDetails.weddingdate,
+        weddingdate: `${year}-${month}-${date}`,
       });
       setImage(userDetails.image);
       setBudget(userDetails.budget);
