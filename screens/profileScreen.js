@@ -13,7 +13,7 @@ import {
   Keyboard,
 } from "react-native";
 import ProfilePicture from "../components/profilePicture";
-import Icon from "react-native-vector-icons/FontAwesome6";
+import Icon from "react-native-vector-icons/FontAwesome";
 import ProgressBar from "../components/progressBar";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -25,6 +25,8 @@ import storage from "../Storage/storage";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "../ThemeContext";
 import RNPickerSelect from "react-native-picker-select";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const ProfileScreen = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -32,10 +34,11 @@ const ProfileScreen = () => {
   const [profile, setProfile] = useState(null);
   const [image, setImage] = useState("");
   const [budget, setBudget] = useState("");
+  const [showPicker, setShowPicker] = useState(false);
+  const [weddingDate, setWeddingDate] = useState(null);
 
   const userDetails = useSelector((state) => state.user.user);
   const names = useSelector((state) => state.home.names);
-
   const plan = useSelector((state) => state.user.plan);
   const { t } = useTranslation();
   const { theme } = useTheme();
@@ -66,8 +69,9 @@ const ProfileScreen = () => {
       });
       setImage(userDetails.image);
       setBudget(userDetails.budget);
+      setWeddingDate(new Date(userDetails.weddingdate));
     }
-  }, [userDetails]);
+  }, [userDetails, names]);
 
   useEffect(() => {
     if (!isEditing && profile) {
@@ -204,11 +208,38 @@ const ProfileScreen = () => {
               <View style={styles.detailRow}>
                 <Text style={styles.label}>{t("Wedding Date")}</Text>
                 {isEditing ? (
-                  <TextInput
-                    style={styles.input}
-                    value={profile.weddingdate}
-                    onChangeText={(text) => handleChange("weddingdate", text)}
-                  />
+                  <View style={styles.inputContainer}>
+                    <FontAwesome
+                      name="calendar"
+                      size={24}
+                      color="gray"
+                      style={styles.inputIcon}
+                    />
+                    <TouchableOpacity
+                      style={{ height: 45, justifyContent: "center" }}
+                      onPress={() => setShowPicker(true)}
+                    >
+                      {weddingDate ? (
+                        <Text>{weddingDate.toDateString()}</Text>
+                      ) : (
+                        <Text style={{ color: "#AAAA" }}>
+                          Select Wedding Date
+                        </Text>
+                      )}
+                    </TouchableOpacity>
+                    {showPicker && (
+                      <DateTimePicker
+                        value={weddingDate || new Date()}
+                        mode="date"
+                        display="default"
+                        onChange={(event, selectedDate) => {
+                          setShowPicker(false);
+                          setWeddingDate(selectedDate);
+                          handleChange("weddingdate", selectedDate); // Update profile state
+                        }}
+                      />
+                    )}
+                  </View>
                 ) : (
                   <Text style={styles.value}>{profile.weddingdate}</Text>
                 )}
@@ -344,6 +375,19 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 12,
     right: 15,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: "gray",
+    backgroundColor: "white",
+    paddingHorizontal: 15,
+    marginBottom: 5,
+  },
+  inputIcon: {
+    marginRight: 10,
   },
 });
 
