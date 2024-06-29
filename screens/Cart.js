@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   Linking,
+  Modal,
 } from "react-native";
 import { Icon } from "react-native-elements";
 import { Card, Button } from "react-native-paper";
@@ -16,8 +17,8 @@ import { useTranslation } from "react-i18next";
 import storage from "../Storage/storage";
 import { clearCart, createOrder } from "../StateManagement/slices/CartSlice";
 import { useDispatch } from "react-redux";
-import { useTheme ,themes} from "../ThemeContext"
-
+import { useTheme, themes } from "../ThemeContext";
+import { payWithWallet } from "../StateManagement/slices/SettingsSlice";
 
 const Cart = ({ navigation, route }) => {
   const { t } = useTranslation();
@@ -25,6 +26,7 @@ const Cart = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, settotalPrice] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   const deleteFromcart = async (itemID) => {
@@ -38,7 +40,12 @@ const Cart = ({ navigation, route }) => {
       console.error("Error fetching supplier details:", error);
     }
   };
+
   const handleCheckOut = () => {
+    setModalVisible(true);
+  };
+
+  const handlePaymentVisa = () => {
     axios
       .post("https://accept.paymob.com/api/auth/tokens", {
         api_key:
@@ -91,11 +98,11 @@ const Cart = ({ navigation, route }) => {
                   client: accountID,
                   price: totalPrice,
                   items: cartItems,
-                  // date: formatDate(new Date()),
                   date: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
                 };
                 dispatch(createOrder(order));
                 dispatch(clearCart());
+                setModalVisible(false);
                 // window.open(
                 //   `https://accept.paymob.com/api/acceptance/iframes/837986?payment_token=${res.data.token}`
                 // );
@@ -111,6 +118,19 @@ const Cart = ({ navigation, route }) => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const handlePaymentWallet = () => {
+    const order = {
+      client: accountID,
+      price: totalPrice,
+      items: cartItems,
+      date: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
+    };
+    dispatch(createOrder(order));
+    dispatch(clearCart());
+    dispatch(payWithWallet(totalPrice));
+    setModalVisible(false);
   };
 
   useEffect(() => {
@@ -137,17 +157,17 @@ const Cart = ({ navigation, route }) => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background}]}>
-
-
-      <Text style={[styles.mainTitle, { color: theme.text}]}>{t("Your Wedding Plan!")}</Text>
-      <Text style={[styles.subtitle, { color: theme.text}]}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <Text style={[styles.mainTitle, { color: theme.text }]}>
+        {t("Your Wedding Plan!")}
+      </Text>
+      <Text style={[styles.subtitle, { color: theme.text }]}>
         {t("Review your cart and proceed to payment")}
       </Text>
       <FlatList
         data={cartItems}
         renderItem={({ item }) => (
-          <Card  style={[styles.card, {backgroundColor:theme.card}]}>
+          <Card style={[styles.card, { backgroundColor: theme.card }]}>
             <View style={styles.cardContent}>
               <Card.Cover
                 source={{
@@ -158,8 +178,9 @@ const Cart = ({ navigation, route }) => {
               />
 
               <View style={styles.detailsContainer}>
-                <Text             style={[styles.itemTitle, { color: theme.text}]}
->{item.name}</Text>
+                <Text style={[styles.itemTitle, { color: theme.text }]}>
+                  {item.name}
+                </Text>
                 <Text style={styles.description}>
                   {(item.cakes && item.cakes[0] && item.cakes[0].name) || ""}
                 </Text>
@@ -191,17 +212,57 @@ const Cart = ({ navigation, route }) => {
       />
       <View style={styles.footer}>
         <View style={styles.totalContainer}>
-          <Text style={[styles.totalAmount, { color: theme.extra}]}>{t("Total Package:")}</Text>
-          <Text style={[styles.totalAmount, { color: theme.text}]}>${totalPrice}</Text>
+          <Text style={[styles.totalAmount, { color: theme.extra }]}>
+            {t("Total Package:")}
+          </Text>
+          <Text style={[styles.totalAmount, { color: theme.text }]}>
+            ${totalPrice}
+          </Text>
         </View>
         <Button
           mode="contained"
-          style={[styles.paymentButton, { backgroundColor: theme.extra}]}
+          style={[styles.paymentButton, { backgroundColor: theme.extra }]}
           onPress={handleCheckOut}
-          labelStyle={{ fontSize: 16 }}>
+          labelStyle={{ fontSize: 16 }}
+        >
           {t("Proceed to Payment")}
         </Button>
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={[styles.modalContent, { backgroundColor: theme.card }]}>
+            <Text style={[styles.modalTitle, { color: theme.text }]}>
+              {t("Choose Payment Method")}
+            </Text>
+            <Button
+              mode="contained"
+              style={styles.modalButton}
+              onPress={() => handlePaymentVisa()}
+            >
+              {t("Pay with Visa")}
+            </Button>
+            <Button
+              mode="contained"
+              style={styles.modalButton}
+              onPress={() => handlePaymentWallet()}
+            >
+              {t("Pay with Wallet")}
+            </Button>
+            <Button
+              mode="text"
+              onPress={() => setModalVisible(false)}
+              labelStyle={{ color: theme.text }}
+            >
+              {t("Cancel")}
+            </Button>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -297,6 +358,28 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingBottom: 80,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  modalContent: {
+    width: "80%",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  modalButton: {
+    marginBottom: 10,
+    width: "100%",
+    backgroundColor: "#FF81AE",
   },
 });
 

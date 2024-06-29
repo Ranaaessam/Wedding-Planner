@@ -41,6 +41,30 @@ export const getWalletVal = createAsyncThunk(
     }
   }
 );
+export const payWithWallet = createAsyncThunk(
+  "account/payWithWallet",
+  async (totalPrice, { getState, rejectWithValue }) => {
+    const state = getState();
+    const accountId = await storage.load({ key: "accountId" });
+
+    try {
+      const response = await axios.patch(
+        `${API_URL}/account?accountId=${accountId}`,
+        {
+          account: {
+            wallet: state.settings.wallet - totalPrice,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      // Return a rejected action containing the error message
+      return rejectWithValue(
+        error.response ? error.response.data : error.message
+      );
+    }
+  }
+);
 
 const settingsSlice = createSlice({
   name: "settings",
