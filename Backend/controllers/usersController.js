@@ -109,7 +109,7 @@ const Login = async (req, res) => {
     let user = await User.findOne({
       email: req.body.email.toLowerCase(),
     }).exec();
-   // console.log(user);
+    // console.log(user);
 
     if (!user) {
       return res.status(400).send("Invalid email or password.");
@@ -186,16 +186,14 @@ const generatePassword = (length = 8) => {
 
 const sendEmail = async (email, name, senderName, password) => {
   try {
-    
     let transporter = nodemailer.createTransport({
       service: "Gmail",
       auth: {
-        user: "weddingplanner746542@gmail.com", 
-        pass: "dkrg umvk tqez ubhm", 
+        user: "weddingplanner746542@gmail.com",
+        pass: "dkrg umvk tqez ubhm",
       },
     });
 
-   
     let subject, text;
     if (password) {
       subject = "You have been added to a wedding planner account";
@@ -205,12 +203,11 @@ const sendEmail = async (email, name, senderName, password) => {
       text = `Dear ${name},\n\nYou have been added to a wedding planner account by ${senderName}.\n\nBest regards,\nWedding Planner Team`;
     }
 
-    
     let info = await transporter.sendMail({
-      from: '"weddingplanner" <weddingplanner746542@gmail.com>', 
-      to: email, 
+      from: '"weddingplanner" <weddingplanner746542@gmail.com>',
+      to: email,
       subject: subject,
-      text: text, 
+      text: text,
     });
 
     console.log("Email sent:", info.response);
@@ -225,18 +222,16 @@ const invite = async (req, res) => {
   try {
     const accountId = req.body.accountId;
     const account = await Account.findById(accountId);
-   // console.log(account);
+    // console.log(account);
     if (!account) {
       return res
         .status(404)
         .json({ error: `Account with ID ${accountId} not found` });
     }
 
-   
     let senderUser;
     let senderName;
     if (account.user1Id) {
-      
       senderUser = await User.findById(account.user1Id);
       console.log(senderUser);
       console.log(senderUser);
@@ -248,37 +243,30 @@ const invite = async (req, res) => {
           .json({ error: `User with ID ${account.user1Id} not found` });
       }
     } else {
-      
       return res.status(400).json({
         error: `Account with ID ${accountId} does not have user1Id populated`,
       });
     }
 
-   
     let existingUser = await User.findOne({ email: req.body.email });
 
     let password = null;
-    let password = null;
     if (!existingUser) {
-      
       password = generatePassword();
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      
       existingUser = await User.create({
         name: req.body.name,
         email: req.body.email.toLowerCase(),
-        password: hashedPassword, 
+        password: hashedPassword,
       });
     }
     await existingUser.save();
-  
+
     account["user2Id"] = existingUser._id;
 
-   
     await account.save();
 
-   
     await sendEmail(req.body.email, req.body.name, senderName, password);
 
     console.log(
@@ -286,21 +274,19 @@ const invite = async (req, res) => {
         req.body.email
       }) added to account ${accountId} with ${
         password ? "a new password" : "an existing account"
-      }`
-      `User ${req.body.name} (${
+      }``User ${req.body.name} (${
         req.body.email
       }) added to account ${accountId} with ${
         password ? "a new password" : "an existing account"
       }`
     );
 
-    
     return res.status(200).json({
       message: `User ${req.body.name} (${req.body.email}) added to account ${accountId} successfully`,
     });
   } catch (error) {
     console.error("Error inviting user:", error);
-    
+
     return res
       .status(500)
       .json({ error: "Error inviting user", details: error.message });

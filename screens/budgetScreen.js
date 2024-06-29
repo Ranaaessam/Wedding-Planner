@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import ProgressBar from "../components/progressBar";
@@ -12,55 +12,77 @@ import {
 import { getUserProfile } from "../StateManagement/slices/ProfileSlice";
 import storage from "../Storage/storage";
 import { useTheme, themes } from "../ThemeContext";
+import LoaderComponent from "../components/loader";
 
 const BudgetScreen = ({ navigation }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const userDetails = useSelector((state) => state.user.user);
-
   const budgetHistory = useSelector((state) => state.budget.budgetHistory);
   const totalBudget = userDetails?.budget;
   const amountSpent = useSelector((state) => state.budget.amountSpent);
   const budgetLeft = totalBudget - amountSpent;
   const { theme, toggleTheme } = useTheme();
 
+  const [loading, setLoading] = useState(true); // Add a loading state
+
   useEffect(() => {
     const fetchUserProfile = async () => {
-      const userId = await storage.load({ key: "userId" });
-      dispatch(getUserProfile(userId));
+      try {
+        const userId = await storage.load({ key: "userId" });
+        await dispatch(getUserProfile(userId));
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
     };
     fetchUserProfile();
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchBudgetData());
-    dispatch(calculateTotalSpent());
+    const fetchData = async () => {
+      try {
+        setLoading(true); // Set loading state to true before fetching data
+        await dispatch(fetchBudgetData());
+        await dispatch(calculateTotalSpent());
+      } catch (error) {
+        console.error("Error fetching budget data:", error);
+      } finally {
+        setLoading(false); // Set loading state to false after data is fetched
+      }
+    };
+
+    fetchData();
   }, [dispatch]);
 
-  const handleRefund = (id) => {
-    // Optimistic update: remove item from local state first
-    const updatedBudgetHistory = budgetHistory.filter(
-      (item) => item._id !== id
-    );
-    dispatch({
-      type: "budget/setBudgetHistory",
-      payload: updatedBudgetHistory,
-    });
-
-    // Then make API call to perform refund
-    dispatch(refundItem(id))
-      .then(() => {
-        // If API call succeeds, fetch updated data
-        dispatch(fetchBudgetData());
-        dispatch(calculateTotalSpent());
-      })
-      .catch((error) => {
-        console.error("Error refunding item:", error);
-        // Revert local state on error (optional)
-        dispatch(fetchBudgetData()); // Fetch updated data to revert to server state
-        dispatch(calculateTotalSpent());
+  const handleRefund = async (id) => {
+    try {
+      // Optimistic update: remove item from local state first
+      const updatedBudgetHistory = budgetHistory.filter(
+        (item) => item._id !== id
+      );
+      dispatch({
+        type: "budget/setBudgetHistory",
+        payload: updatedBudgetHistory,
       });
+
+      // Make API call to perform refund
+      await dispatch(refundItem(id));
+
+      // Fetch updated data
+      await dispatch(fetchBudgetData());
+      await dispatch(calculateTotalSpent());
+    } catch (error) {
+      console.error("Error refunding item:", error);
+
+      // Revert local state on error
+      await dispatch(fetchBudgetData());
+      await dispatch(calculateTotalSpent());
+    }
   };
+
+  if (loading) {
+    return <LoaderComponent />;
+  }
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -86,9 +108,8 @@ const BudgetScreen = ({ navigation }) => {
             width: 10,
             backgroundColor: "#FF81AE",
             marginRight: 10,
-            color: theme.text,
           }}
-        ></View>
+        />
         <Text style={{ textAlign: "left", color: theme.text }}>
           {t("Amount spent till now:")}
         </Text>
@@ -115,7 +136,7 @@ const BudgetScreen = ({ navigation }) => {
             marginBottom: 2,
             marginTop: 6,
           }}
-        ></View>
+        />
       </View>
       <FlatList
         data={budgetHistory}
@@ -142,13 +163,17 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 50,
     marginBottom: 20,
-    height: 800,
+    height: "100%",
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   budget: {
     paddingVertical: 12,
     fontSize: 28,
     fontWeight: "700",
-    color: themes.text,
   },
   progressRow: {
     flexDirection: "row",
@@ -158,12 +183,10 @@ const styles = StyleSheet.create({
   progressBudget: {
     fontSize: 15,
     fontWeight: "500",
-    color: themes.text,
   },
   budgetSpent: {
     fontSize: 15,
     fontWeight: "500",
-    color: themes.text,
   },
 });
 

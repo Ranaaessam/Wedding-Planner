@@ -9,6 +9,8 @@ import {
   FlatList,
   Image,
   Modal,
+  SafeAreaView,
+  ActivityIndicator,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -31,7 +33,8 @@ import storage from "../Storage/storage";
 import { getSupplierReview } from "../StateManagement/slices/ReviewSlice";
 import { getReviewsBySupplierID } from "../Backend/controllers/reviewsController";
 import { getReviews } from "../StateManagement/slices/ReviewSlice";
-import { useTheme ,themes} from "../ThemeContext";
+import { useTheme, themes } from "../ThemeContext";
+import LoaderComponent from "../components/loader";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -48,7 +51,6 @@ const SupplierDetails = ({ navigation, route }) => {
   const favorites = useSelector((state) => state.favourites.favourites);
   const bookedItems = useSelector((state) => state.cart.cartItems);
   const { theme, toggleTheme } = useTheme();
-
 
   useEffect(() => {
     dispatch(getAllFavourites());
@@ -126,11 +128,7 @@ const SupplierDetails = ({ navigation, route }) => {
   );
 
   if (!supplier) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Text>Loading...</Text>
-      </View>
-    );
+    return <LoaderComponent></LoaderComponent>;
   }
   const handleReview = () => {
     setReviewModalVisible(true);
@@ -140,7 +138,6 @@ const SupplierDetails = ({ navigation, route }) => {
     <ScrollView>
       {/* <View style={styles.container}> */}
       <View style={[styles.container, { backgroundColor: theme.background }]}>
-
         <View style={styles.carouselContainer}>
           <ImageCarousel
             images={supplier.images}
@@ -152,8 +149,9 @@ const SupplierDetails = ({ navigation, route }) => {
         <View style={styles.infoContainer}>
           <View style={styles.nameContainer}>
             {/* <Text style={styles.name}>{supplier.name}</Text> */}
-            <Text style={[styles.name, {color: theme.text }]}>{supplier.name}</Text>
-
+            <Text style={[styles.name, { color: theme.text }]}>
+              {supplier.name}
+            </Text>
           </View>
           <View style={styles.locationContainer}>
             <FontAwesome name="map-marker" size={16} color="#666" />
@@ -162,7 +160,8 @@ const SupplierDetails = ({ navigation, route }) => {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[styles.button, styles.bookButton]}
-              onPress={handleBookPress}>
+              onPress={handleBookPress}
+            >
               <Text style={styles.buttonText}>Book Now</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -172,12 +171,14 @@ const SupplierDetails = ({ navigation, route }) => {
                   ? styles.removeFavoriteButton
                   : styles.favoriteButton,
               ]}
-              onPress={handleFavoritePress}>
+              onPress={handleFavoritePress}
+            >
               <Text
                 style={[
                   styles.buttonText,
                   isFavorite ? { color: "white" } : { color: "black" },
-                ]}>
+                ]}
+              >
                 {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
               </Text>
             </TouchableOpacity>
@@ -203,12 +204,14 @@ const SupplierDetails = ({ navigation, route }) => {
                 justifyContent: "space-between",
                 marginTop: 20,
               },
-            ]}>
+            ]}
+          >
             <Text style={{ marginLeft: 14 }}>Reviews</Text>
             <View style={{ flexDirection: "row", marginLeft: 200 }}>
               <TouchableOpacity
                 style={styles.iconButton}
-                onPress={handleReview}>
+                onPress={handleReview}
+              >
                 <MaterialIcons name="rate-review" size={24} color="black" />
               </TouchableOpacity>
             </View>
@@ -227,7 +230,8 @@ const SupplierDetails = ({ navigation, route }) => {
         visible={modalVisible}
         transparent={true}
         animationType="slide"
-        onRequestClose={() => setModalVisible(false)}>
+        onRequestClose={() => setModalVisible(false)}
+      >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>Added to favorites</Text>
@@ -238,7 +242,8 @@ const SupplierDetails = ({ navigation, route }) => {
         visible={bookingModalVisible}
         transparent={true}
         animationType="fade"
-        onRequestClose={() => setBookingModalVisible(false)}>
+        onRequestClose={() => setBookingModalVisible(false)}
+      >
         <View style={styles.modalContainer}>
           <View style={styles.bookingModalContent}>
             <Text style={styles.bookingModalText}>{modalMessage}</Text>
@@ -295,7 +300,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#333",
     color: themes.cart,
-
   },
   locationContainer: {
     flexDirection: "row",
@@ -353,7 +357,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     backgroundColor: "#f0f0f0",
     backgroundColor: themes.cart,
-
   },
   modalContainer: {
     flex: 1,

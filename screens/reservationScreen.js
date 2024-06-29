@@ -234,7 +234,7 @@ const ReservationScreen = ({ navigation, route }) => {
             style={styles.button}
             labelStyle={{ fontSize: 16, fontWeight: "bold" }}
           >
-            Next ${venueObj.price}
+            Proceed ${venueObj.price}
           </Button>
         </TouchableOpacity>
       </View>
@@ -260,6 +260,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 32,
+    width: "70%",
     fontWeight: "bold",
   },
   ratingContainer: {

@@ -13,18 +13,35 @@ import {
 import storage from "../Storage/storage";
 import { getUserProfile } from "../StateManagement/slices/ProfileSlice";
 import { useTheme, themes } from "../ThemeContext";
+import LoaderComponent from "../components/loader";
 
 const HomeScreen = ({ navigation }) => {
   const { t } = useTranslation();
-
   const dispatch = useDispatch();
   const { theme, toggleTheme } = useTheme();
 
+  const [loading, setLoading] = useState(true); // Add a loading state
+
   const names = useSelector((state) => state.home.names);
+  const userDetails = useSelector((state) => state.user.user);
+
   useEffect(() => {
-    dispatch(getVenuesNearLocation());
-    dispatch(getNames());
-  });
+    const fetchData = async () => {
+      try {
+        setLoading(true); // Set loading state to true before fetching data
+        await dispatch(getVenuesNearLocation());
+        await dispatch(getNames());
+        const userId = await storage.load({ key: "userId" });
+        await dispatch(getUserProfile(userId));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false); // Set loading state to false after data is fetched
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
 
   const data = [
     { key: "header" },
@@ -32,16 +49,7 @@ const HomeScreen = ({ navigation }) => {
     { key: "suppliers" },
     { key: "plan" },
   ];
-  //-----------------------------------
-  const userDetails = useSelector((state) => state.user.user);
 
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      const userId = await storage.load({ key: "userId" });
-      dispatch(getUserProfile(userId));
-    };
-    fetchUserProfile();
-  }, [dispatch]);
   const renderItem = ({ item }) => {
     switch (item.key) {
       case "header":
@@ -59,7 +67,6 @@ const HomeScreen = ({ navigation }) => {
             <Text style={[styles.header, { color: theme.text }]}>
               {t("Explore Venues near you")}
             </Text>
-
             <Venues navigation={navigation} />
           </View>
         );
@@ -86,6 +93,10 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
+  if (loading) {
+    return <LoaderComponent />;
+  }
+
   return (
     <SafeAreaView
       style={[styles.safeArea, { backgroundColor: theme.background }]}
@@ -94,11 +105,7 @@ const HomeScreen = ({ navigation }) => {
         data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.key}
-        ListHeaderComponent={
-          <View>
-            {/* You can add additional header components here if needed */}
-          </View>
-        }
+        ListHeaderComponent={<View>{/* Additional header components */}</View>}
       />
     </SafeAreaView>
   );
@@ -108,6 +115,11 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: themes.cart,
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   container: {
     margin: 10,
