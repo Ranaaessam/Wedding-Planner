@@ -67,7 +67,6 @@ const filterSuppliers = async (req, res) => {
       query.location = location;
     }
 
-    console.log(query);
     const suppliers = await Supplier.find(query);
 
     res.status(200).json(suppliers);

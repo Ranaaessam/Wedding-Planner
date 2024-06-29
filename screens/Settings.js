@@ -1,5 +1,5 @@
 // SettingsScreen.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -20,6 +20,7 @@ import storage from "../Storage/storage.js";
 import { useTheme, themes } from "../ThemeContext";
 import { useDispatch, useSelector } from "react-redux";
 import { getWalletVal } from "../StateManagement/slices/SettingsSlice.js";
+import { useFocusEffect } from "@react-navigation/native";
 
 const SettingsScreen = ({ navigation }) => {
   const { t } = useTranslation();
@@ -27,13 +28,14 @@ const SettingsScreen = ({ navigation }) => {
   const [selectedLanguage, setSelectedLanguage] = useState("en");
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
+  const balance = useSelector((state) => state.settings.wallet);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getWalletVal());
-  });
-
-  const balance = useSelector((state) => state.settings.wallet);
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(getWalletVal());
+    }, [dispatch])
+  );
 
   const selectLanguage = (language) => {
     setSelectedLanguage(language);
@@ -71,6 +73,7 @@ const SettingsScreen = ({ navigation }) => {
     );
     navigation.navigate("Home");
   };
+
   const data = [
     {
       id: "profile",
@@ -130,8 +133,7 @@ const SettingsScreen = ({ navigation }) => {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={[styles.optionContainer, { backgroundColor: theme.card }]}
-      onPress={item.onPress}
-    >
+      onPress={item.onPress}>
       <Icon
         name={item.icon}
         type="font-awesome"
@@ -147,7 +149,12 @@ const SettingsScreen = ({ navigation }) => {
         </Text>
       )}
       {item.id === "language" && (
-        <Icon name="caret-down" type="font-awesome" color={theme.text} />
+        <Icon
+          name="caret-down"
+          type="font-awesome"
+          color={theme.text}
+          style={{ marginLeft: 10 }}
+        />
       )}
       {item.id === "darkMode" && (
         <Switch
@@ -178,24 +185,21 @@ const SettingsScreen = ({ navigation }) => {
         visible={isDropdownVisible}
         transparent={true}
         animationType="slide"
-        onRequestClose={() => setDropdownVisible(false)}
-      >
+        onRequestClose={() => setDropdownVisible(false)}>
         <TouchableWithoutFeedback onPress={() => setDropdownVisible(false)}>
           <View style={styles.modalOverlay} />
         </TouchableWithoutFeedback>
         <View style={[styles.dropdown, { backgroundColor: theme.card }]}>
           <TouchableOpacity
             style={styles.dropdownItem}
-            onPress={() => selectLanguage("en")}
-          >
+            onPress={() => selectLanguage("en")}>
             <Text style={[styles.dropdownItemText, { color: theme.text }]}>
               ▫ {t("english")}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.dropdownItem}
-            onPress={() => selectLanguage("ar")}
-          >
+            onPress={() => selectLanguage("ar")}>
             <Text style={[styles.dropdownItemText, { color: theme.text }]}>
               ▫ {t("arabic")}
             </Text>

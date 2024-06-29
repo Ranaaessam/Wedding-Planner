@@ -23,7 +23,7 @@ import {
 } from "../StateManagement/slices/ProfileSlice";
 import storage from "../Storage/storage";
 import { useTranslation } from "react-i18next";
-import { useTheme, themes } from "../ThemeContext";
+import { useTheme } from "../ThemeContext";
 import RNPickerSelect from "react-native-picker-select";
 
 const ProfileScreen = () => {
@@ -38,7 +38,7 @@ const ProfileScreen = () => {
 
   const plan = useSelector((state) => state.user.plan);
   const { t } = useTranslation();
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -53,12 +53,16 @@ const ProfileScreen = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    const weddingDate = new Date(userDetails.weddingdate);
+    const year = weddingDate.getFullYear();
+    const month = String(weddingDate.getMonth() + 1).padStart(2, "0");
+    const date = String(weddingDate.getDate()).padStart(2, "0");
     if (userDetails) {
       setProfile({
         groomName: names["user1Name"] || "",
         brideName: names["user2Name"] || "",
         location: userDetails.location,
-        weddingdate: userDetails.weddingdate,
+        weddingdate: `${year}-${month}-${date}`,
       });
       setImage(userDetails.image);
       setBudget(userDetails.budget);
@@ -91,7 +95,7 @@ const ProfileScreen = () => {
 
   if (profile === null) {
     return (
-      <View>
+      <View style={styles.loadingContainer}>
         <Text>Loading....</Text>
       </View>
     );
@@ -104,7 +108,6 @@ const ProfileScreen = () => {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView keyboardShouldPersistTaps="handled">
-          {/* <View style={styles.container}> */}
           <View
             style={[styles.container, { backgroundColor: theme.background }]}
           >
@@ -119,14 +122,7 @@ const ProfileScreen = () => {
               style={[styles.editBtn, { backgroundColor: theme.extra }]}
               onPress={handleEditToggle}
             >
-              <Text
-                style={{
-                  paddingRight: 10,
-                  fontWeight: "500",
-                  color: "white",
-                  fontSize: 18,
-                }}
-              >
+              <Text style={styles.editText}>
                 {isEditing ? t("saveProfile") : t("editProfile")}
               </Text>
               <Icon
@@ -137,31 +133,20 @@ const ProfileScreen = () => {
             </TouchableOpacity>
             <View style={styles.infoContainer}>
               <View style={styles.balanceContainer}>
-                <Text style={{ fontSize: 16 }}>{t("Budget")}</Text>
+                <Text style={styles.label}>{t("Budget")}</Text>
                 {isEditing ? (
                   <TextInput
-                    style={[styles.data, { backgroundColor: theme.text }]}
+                    style={[styles.input, { backgroundColor: theme.text }]}
                     value={budget}
                     onChangeText={(text) => setBudget(text)}
                   />
                 ) : (
-                  <Text
-                    style={{ fontWeight: "500", fontSize: 18, paddingTop: 10 }}
-                  >
-                    ${budget}
-                  </Text>
+                  <Text style={styles.value}>${budget}</Text>
                 )}
               </View>
               <View style={styles.planContainer}>
-                <Text style={{ fontSize: 16 }}>{t("plan")}</Text>
-                <Text
-                  style={{
-                    fontWeight: "500",
-                    fontSize: 18,
-                    paddingTop: 5,
-                    paddingBottom: 5,
-                  }}
-                >
+                <Text style={styles.label}>{t("Plan")}</Text>
+                <Text style={styles.value}>
                   {plan ? `${plan}%` : t("No Plan")}
                 </Text>
                 <ProgressBar progress={plan} height={5} />
@@ -169,57 +154,64 @@ const ProfileScreen = () => {
             </View>
             <View style={styles.detailsContainer}>
               <View style={styles.detailRow}>
-                <Text style={styles.head}>{t("Groom Name")}</Text>
+                <Text style={styles.label}>{t("Groom Name")}</Text>
                 {isEditing ? (
                   <TextInput
-                    style={styles.data}
+                    style={styles.input}
                     value={profile.groomName}
                     onChangeText={(text) => handleChange("groomName", text)}
                   />
                 ) : (
-                  <Text style={styles.data}>{profile.groomName}</Text>
+                  <Text style={styles.value}>{profile.groomName}</Text>
                 )}
-                <View style={styles.divider}></View>
               </View>
               <View style={styles.detailRow}>
-                <Text style={styles.head}>{t("Bride Name")}</Text>
+                <Text style={styles.label}>{t("Bride Name")}</Text>
                 {isEditing ? (
                   <TextInput
-                    style={styles.data}
+                    style={styles.input}
                     value={profile.brideName}
                     onChangeText={(text) => handleChange("brideName", text)}
                   />
                 ) : (
-                  <Text style={styles.data}>{profile.brideName}</Text>
+                  <Text style={styles.value}>{profile.brideName}</Text>
                 )}
-                <View style={styles.divider}></View>
               </View>
               <View style={styles.detailRow}>
-                <Text style={styles.head}>{t("Location")}</Text>
+                <Text style={styles.label}>{t("Location")}</Text>
                 {isEditing ? (
-                  <RNPickerSelect
-                    onValueChange={(value) => handleChange("location", value)}
-                    items={locationOptions}
-                    value={profile.location}
-                    style={pickerSelectStyles}
-                  />
+                  <View style={styles.pickerContainer}>
+                    <RNPickerSelect
+                      onValueChange={(value) => handleChange("location", value)}
+                      items={locationOptions}
+                      value={profile.location}
+                      style={pickerSelectStyles}
+                      useNativeAndroidPickerStyle={false}
+                      Icon={() => (
+                        <Icon
+                          name="chevron-down"
+                          size={20}
+                          color="gray"
+                          style={styles.pickerIcon}
+                        />
+                      )}
+                    />
+                  </View>
                 ) : (
-                  <Text style={styles.data}>{profile.location}</Text>
+                  <Text style={styles.value}>{profile.location}</Text>
                 )}
-                <View style={styles.divider}></View>
               </View>
               <View style={styles.detailRow}>
-                <Text style={styles.head}>{t("Wedding Date")}</Text>
+                <Text style={styles.label}>{t("Wedding Date")}</Text>
                 {isEditing ? (
                   <TextInput
-                    style={styles.data}
+                    style={styles.input}
                     value={profile.weddingdate}
                     onChangeText={(text) => handleChange("weddingdate", text)}
                   />
                 ) : (
-                  <Text style={styles.data}>{profile.weddingdate}</Text>
+                  <Text style={styles.value}>{profile.weddingdate}</Text>
                 )}
-                <View style={styles.divider}></View>
               </View>
             </View>
           </View>
@@ -239,22 +231,29 @@ const pickerSelectStyles = StyleSheet.create({
     borderRadius: 4,
     color: "black",
     paddingRight: 30, // to ensure the text is never behind the icon
+    backgroundColor: "white",
   },
   inputAndroid: {
     fontSize: 16,
     paddingHorizontal: 10,
     paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: "purple",
+    borderWidth: 1,
+    borderColor: "gray",
     borderRadius: 8,
     color: "black",
     paddingRight: 30, // to ensure the text is never behind the icon
+    backgroundColor: "white",
   },
 });
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   avatar: {
     width: "100%",
@@ -272,6 +271,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     flexDirection: "row",
     alignItems: "center",
+  },
+  editText: {
+    paddingRight: 10,
+    fontWeight: "500",
+    color: "white",
+    fontSize: 18,
   },
   infoContainer: {
     flexDirection: "row",
@@ -304,26 +309,41 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 10,
   },
-  head: {
-    color: "grey",
-    fontSize: 16,
-  },
-  data: {
-    fontSize: 20,
-    fontWeight: "500",
-    paddingVertical: 0,
-    marginVertical: 5,
-    height: 20,
-    alignItems: "center",
-    color: themes.text,
-  },
-  divider: {
-    backgroundColor: "#e0e0df",
-    height: 1,
-    marginVertical: 10,
-  },
   detailRow: {
     marginBottom: 10,
+  },
+  label: {
+    color: "#555",
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  value: {
+    fontSize: 18,
+    fontWeight: "500",
+    marginBottom: 5,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 5,
+    paddingVertical: Platform.OS === "ios" ? 15 : 10,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    backgroundColor: "white",
+    marginBottom: 5,
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: "transparent",
+    fontSize: 16,
+    backgroundColor: "white",
+    marginBottom: 5,
+  },
+  pickerIcon: {
+    position: "absolute",
+    top: 12,
+    right: 15,
   },
 });
 

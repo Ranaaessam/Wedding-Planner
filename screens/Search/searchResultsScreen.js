@@ -11,7 +11,6 @@ const SearchResultsScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("Initial dispatch for category: venue");
     dispatch(filterResultsByCategory({ category: "venue" }));
   }, [dispatch]);
 
@@ -27,7 +26,7 @@ const SearchResultsScreen = ({ navigation }) => {
             source={require("../../assets/Images/EmptyList.png")}
             style={styles.noResultsImage}
           />
-          <Text style={styles.noResultsText}>No results found</Text>
+          <Text style={styles.noResultsText}>No results found!</Text>
         </View>
       )}
       {hasResults && (
@@ -63,8 +62,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   noResultsText: {
-    fontSize: 24,
-    fontFamily: "PoppinsBold",
+    fontSize: 32,
+    fontFamily: "Poppins",
     color: "#aaa",
     letterSpacing: 1,
   },

@@ -76,7 +76,8 @@ const ListviewSuppliers = ({ navigation, route }) => {
                 supplierId: item._id,
                 imagess: item.images,
               })
-            }>
+            }
+          >
             <SupplierCard
               image={item.images[0]}
               name={item.name}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   StyleSheet,
@@ -12,6 +12,7 @@ import {
 import Icon from "react-native-vector-icons/AntDesign";
 import axios from "axios";
 import API_URL from "../constants";
+import storage from "../Storage/storage"; // Replace with your actual storage import
 
 const PlanInvitePartner = ({ navigation }) => {
   const { t } = useTranslation();
@@ -20,7 +21,20 @@ const PlanInvitePartner = ({ navigation }) => {
   const [nameError, setNameError] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const accountId = "667a9b0ab88a1379814771eb";
+  const [accountId, setAccountID] = useState("");
+
+  useEffect(() => {
+    const fetchUserID = async () => {
+      try {
+        const id = await storage.load({ key: "accountId" });
+        setAccountID(id);
+        console.log("Account ID fetched:", id);
+      } catch (error) {
+        console.error("Error fetching account ID:", error);
+      }
+    };
+    fetchUserID();
+  }, []);
 
   const handlePress = () => {
     setModalVisible(true);
@@ -97,7 +111,7 @@ const PlanInvitePartner = ({ navigation }) => {
               onChangeText={setName}
             />
             {nameError ? (
-              <Text style={{ color: "red" }}>{nameError}</Text>
+              <Text style={styles.errorText}>{nameError}</Text>
             ) : null}
             <TextInput
               style={styles.input}
@@ -108,19 +122,15 @@ const PlanInvitePartner = ({ navigation }) => {
               keyboardType="email-address"
             />
             {emailError ? (
-              <Text style={{ color: "red" }}>{emailError}</Text>
+              <Text style={styles.errorText}>{emailError}</Text>
             ) : null}
 
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={handleInvite}>
-                <Text style={{ color: "#FF81AE", fontSize: 18, marginTop: 10 }}>
-                  Send Invitation
-                </Text>
+                <Text style={styles.inviteText}>Send Invitation</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Text style={{ color: "red", fontSize: 18, marginTop: 10 }}>
-                  Cancel
-                </Text>
+                <Text style={styles.cancelText}>Cancel</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -213,6 +223,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%",
+  },
+  errorText: {
+    color: "red",
+  },
+  inviteText: {
+    color: "#FF81AE",
+    fontSize: 18,
+    marginTop: 10,
+  },
+  cancelText: {
+    color: "red",
+    fontSize: 18,
+    marginTop: 10,
   },
 });
 

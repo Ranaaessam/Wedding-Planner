@@ -18,7 +18,7 @@ const FavouriteItem = ({ item }) => {
   const imageUrl =
     item.images && item.images.length > 0 ? item.images[0] : null;
   const name = item.name || "No name available";
-  const rate = item.rate || "No rate available";
+  const rate = Math.round(item.rate) || "No rate available";
   const price = item.price || "No price available";
 
   return (

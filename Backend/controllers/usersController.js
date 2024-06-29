@@ -239,6 +239,7 @@ const invite = async (req, res) => {
       
       senderUser = await User.findById(account.user1Id);
       console.log(senderUser);
+      console.log(senderUser);
       if (senderUser) {
         senderName = senderUser.name;
       } else {
@@ -256,6 +257,7 @@ const invite = async (req, res) => {
    
     let existingUser = await User.findOne({ email: req.body.email });
 
+    let password = null;
     let password = null;
     if (!existingUser) {
       
@@ -285,6 +287,11 @@ const invite = async (req, res) => {
       }) added to account ${accountId} with ${
         password ? "a new password" : "an existing account"
       }`
+      `User ${req.body.name} (${
+        req.body.email
+      }) added to account ${accountId} with ${
+        password ? "a new password" : "an existing account"
+      }`
     );
 
     
@@ -299,6 +306,7 @@ const invite = async (req, res) => {
       .json({ error: "Error inviting user", details: error.message });
   }
 };
+//dkrg umvk tqez ubhm
 //dkrg umvk tqez ubhm
 module.exports = {
   getAllUsers,
