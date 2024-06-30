@@ -174,12 +174,12 @@ const StackNav = () => {
       <Stack.Screen
         name="SearchResults"
         component={SearchResultsScreen}
-        options={{ headerTitle: "" }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Review"
         component={ReviewScreen}
-        options={{ headerTitle: "" }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="ChatBot"

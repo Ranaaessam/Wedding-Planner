@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import Venues from "../components/venues";
 import Suppliers from "../components/suppliers";
@@ -14,6 +14,7 @@ import storage from "../Storage/storage";
 import { getUserProfile } from "../StateManagement/slices/ProfileSlice";
 import { useTheme, themes } from "../ThemeContext";
 import LoaderComponent from "../components/loader";
+import { useFocusEffect } from "@react-navigation/native";
 
 const HomeScreen = ({ navigation }) => {
   const { t } = useTranslation();
@@ -25,23 +26,25 @@ const HomeScreen = ({ navigation }) => {
   const names = useSelector((state) => state.home.names);
   const userDetails = useSelector((state) => state.user.user);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true); // Set loading state to true before fetching data
-        await dispatch(getVenuesNearLocation());
-        await dispatch(getNames());
-        const userId = await storage.load({ key: "userId" });
-        await dispatch(getUserProfile(userId));
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false); // Set loading state to false after data is fetched
-      }
-    };
+  useFocusEffect(
+    useCallback(() => {
+      const fetchData = async () => {
+        try {
+          setLoading(true);
+          dispatch(getVenuesNearLocation());
+          dispatch(getNames());
+          const userId = await storage.load({ key: "userId" });
+          dispatch(getUserProfile(userId));
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
 
-    fetchData();
-  }, [dispatch]);
+      fetchData();
+    }, [dispatch])
+  );
 
   const data = [
     { key: "header" },
@@ -99,8 +102,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView
-      style={[styles.safeArea, { backgroundColor: theme.background }]}
-    >
+      style={[styles.safeArea, { backgroundColor: theme.background }]}>
       <FlatList
         data={data}
         renderItem={renderItem}

@@ -51,6 +51,7 @@ const SearchResultsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+    paddingTop: 50,
   },
   noResultsContainer: {
     justifyContent: "center",

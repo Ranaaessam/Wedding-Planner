@@ -114,7 +114,7 @@ const SupplierDetails = ({ navigation, route }) => {
 
   const renderReviewCard = ({ item }) => (
     <ReviewCard
-      avatarUrl="https://media.istockphoto.com/id/1494104649/photo/ai-chatbot-artificial-intelligence-digital-concept.jpg?s=612x612&w=0&k=20&c=1Zq2sj3W0tWcpc-n1fVt4dQQOBGhtwcAk1H2eQ5MAbI="
+      avatarUrl="https://png.pngtree.com/thumb_back/fh260/background/20230612/pngtree-man-wearing-glasses-is-wearing-colorful-background-image_2905240.jpg"
       name={item.name}
       date={item.date}
       review={item.review}
@@ -157,8 +157,7 @@ const SupplierDetails = ({ navigation, route }) => {
               alignItems: "center",
               justifyContent: "space-between",
               paddingRight: 5,
-            }}
-          >
+            }}>
             <View style={styles.locationContainer}>
               <FontAwesome name="map-marker" size={16} color="#666" />
               <Text style={[styles.location, { color: theme.text }]}>
@@ -174,8 +173,7 @@ const SupplierDetails = ({ navigation, route }) => {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[styles.button, styles.bookButton]}
-              onPress={handleBookPress}
-            >
+              onPress={handleBookPress}>
               <Text style={styles.buttonText}>Book Now</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -185,14 +183,12 @@ const SupplierDetails = ({ navigation, route }) => {
                   ? styles.removeFavoriteButton
                   : styles.favoriteButton,
               ]}
-              onPress={handleFavoritePress}
-            >
+              onPress={handleFavoritePress}>
               <Text
                 style={[
                   styles.buttonText,
                   isFavorite ? { color: "white" } : { color: "black" },
-                ]}
-              >
+                ]}>
                 {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
               </Text>
             </TouchableOpacity>
@@ -218,14 +214,12 @@ const SupplierDetails = ({ navigation, route }) => {
                 justifyContent: "space-between",
                 marginTop: 20,
               },
-            ]}
-          >
+            ]}>
             <Text style={{ marginLeft: 14 }}>Reviews</Text>
             <View style={{ flexDirection: "row", marginLeft: 200 }}>
               <TouchableOpacity
                 style={styles.iconButton}
-                onPress={handleReview}
-              >
+                onPress={handleReview}>
                 <MaterialIcons name="rate-review" size={24} color="black" />
               </TouchableOpacity>
             </View>
@@ -244,8 +238,7 @@ const SupplierDetails = ({ navigation, route }) => {
         visible={modalVisible}
         transparent={true}
         animationType="slide"
-        onRequestClose={() => setModalVisible(false)}
-      >
+        onRequestClose={() => setModalVisible(false)}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>Added to favorites</Text>
@@ -256,8 +249,7 @@ const SupplierDetails = ({ navigation, route }) => {
         visible={bookingModalVisible}
         transparent={true}
         animationType="fade"
-        onRequestClose={() => setBookingModalVisible(false)}
-      >
+        onRequestClose={() => setBookingModalVisible(false)}>
         <View style={styles.modalContainer}>
           <View style={styles.bookingModalContent}>
             <Text style={styles.bookingModalText}>{modalMessage}</Text>

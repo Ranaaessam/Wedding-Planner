@@ -58,8 +58,7 @@ const ListviewSuppliers = ({ navigation, route }) => {
                 supplierId: item._id,
                 imagess: item.images,
               })
-            }
-          >
+            }>
             <SupplierCard
               image={item.images[0]}
               name={item.name}
@@ -82,6 +81,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: themes.cart,
+    paddingTop: 40,
   },
   loaderContainer: {
     flex: 1,

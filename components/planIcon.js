@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     paddingTop: 5,
-    marginHorizontal: 9,
+    marginRight: 28,
   },
   circle: {
     height: 50,

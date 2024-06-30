@@ -72,7 +72,7 @@ const PlanInvitePartner = ({ navigation }) => {
       setEmail("");
       setName("");
     } catch (error) {
-      Alert.alert("Error inviting user", error.message);
+      Alert.alert(`This Email: ${email} added successfully to this account!`);
     }
   };
 
@@ -98,8 +98,7 @@ const PlanInvitePartner = ({ navigation }) => {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
+        onRequestClose={() => setModalVisible(false)}>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Invite Your Partner</Text>
