@@ -43,7 +43,15 @@ const LoginScreen = () => {
   const handleLogin = async (values) => {
     try {
       const response = await axios.post(`${API_URL}/users/Login`, values);
-      if (response.status === 200) {
+
+      if (response.data.isAdmin === true) {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: "Admin" }],
+          })
+        );
+      } else if (response.status === 200) {
         const userId = response.data.userId;
         const accountId = response.data.accountId;
         dispatch(getUserProfile(userId));

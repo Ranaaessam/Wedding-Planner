@@ -73,7 +73,7 @@ const SuppliersManagement = () => {
         <Text style={styles.location}>{item.location}</Text>
         <View style={styles.rateContainer}>
           <Icon name="star" size={20} color="#FFD700" style={styles.rateIcon} />
-          <Text style={styles.rateText}>{item.rate}</Text>
+          <Text style={styles.rateText}>{Math.round(item.rate)}</Text>
         </View>
       </View>
       <TouchableOpacity onPress={() => handleDeleteSupplier(item._id)}>

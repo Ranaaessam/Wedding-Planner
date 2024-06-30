@@ -53,7 +53,7 @@ const OrdersManagement = () => {
 
   const handleSearch = (text) => {
     const filteredData = orders.filter((order) =>
-      order.username.toLowerCase().includes(text.toLowerCase())
+      order.from.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredOrders(filteredData);
   };
@@ -62,7 +62,7 @@ const OrdersManagement = () => {
     <View style={styles.orderCard}>
       <View style={styles.orderInfo}>
         <Text style={styles.username}>{item._id}</Text>
-        <Text style={styles.orderDate}>Date: {item.date}</Text>
+        <Text style={styles.orderDate}>Date: {item.date.slice(0, 10)}</Text>
         <View style={styles.priceContainer}>
           <Icon
             name="attach-money"

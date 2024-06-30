@@ -27,6 +27,7 @@ import BottomNav from "./bottomNav";
 import VenueCard from "../components/venueCard";
 import WalletScreen from "../screens/Wallet";
 import OTPScreen from "../screens/OTP";
+import AdminNav from "../navigators/adminNav";
 import { StyleSheet } from "react-native";
 import ChatBot from "../screens/chatbot";
 
@@ -183,6 +184,11 @@ const StackNav = () => {
       <Stack.Screen
         name="ChatBot"
         component={ChatBot}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Admin"
+        component={AdminNav}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
